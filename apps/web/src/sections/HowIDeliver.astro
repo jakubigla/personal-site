@@ -1,0 +1,13 @@
+---
+import type { Content } from "../content/schema";
+
+interface Props {
+  section: Content["how_i_deliver"];
+}
+const { section } = Astro.props;
+---
+
+<section class="section" id="how-i-deliver">
+  <h2>{section.title}</h2>
+  <p>{section.body}</p>
+</section>

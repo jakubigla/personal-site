@@ -1,0 +1,92 @@
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { spawnSync } from "node:child_process";
+import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync, existsSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+
+const root = new URL("..", import.meta.url).pathname;
+const committed = readFileSync(join(root, "content/en.yaml"), "utf8");
+const work = mkdtempSync(join(tmpdir(), "site-build-"));
+
+function build(name: string, contentText: string) {
+  const contentFile = join(work, `${name}.yaml`);
+  const outDir = join(work, `${name}-dist`);
+  writeFileSync(contentFile, contentText);
+  const run = spawnSync("npx", ["astro", "build", "--outDir", outDir], {
+    cwd: root,
+    env: { ...process.env, CONTENT_FILE: contentFile },
+    encoding: "utf8",
+  });
+  const html = existsSync(join(outDir, "index.html"))
+    ? readFileSync(join(outDir, "index.html"), "utf8")
+    : "";
+  return { run, outDir, html, output: `${run.stdout}\n${run.stderr}` };
+}
+
+afterAll(() => rmSync(work, { recursive: true, force: true }));
+
+describe("static build", () => {
+  let base: ReturnType<typeof build>;
+  beforeAll(() => {
+    base = build("base", committed);
+  });
+
+  it("emits plain static files and nothing that needs a server", () => {
+    expect(base.run.status).toBe(0);
+    const files = readdirSync(base.outDir, { recursive: true }).map(String);
+    expect(files).toContain("index.html");
+    expect(files.some((f) => f.endsWith(".css")) || base.html.includes("<style")).toBe(true);
+    expect(files.some((f) => /\.(mjs|cjs)$/.test(f) && f.includes("server"))).toBe(false);
+  });
+
+  it("renders the headline from the content file", () => {
+    const changed = build(
+      "headline",
+      committed.replace(/^( {2}headline:).*$/m, '$1 "A brand new headline"'),
+    );
+    expect(changed.run.status).toBe(0);
+    expect(changed.html).toContain("A brand new headline");
+    expect(base.html).not.toContain("A brand new headline");
+  });
+
+  it("omits How I deliver while its flag is off and shows it when on", () => {
+    expect(base.html).not.toContain('id="how-i-deliver"');
+    const on = build(
+      "deliver-on",
+      committed.replace(/how_i_deliver: false/, "how_i_deliver: true"),
+    );
+    expect(on.html).toContain('id="how-i-deliver"');
+  });
+
+  it("removes the footer when its flag is off", () => {
+    expect(base.html).toContain("<footer");
+    const off = build("footer-off", committed.replace(/footer: true/, "footer: false"));
+    expect(off.html).not.toContain("<footer");
+  });
+
+  it("is readable without JavaScript: the text is in the HTML and no script ships", () => {
+    expect(base.html).toContain("<h1");
+    expect(base.html).not.toMatch(/<script/i);
+  });
+
+  it("fails the build readably on an invalid content file", () => {
+    const bad = build("bad", committed.replace(/^ {2}headline:.*$/m, ""));
+    expect(bad.run.status).not.toBe(0);
+    expect(bad.output).toMatch(/hero\.headline/);
+  });
+
+  it("renders markup in content as escaped text, never as markup or script", () => {
+    const hostile = build(
+      "hostile",
+      committed.replace(
+        /^( {2}headline:).*$/m,
+        `$1 "<script>alert(1)</script><img src=x onerror=alert(2)><b>bold</b>"`,
+      ),
+    );
+    expect(hostile.run.status).toBe(0);
+    expect(hostile.html).toContain("&lt;script&gt;alert(1)&lt;/script&gt;");
+    expect(hostile.html).not.toContain("<script");
+    expect(hostile.html).not.toContain("<img src=x");
+    expect(hostile.html).not.toContain("<b>bold");
+  });
+});
