@@ -4,16 +4,16 @@
   "id": "PS-3",
   "ticket": "PS-3",
   "branch": "feature/PS-3-aws-static-hosting-is-defined-in",
-  "generated_at": "2026-11-27T15:19:05Z",
+  "generated_at": "2026-11-27T15:25:44Z",
   "coverage": "parent-and-subagents",
   "subagents": {
     "xpm:xpm-exerciser": {
-      "count": 21,
-      "output_tokens": 13931,
-      "input_tokens": 42,
-      "cache_read": 418367,
-      "cache_create": 52738,
-      "cache_write_5m": 52738,
+      "count": 35,
+      "output_tokens": 20809,
+      "input_tokens": 70,
+      "cache_read": 625518,
+      "cache_create": 82937,
+      "cache_write_5m": 82937,
       "cache_write_1h": 0,
       "models": [
         "claude-sonnet-5-5"
@@ -61,12 +61,12 @@
   },
   "cost": {
     "tokens": {
-      "output": 189860,
-      "input": 708,
-      "cache_read": 21071497,
-      "cache_create": 788439,
-      "cache_write_5m": 608552,
-      "cache_write_1h": 179887
+      "output": 204928,
+      "input": 810,
+      "cache_read": 24536728,
+      "cache_create": 851956,
+      "cache_write_5m": 638751,
+      "cache_write_1h": 213205
     },
     "usd": null,
     "usd_source": null
@@ -132,7 +132,7 @@
     {
       "stage": "after-ready-flipped",
       "at": "2026-11-27T15:09:35Z",
-      "output_tokens": 8922,
+      "output_tokens": 17112,
       "cost_usd": null,
       "trailing": true
     }
@@ -171,7 +171,7 @@
   "sessions": 2,
   "wall_clock": {
     "first": "2026-11-27T14:04:45.996Z",
-    "last": "2026-11-27T15:19:01.195Z"
+    "last": "2026-11-27T15:25:18.425Z"
   },
   "per_session": [
     {
@@ -183,30 +183,32 @@
     },
     {
       "sessionId": "76734889-4532-4a34-aab8-cf1d765e73f1",
-      "entries": 70,
-      "output_tokens": 8253,
+      "entries": 162,
+      "output_tokens": 16443,
       "first": "2026-11-27T15:14:43.916Z",
-      "last": "2026-11-27T15:19:01.195Z"
+      "last": "2026-11-27T15:25:18.425Z"
     }
   ],
-  "output_tokens": 28760,
+  "output_tokens": 36950,
   "models": {
     "claude-sonnet-5-5": {
-      "calls": 99,
-      "output_tokens": 28760,
-      "input_tokens": 226,
-      "cache_read": 9733445,
-      "cache_create": 179887,
+      "calls": 131,
+      "output_tokens": 36950,
+      "input_tokens": 300,
+      "cache_read": 12991525,
+      "cache_create": 213205,
       "cache_write_5m": 0,
-      "cache_write_1h": 179887
+      "cache_write_1h": 213205
     }
   },
   "skills": {
+    "xpm:xpm-exercise-acs": 1,
     "xpm:xpm-finalize-branch": 2,
-    "xpm:xpm-publish-evidence": 1,
+    "xpm:xpm-publish-evidence": 2,
     "xpm:xpm-start": 2
   },
   "dispatches": {
+    "xpm:xpm-exerciser": 2,
     "xpm:xpm-step": 8
   },
   "dispatches_reported": {
@@ -215,21 +217,24 @@
   },
   "dispatches_reported_source": "evidence-dir",
   "tools": {
-    "Agent": 8,
-    "Bash": 70,
+    "Agent": 10,
+    "Bash": 96,
     "Edit": 5,
-    "Read": 8,
-    "Skill": 5,
+    "Read": 9,
+    "Skill": 7,
     "TaskStop": 1,
     "Write": 1
   },
   "profile": {
     "skills": {
+      "xpm:xpm-exercise-acs": {
+        "count": 1
+      },
       "xpm:xpm-finalize-branch": {
         "count": 2
       },
       "xpm:xpm-publish-evidence": {
-        "count": 1
+        "count": 2
       },
       "xpm:xpm-start": {
         "count": 2
@@ -237,13 +242,13 @@
     },
     "tools": {
       "Agent": {
-        "count": 8,
-        "total_seconds": 6,
+        "count": 10,
+        "total_seconds": 7,
         "median_seconds": 1
       },
       "Bash": {
-        "count": 69,
-        "total_seconds": 926,
+        "count": 95,
+        "total_seconds": 1143,
         "median_seconds": 3
       },
       "Edit": {
@@ -252,13 +257,13 @@
         "median_seconds": 1
       },
       "Read": {
-        "count": 8,
-        "total_seconds": 11,
+        "count": 9,
+        "total_seconds": 12,
         "median_seconds": 1
       },
       "Skill": {
-        "count": 5,
-        "total_seconds": 4,
+        "count": 7,
+        "total_seconds": 6,
         "median_seconds": 1
       },
       "TaskStop": {
@@ -273,26 +278,26 @@
       }
     },
     "hooks": {
-      "fires": 30,
+      "fires": 36,
       "errors": 0,
       "by_command": {
         "\"${CLAUDE_PLUGIN_ROOT}/hooks/autonomous-keepalive.sh\"": {
-          "fires": 10,
-          "total_ms": 1321
+          "fires": 12,
+          "total_ms": 1795
         },
         "\"${CLAUDE_PLUGIN_ROOT}/hooks/stage-keepalive.sh\"": {
-          "fires": 10,
-          "total_ms": 205
+          "fires": 12,
+          "total_ms": 769
         },
         "\"/Users/jakubigla/.config/iterm2/it2\" handle-agent-hook": {
-          "fires": 10,
-          "total_ms": 1406
+          "fires": 12,
+          "total_ms": 1648
         }
       }
     },
     "turns": {
-      "count": 10,
-      "total_seconds": 4231
+      "count": 12,
+      "total_seconds": 4685
     },
     "subagent_runs": [
       {
@@ -392,25 +397,39 @@
         "first": "2026-11-27T14:57:52.700Z",
         "last": "2026-11-27T14:59:57.885Z",
         "seconds": 125
+      },
+      {
+        "name": "ex-infra-2",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T15:23:28.359Z",
+        "last": "2026-11-27T15:23:42.602Z",
+        "seconds": 14
+      },
+      {
+        "name": "ex-infra",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T15:20:04.518Z",
+        "last": "2026-11-27T15:21:18.134Z",
+        "seconds": 74
       }
     ]
   },
   "spend": {
-    "usd": 8.9076747,
+    "usd": 9.613851299999997,
     "coverage": "exact",
     "coverage_tokens": {
-      "exact": 22050504
+      "exact": 25594422
     },
     "unpriced": [],
     "table_date": "2026-11-09",
-    "tokens": 22050504,
+    "tokens": 25594422,
     "tokens_by_model": {
       "claude-sonnet-5-5": {
-        "input": 410,
-        "output": 86193,
-        "cache_write_1h": 179887,
-        "cache_read": 13212822,
-        "cache_write_5m": 273973
+        "input": 512,
+        "output": 101261,
+        "cache_write_1h": 213205,
+        "cache_read": 16678053,
+        "cache_write_5m": 304172
       },
       "claude-opus-5-5": {
         "input": 298,
@@ -424,20 +443,21 @@
   "friction": {
     "by_kind": {
       "missing-context": 1,
+      "other": 1,
       "script-fail": 2,
       "unclear-instruction": 1
     },
     "by_owner": {
       "project": 2,
-      "xpm": 2
+      "xpm": 3
     },
-    "records": 4
+    "records": 5
   },
   "quality": {
     "evidence": {
       "fail": 0,
       "pass": 10,
-      "repins": 0
+      "repins": 2
     },
     "po_outcome": null,
     "review": {
