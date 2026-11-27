@@ -11,8 +11,8 @@ hosts it. The page, its link preview and its CV are all derived from `apps/web/c
 
 ## Run locally
 
-Needs [mise](https://mise.jdx.dev) and nothing else: it installs Node, Terraform, tflint and
-pre-commit at the pinned versions. No environment variable is needed; the site reads only the
+Needs [mise](https://mise.jdx.dev) and nothing else: it installs Node, Terraform, tflint,
+pre-commit and gitleaks at the pinned versions. No environment variable is needed; the site reads only the
 committed content file, which holds published details only.
 
 1. `mise trust && mise install` - installs the pinned tools.
@@ -29,7 +29,8 @@ committed content file, which holds published details only.
   `apps/web/dist`.
 - `mise run infra:fmt`, `infra:validate`, `infra:lint` - Terraform checks, no credentials needed.
 - `mise run repo:lint` - every pre-commit hook over every file. `mise run repo:test` - the
-  repo's own script tests.
+  repo's own script tests. `mise run repo:secrets` - gitleaks over every commit in history
+  (`.gitleaks.toml` holds its allowlist).
 
 ### Client-name denylist
 
