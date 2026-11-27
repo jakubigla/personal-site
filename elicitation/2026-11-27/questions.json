@@ -1,0 +1,447 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "Q1",
+      "topic": "priority",
+      "text": "Recommended MoSCoW for every FR and NFR, by domain (FR-005, FR-011, FR-031 and FR-032 are decided in their own questions):\n\n| Domain | ID | Title | Recommended |\n|---|---|---|---|\n| sections | FR-001 | Show the hero with name, role and primary call to action | must |\n| sections | FR-004 | Show the proof strip of key numbers and facts | must |\n| sections | FR-006 | Show selected work as anonymized glass cards | must |\n| sections | FR-008 | Show the How I can help offer | must |\n| sections | FR-009 | State the pre-sales result line | must |\n| sections | FR-010 | Show the experience timeline | must |\n| sections | FR-012 | List certifications and speaking | must |\n| sections | FR-013 | Show Champion status with the official badge when available | must |\n| sections | FR-014 | Show a placeholder portrait with a swappable photo slot | must |\n| motion | FR-002 | Play the opening sequence - the last boring homepage (Act 1) | must |\n| motion | FR-003 | Turn the drifting constellation into a governed graph on scroll (Act 2) | must |\n| motion | FR-007 | Slide work cards in along the graph and highlight their part of it (Act 4) | should |\n| motion | FR-016 | Settle the page at contact (Act 6) | should |\n| motion | FR-017 | Deep-link to a chapter in its final state | should |\n| motion | FR-018 | Drift the constellation with scroll and pointer | should |\n| motion | FR-019 | Reveal each section as it enters the viewport | should |\n| contact | FR-015 | Contact Jakub by email, LinkedIn or GitHub | must |\n| footer | FR-020 | Show the How this site was built note | must |\n| footer | FR-021 | Show the legal entity and privacy note in the footer | must |\n| content | FR-022 | Update all page content from one content file | must |\n| content | FR-023 | Reserve a flagged-off How I deliver section | must |\n| content | FR-030 | Reserve a flagged-off testimonial slot | could |\n| content | NFR-025 | Plain hyphen only, never em or en dashes, in copy and code comments | must |\n| content | NFR-026 | The brand is the person - JacOps only as the footer legal entity | must |\n| seo | FR-024 | Produce a proper link preview card | must |\n| delivery | FR-025 | Publish site changes on merge to main | must |\n| cv | FR-026 | Download the CV as a PDF | should |\n| theming | FR-027 | Follow the system light or dark theme | should |\n| hosting | FR-028 | Show a custom 404 page | should |\n| hosting | FR-029 | Redirect www to the apex domain | should |\n| performance | NFR-001 | Lighthouse 95+ and LCP under 2.5 s on a mid-range phone | must |\n| performance | NFR-002 | Animation never blocks reading - hero text is the first-frame LCP element | must |\n| performance | NFR-006 | Automatic reduced variant on low-power devices | should |\n| performance | NFR-007 | No endless animation - motion rests and pauses when not visible | should |\n| performance | NFR-010 | Rendering stack - CSS 3D plus Canvas 2D or SVG, WebGL only lazy and proven | should |\n| accessibility | NFR-003 | WCAG 2.2 AA, including contrast over the animated background in both themes | must |\n| accessibility | NFR-004 | Full content readable with JavaScript off | must |\n| accessibility | NFR-005 | Reduced-motion variant honours prefers-reduced-motion | must |\n| ux | NFR-008 | Native scrolling - no scroll hijacking or scroll traps | must |\n| ux | NFR-009 | Shared motion tokens and input-appropriate motion | should |\n| ux | NFR-011 | Responsive from 360 px with mobile as a first-class layout | must |\n| ux | NFR-029 | Reads as a CV in 60 seconds | must |\n| security | NFR-012 | HTTPS-only delivery from a private origin with security headers | must |\n| security | NFR-013 | No long-lived cloud credentials - deploy via GitHub Actions OIDC | must |\n| security | NFR-017 | No third-party origins at runtime | must |\n| privacy-and-compliance | NFR-014 | Public repository hygiene - no secrets or private details | must |\n| privacy-and-compliance | NFR-015 | Client anonymity and the traceability rule | must |\n| privacy-and-compliance | NFR-016 | No cookies and no third-party trackers | must |\n| privacy-and-compliance | NFR-027 | Third-party marks and imagery - official badge only, no stock or generated faces | must |\n| privacy-and-compliance | NFR-028 | Inspiration sources used for techniques only | must |\n| operability | NFR-018 | Static files only - no server, database or backend | must |\n| operability | NFR-020 | All hosting infrastructure defined in Terraform | must |\n| operability | NFR-021 | CI runs on every pull request, docs-only included | must |\n| operability | NFR-022 | First apply and DNS cut-over stay attended | must |\n| cost | NFR-019 | Hosting cost under 2 USD per month | must |\n| maintainability | NFR-023 | Content file is the single source of truth, separate from layout | must |\n| maintainability | NFR-024 | English at launch, structure ready for a Polish version | must |",
+      "options": [
+        "Keep all as listed",
+        "Change some (name the ids)"
+      ],
+      "recommended": "Keep all as listed",
+      "why": "Brief Needs Must/Should/Could lists; unranked motion items set to should per Open decision 4",
+      "touches": [
+        "FR-001",
+        "FR-004",
+        "FR-006",
+        "FR-008",
+        "FR-009",
+        "FR-010",
+        "FR-012",
+        "FR-013",
+        "FR-014",
+        "FR-002",
+        "FR-003",
+        "FR-007",
+        "FR-016",
+        "FR-017",
+        "FR-018",
+        "FR-019",
+        "FR-015",
+        "FR-020",
+        "FR-021",
+        "FR-022",
+        "FR-023",
+        "FR-030",
+        "NFR-025",
+        "NFR-026",
+        "FR-024",
+        "FR-025",
+        "FR-026",
+        "FR-027",
+        "FR-028",
+        "FR-029",
+        "NFR-001",
+        "NFR-002",
+        "NFR-006",
+        "NFR-007",
+        "NFR-010",
+        "NFR-003",
+        "NFR-004",
+        "NFR-005",
+        "NFR-008",
+        "NFR-009",
+        "NFR-011",
+        "NFR-029",
+        "NFR-012",
+        "NFR-013",
+        "NFR-017",
+        "NFR-014",
+        "NFR-015",
+        "NFR-016",
+        "NFR-027",
+        "NFR-028",
+        "NFR-018",
+        "NFR-020",
+        "NFR-021",
+        "NFR-022",
+        "NFR-019",
+        "NFR-023",
+        "NFR-024"
+      ],
+      "answer": "Keep all as listed"
+    },
+    {
+      "id": "Q2",
+      "topic": "conflict",
+      "text": "Needs (Must) 2 and 5 ask for the breakout figure (Act 3, FR-005) and a timeline line that draws with scroll (Act 5, FR-011), but Open decision 4 says Acts 3 to 6 may ship as plain reveals if the budget is tight. Which rule sets their priority?",
+      "options": [
+        "Must - both ship as described whatever the budget",
+        "Should - both ship if the motion budget allows, else plain reveals"
+      ],
+      "recommended": "Should - both ship if the motion budget allows, else plain reveals",
+      "why": "Brief Open decision 4 is the later, specific rule; keeps the MVP from widening",
+      "touches": [
+        "FR-005",
+        "FR-011"
+      ],
+      "picture": {
+        "type": "quotes",
+        "quotes": [
+          {
+            "text": "One figure \"breaks out of its frame\" (see Act 3).",
+            "source": "Brief - Needs (Must 2)"
+          },
+          {
+            "text": "Acts 3 to 6 can ship as plain reveals if the budget is tight",
+            "source": "Brief - Open decisions"
+          }
+        ]
+      },
+      "answer": "Should - both ship if the motion budget allows, else plain reveals"
+    },
+    {
+      "id": "Q3",
+      "topic": "nfr-gap",
+      "area": "availability-and-recovery",
+      "text": "No uptime target exists, and only the DNS cut-over has a rollback (NFR-022). What uptime should the site hold, and how is a bad release undone?",
+      "options": [
+        "99.9% monthly; a bad release restored within 15 min from S3 versioning or per-release prefixes",
+        "99.5% monthly; a bad release undone by reverting the commit and redeploying within 1 h",
+        "Best effort, no target; fix forward"
+      ],
+      "recommended": "99.5% monthly; a bad release undone by reverting the commit and redeploying within 1 h",
+      "why": "Research - deploy finding: sync with delete removes the old build; content history already lives in git",
+      "touches": [
+        "NFR-new"
+      ],
+      "picture": {
+        "type": "coverage",
+        "rows": [
+          {
+            "area": "Rollback of the DNS cut-over",
+            "covered": true,
+            "by": "NFR-022"
+          },
+          {
+            "area": "Uptime target",
+            "covered": false,
+            "risk": "No agreed bar for an outage on launch day, so nobody knows when one matters"
+          },
+          {
+            "area": "Rollback of a bad release",
+            "covered": false,
+            "risk": "A sync with delete removes the previous build, so a broken release has no quick way back"
+          }
+        ]
+      },
+      "answer": "99.5% monthly; a bad release undone by reverting the commit and redeploying within 1 h"
+    },
+    {
+      "id": "Q4",
+      "topic": "nfr-gap",
+      "area": "privacy-and-compliance",
+      "text": "CloudFront access logs hold visitor IP addresses, which are personal data under GDPR, and nothing says whether they are kept. What happens to them?",
+      "options": [
+        "CloudFront access logging off",
+        "Logging on, IPs kept 30 days then deleted, named in the privacy note"
+      ],
+      "recommended": "CloudFront access logging off",
+      "why": "Research - GDPR access-log finding; keeps the NFR-016 no-tracking note true at no cost",
+      "touches": [
+        "NFR-new",
+        "NFR-016"
+      ],
+      "picture": {
+        "type": "coverage",
+        "rows": [
+          {
+            "area": "Cookies and trackers",
+            "covered": true,
+            "by": "NFR-016"
+          },
+          {
+            "area": "Third-party runtime origins",
+            "covered": true,
+            "by": "NFR-017"
+          },
+          {
+            "area": "Client anonymity",
+            "covered": true,
+            "by": "NFR-015"
+          },
+          {
+            "area": "CDN access logs with IP addresses",
+            "covered": false,
+            "risk": "Logs hold personal data and could make the no-tracking privacy note untrue"
+          }
+        ]
+      },
+      "answer": "CloudFront access logging off"
+    },
+    {
+      "id": "Q5",
+      "topic": "thin-fr",
+      "text": "FR-024 asks for an Open Graph image but sets no size or source. LinkedIn wants at least 1200 x 627 px. Where does the image come from?",
+      "options": [
+        "1200 x 627 px, generated at build from the content file",
+        "1200 x 627 px, designed once and committed as a static file"
+      ],
+      "recommended": "1200 x 627 px, generated at build from the content file",
+      "why": "Research - link preview finding (1200 x 627, under 5 MB); NFR-023 single source of truth",
+      "touches": [
+        "FR-024"
+      ],
+      "picture": {
+        "type": "timeline",
+        "steps": [
+          "Launch post shares the jacops.pl link",
+          "LinkedIn shows the card with title, description and image",
+          "Months later Jakub edits the headline in the content file",
+          "The link is shared again"
+        ],
+        "gap": 3,
+        "outcomes": {
+          "1200 x 627 px, generated at build from the content file": "The card image shows the new headline after the next deploy",
+          "1200 x 627 px, designed once and committed as a static file": "The card image keeps the old headline until someone redraws it"
+        }
+      },
+      "answer": "1200 x 627 px, generated at build from the content file"
+    },
+    {
+      "id": "Q6",
+      "topic": "nfr-gap",
+      "area": "observability",
+      "text": "Nothing tells Jakub when the site is down, a deploy fails or the bill grows. Which alerts should exist?",
+      "options": [
+        "Budget alerts at 80% and 100% of 2 USD, email on a failed deploy, uptime check every 5 min with email",
+        "Budget alerts at 80% and 100% of 2 USD and email on a failed deploy; no uptime check",
+        "Email on a failed deploy only"
+      ],
+      "recommended": "Budget alerts at 80% and 100% of 2 USD and email on a failed deploy; no uptime check",
+      "why": "Research - budget alert finding; a static site behind a CDN rarely goes down and a probe adds cost against NFR-019",
+      "touches": [
+        "NFR-new"
+      ],
+      "picture": {
+        "type": "coverage",
+        "rows": [
+          {
+            "area": "Monthly cost cap",
+            "covered": true,
+            "by": "NFR-019"
+          },
+          {
+            "area": "Cost alert",
+            "covered": false,
+            "risk": "A traffic spike or misconfiguration bills for days before anyone sees it"
+          },
+          {
+            "area": "Deploy failure notice",
+            "covered": false,
+            "risk": "A content change silently never goes live"
+          },
+          {
+            "area": "Uptime check",
+            "covered": false,
+            "risk": "An outage during the launch post goes unnoticed"
+          }
+        ]
+      },
+      "answer": "Budget alerts at 80% and 100% of 2 USD and email on a failed deploy; no uptime check"
+    },
+    {
+      "id": "Q7",
+      "topic": "thin-fr",
+      "text": "FR-025 deploys on merge but says nothing about caching: a visitor mid-deploy can get old HTML with new assets. How soon must a merged change be live?",
+      "options": [
+        "Within 10 min; the pipeline waits for the invalidation, hashed assets cached long, HTML short",
+        "Within 1 h through a short HTML cache, no invalidation"
+      ],
+      "recommended": "Within 10 min; the pipeline waits for the invalidation, hashed assets cached long, HTML short",
+      "why": "Research - deploy cache finding (long TTL on hashed assets, short on HTML, awaited invalidation)",
+      "touches": [
+        "FR-025"
+      ],
+      "picture": {
+        "type": "timeline",
+        "steps": [
+          "Jakub merges a content PR",
+          "CI builds, tests and uploads the new files",
+          "CloudFront still holds the old HTML in cache",
+          "A visitor opens the page"
+        ],
+        "gap": 2,
+        "outcomes": {
+          "Within 10 min; the pipeline waits for the invalidation, hashed assets cached long, HTML short": "The visitor gets the new page within minutes, old assets stay valid meanwhile",
+          "Within 1 h through a short HTML cache, no invalidation": "The visitor may see the old page for up to an hour"
+        }
+      },
+      "answer": "Within 10 min; the pipeline waits for the invalidation, hashed assets cached long, HTML short"
+    },
+    {
+      "id": "Q8",
+      "topic": "thin-fr",
+      "text": "FR-021 leaves open whether the footer carries the company tax number (NIP). Polish e-services guides list company details among usual site disclosures. What does the footer show?",
+      "options": [
+        "Legal entity plus NIP, both from the content file",
+        "Legal entity only until a legal check says NIP is required"
+      ],
+      "recommended": "Legal entity plus NIP, both from the content file",
+      "why": "Research - Electronic Services Act finding; Brief Open decision 3; the NIP is already public in the business register",
+      "touches": [
+        "FR-021"
+      ],
+      "answer": "Legal entity plus NIP, both from the content file"
+    },
+    {
+      "id": "Q9",
+      "topic": "conflict",
+      "text": "The Could visit counter (FR-032) would read CloudFront logs or use a privacy-first service, but research says those logs hold personal data and a hosted service would be a third-party origin (NFR-017). What becomes of it?",
+      "options": [
+        "Could, after launch: CloudFront logs only, IPs minimised, short retention, privacy note updated",
+        "Wont: drop the counter so no visitor data is kept"
+      ],
+      "recommended": "Could, after launch: CloudFront logs only, IPs minimised, short retention, privacy note updated",
+      "why": "Brief Needs (Could) 22 keeps it; Research - GDPR access-log finding sets the conditions",
+      "touches": [
+        "FR-032"
+      ],
+      "picture": {
+        "type": "quotes",
+        "quotes": [
+          {
+            "text": "Cookieless visit counter (CloudFront logs or a privacy-first service).",
+            "source": "Brief - Needs (Could 22)"
+          },
+          {
+            "text": "CDN and web server access logs hold IP addresses and user agents, which are personal data under GDPR",
+            "source": "Research - Findings"
+          }
+        ]
+      },
+      "answer": "Could, after launch: CloudFront logs only, IPs minimised, short retention, privacy note updated"
+    },
+    {
+      "id": "Q10",
+      "topic": "implied-fr",
+      "text": "Jakub updates content by editing one file and merging a PR, but nothing lets him see the built page before the merge. Should a PR show it?",
+      "options": [
+        "Could, not MVP: the PR check attaches the built site and screenshots at 360 px and desktop",
+        "Wont: Jakub builds and checks locally before merging"
+      ],
+      "recommended": "Could, not MVP: the PR check attaches the built site and screenshots at 360 px and desktop",
+      "why": "Brief Users 4 implies it; implied capabilities stay out of the MVP",
+      "touches": [
+        "FR-new"
+      ],
+      "picture": {
+        "type": "sketch",
+        "parts": [
+          "PR check builds the site from the edited content file",
+          "Screenshots at 360 px and desktop attached to the PR",
+          "Built site downloadable as a CI artifact"
+        ],
+        "cost": "S",
+        "tickets": 1,
+        "hint": {
+          "text": "Jakub (owner) - updates content a few times a year by editing one file and merging a PR.",
+          "source": "Brief - Users"
+        }
+      },
+      "answer": "Could, not MVP: the PR check attaches the built site and screenshots at 360 px and desktop"
+    },
+    {
+      "id": "Q11",
+      "topic": "conflict",
+      "text": "The Polish version (FR-031) is listed under Could, yet Polish translation is out of scope and English only at launch is decided. Which stands?",
+      "options": [
+        "Wont for now - only the structure stays ready (NFR-024)",
+        "Could - keep it in the backlog for after launch"
+      ],
+      "recommended": "Wont for now - only the structure stays ready (NFR-024)",
+      "why": "Brief Out of scope lists Polish translation; Constraints decide English only",
+      "touches": [
+        "FR-031"
+      ],
+      "picture": {
+        "type": "quotes",
+        "quotes": [
+          {
+            "text": "Polish version behind a language switch.",
+            "source": "Brief - Needs (Could 21)"
+          },
+          {
+            "text": "Language: English only at launch (decided). Structure must allow a Polish version later.",
+            "source": "Brief - Constraints"
+          }
+        ]
+      },
+      "answer": "Wont for now - only the structure stays ready (NFR-024)"
+    },
+    {
+      "id": "Q12",
+      "topic": "thin-fr",
+      "text": "FR-026 stops serving the 2020 CV PDF, but old links to it are out there. What does its old URL do?",
+      "options": [
+        "Redirects permanently to the new CV PDF",
+        "Returns the custom 404 page"
+      ],
+      "recommended": "Redirects permanently to the new CV PDF",
+      "why": "FR-026 AC4 retires the 2020 PDF; old shared links should reach the current CV",
+      "touches": [
+        "FR-026"
+      ],
+      "picture": {
+        "type": "timeline",
+        "steps": [
+          "Someone clicks a saved link to the 2020 CV PDF",
+          "The 2020 PDF is no longer served",
+          "What the visitor sees"
+        ],
+        "gap": 2,
+        "outcomes": {
+          "Redirects permanently to the new CV PDF": "They get the current CV",
+          "Returns the custom 404 page": "They see the 404 page with a link to the main page"
+        }
+      },
+      "answer": "Redirects permanently to the new CV PDF"
+    },
+    {
+      "id": "Q13",
+      "topic": "thin-fr",
+      "text": "FR-015 publishes jakub.igla@gmail.com as a plain mailto link; research says it will be harvested, and script obfuscation breaks the no-JavaScript rule. How is the address shown?",
+      "options": [
+        "Plain mailto link, accept the spam",
+        "Address shown munged in plain HTML (jakub.igla at gmail.com)",
+        "A dedicated forwarding alias instead of the personal address"
+      ],
+      "recommended": "Plain mailto link, accept the spam",
+      "why": "Brief Decisions - Contact names this address; one-click contact matters most (Research - email harvesting finding)",
+      "touches": [
+        "FR-015"
+      ],
+      "answer": "Plain mailto link, accept the spam"
+    },
+    {
+      "id": "Q14",
+      "topic": "nfr-gap",
+      "areas": [
+        "scalability",
+        "data-retention-and-backup"
+      ],
+      "text": "Two areas look not to apply: scalability (static files behind a CDN absorb a launch-post spike; cost under load sits with NFR-019) and data retention and backup (no user data; content and its history live in git). Confirm these don't apply?",
+      "options": [
+        "Confirm both don't apply",
+        "One applies (name it)"
+      ],
+      "recommended": "Confirm both don't apply",
+      "why": "Research - NFR checklist marks both likely-n/a",
+      "touches": [
+        "NFR-new"
+      ],
+      "answer": "Confirm both don't apply"
+    }
+  ]
+}
