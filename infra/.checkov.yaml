@@ -1,0 +1,28 @@
+# Built-in Checkov checks skipped on purpose; the custom policies in policies/checks
+# guard the same ground where it matters.
+framework:
+  - terraform
+skip-download: true
+external-checks-dir:
+  - policies/checks
+skip-check:
+  # No WAF: it would break the 2 USD cap (NFR-019); CKV_PS_007 fails a change that adds one.
+  - CKV_AWS_68
+  # Logging stays off (NFR-031); CKV_PS_008 fails a change that turns it on.
+  - CKV_AWS_86
+  # One private origin; there is no second origin to fail over to.
+  - CKV_AWS_310
+  # A public personal site is served worldwide.
+  - CKV_AWS_374
+  # The WAF it checks is excluded (NFR-019).
+  - CKV2_AWS_47
+  # Buckets hold a rebuildable site or a few KB of state; no replica, event stream, lifecycle
+  # rule, KMS key (AES256 at rest is on) or versioning on the site bucket (content is rebuilt
+  # from git; hashed assets are never deleted, ADR-0011), each of which only adds cost.
+  - CKV_AWS_144
+  - CKV_AWS_145
+  - CKV_AWS_21
+  - CKV2_AWS_61
+  - CKV2_AWS_62
+  # Access logging of the buckets stays off with the rest of the logging (NFR-031).
+  - CKV_AWS_18

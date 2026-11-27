@@ -52,10 +52,45 @@ jobs:
             echo "merge-conflict markers found"; exit 1
           fi
 
+  infra:
+    name: infra
+    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    timeout-minutes: 10
+    # No AWS credentials: every apply is attended (ADR-0010), so CI only checks the code.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+        with:
+          terraform_version: 1.17.2
+          terraform_wrapper: false
+      - uses: terraform-linters/setup-tflint@6ffdbaa3be476b3431f7275c26966ef32ff60337 # v6.3.2
+        with:
+          tflint_version: v0.66.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.14'
+      - name: Install Checkov
+        run: pip install --no-cache-dir checkov==3.4.11
+      - name: terraform fmt
+        run: terraform fmt -check -recursive infra
+      - name: terraform validate and tflint
+        run: |
+          for root in infra/bootstrap infra/environments/prod; do
+            terraform -chdir="$root" init -backend=false -input=false
+            terraform -chdir="$root" validate
+          done
+          for dir in infra/bootstrap infra/environments/prod infra/modules/site-hosting infra/modules/cost-guard; do
+            tflint --chdir="$dir" --config="$GITHUB_WORKSPACE/infra/.tflint.hcl"
+          done
+      - name: Policies reject what they must, and the roots pass them
+        run: infra/policies/test.sh
+
   ci-ok:
     name: ci-ok
     if: always()
-    needs: [baseline]
+    needs: [baseline, infra]
     runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
     timeout-minutes: 2
     steps:
