@@ -97,3 +97,17 @@ block_severity = "medium"
 [blueprints]
 source = "github:jakubigla/xpm-blueprints"
 ref = "v2.0.0"
+
+[[component]]
+name = "web"
+type = "web-frontend"
+path = "apps/web"
+stack = "astro"
+tier = "starter"
+
+[[component]]
+name = "infra"
+type = "terraform"
+path = "infra"
+stack = "aws"
+tier = "starter"
