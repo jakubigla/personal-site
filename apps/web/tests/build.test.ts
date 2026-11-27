@@ -3,10 +3,39 @@ import { spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { gzipSync } from "node:zlib";
 
 const root = new URL("..", import.meta.url).pathname;
 const committed = readFileSync(join(root, "content/en.yaml"), "utf8");
 const work = mkdtempSync(join(tmpdir(), "site-build-"));
+
+// The page JavaScript budget (ADR-0005): 50 KB gzipped in total, at most 1 KB render-blocking.
+const JS_BUDGET_BYTES = 50 * 1024;
+const BLOCKING_JS_BUDGET_BYTES = 1024;
+
+function gzipped(text: string | Buffer) {
+  return gzipSync(text).length;
+}
+
+// Every script's gzipped size, and how much of it blocks rendering: a classic script with no
+// async or defer, inline or loaded, stops the parser until it has run.
+function scriptWeight(outDir: string, html: string) {
+  let total = 0;
+  let blocking = 0;
+  for (const [, attrs = "", body = ""] of html.matchAll(
+    /<script\b([^>]*)>([\s\S]*?)<\/script>/gi,
+  )) {
+    const src = /\bsrc=["']?([^"' >]+)/i.exec(attrs)?.[1];
+    const size = src ? gzipped(readFileSync(join(outDir, src.replace(/^\//, "")))) : gzipped(body);
+    total += src ? 0 : size;
+    if (!/\b(async|defer)\b|type=["']?module/i.test(attrs)) blocking += size;
+  }
+  const files = readdirSync(outDir, { recursive: true }).map(String);
+  for (const file of files.filter((f) => /\.m?js$/.test(f))) {
+    total += gzipped(readFileSync(join(outDir, file)));
+  }
+  return { total, blocking };
+}
 
 function build(name: string, contentText: string) {
   const contentFile = join(work, `${name}.yaml`);
@@ -95,6 +124,12 @@ describe("static build", () => {
   it("is readable without JavaScript: the text is in the HTML and no script ships", () => {
     expect(base.html).toContain("<h1");
     expect(base.html).not.toMatch(/<script/i);
+  });
+
+  it("keeps page JavaScript inside its size budget", () => {
+    const weight = scriptWeight(base.outDir, base.html);
+    expect(weight.total).toBeLessThanOrEqual(JS_BUDGET_BYTES);
+    expect(weight.blocking).toBeLessThanOrEqual(BLOCKING_JS_BUDGET_BYTES);
   });
 
   it("fails the build readably on an invalid content file", () => {
