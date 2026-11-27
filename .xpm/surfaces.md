@@ -32,7 +32,9 @@ Commands (same set CI's `infra` job runs, see `.github/workflows/ci.yml`):
 - `tflint --chdir=<dir> --config=<repo>/infra/.tflint.hcl` for each root and for
   `infra/modules/site-hosting` and `infra/modules/cost-guard`
 - `bash infra/policies/test.sh` (negative fixtures must each be rejected by their policy)
-- `bash infra/policies/check.sh` (the real roots must pass, including the budget-presence check)
+- `bash infra/policies/check.sh --require-budget infra/environments/prod` and
+  `bash infra/policies/check.sh infra/bootstrap` (the real roots must pass, including the
+  budget-presence check)
 
 Docs ACs (the runbook) are checked by reading `docs/runbooks/hosting-first-apply.md`.
 

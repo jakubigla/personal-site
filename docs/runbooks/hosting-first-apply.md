@@ -95,27 +95,30 @@ still points at the old one, so the records can follow without downtime.
 
    Keep `old-records.json` outside the repo.
 2. Lower the TTL of any non-alias apex or www record to 60 seconds and wait the old TTL.
-3. Prove you own the names to CloudFront: create `_jacops.pl` and `_www.jacops.pl` TXT records
-   whose value is `$NEW_H`:
+3. Prove you own `www.jacops.pl` to CloudFront: create the `_www.jacops.pl` TXT record with the
+   value `$NEW_H`. The apex cannot be proven this way: its proof record would be `_jacops.pl`,
+   which sits beside the `jacops.pl` zone (under `.pl`), so Route 53 refuses it
+   (`InvalidChangeBatch`). The apex moves in step 4 by releasing it from the old distribution.
 
    ```bash
-   for n in _jacops.pl _www.jacops.pl; do
-     aws route53 change-resource-record-sets --hosted-zone-id "$ZONE" --change-batch \
-       '{"Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'"$n"'","Type":"TXT","TTL":60,"ResourceRecords":[{"Value":"\"'"$NEW_H"'\""}]}}]}'
-   done
+   aws route53 change-resource-record-sets --hosted-zone-id "$ZONE" --change-batch \
+     '{"Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"_www.jacops.pl","Type":"TXT","TTL":60,"ResourceRecords":[{"Value":"\"'"$NEW_H"'\""}]}}]}'
    ```
 
-4. Move the aliases:
+4. Move the aliases. `www` moves with `associate-alias`. The apex is released from the old
+   distribution: remove `jacops.pl` from its aliases (console, or `aws cloudfront
+   update-distribution` with the `Aliases` list edited). From here until step 5 completes the
+   apex does not serve the old site, so do this in a quiet window and go straight on to step 5.
 
    ```bash
-   aws cloudfront associate-alias --target-distribution-id "$NEW" --alias jacops.pl
    aws cloudfront associate-alias --target-distribution-id "$NEW" --alias www.jacops.pl
    ```
 
 5. Point the records at the new distribution with the full apply (`serve_domain` defaults to
-   true). The plan must show the four apex and www `A`/`AAAA` records created and **no change to
-   the distribution**: its aliases already match after the move. A plan that changes the
-   distribution means the move did not complete; stop and check `associate-alias`.
+   true). The apply adds the apex alias to the new distribution (the old one no longer holds
+   it) and creates the four apex and www `A`/`AAAA` records. If it fails with
+   `CNAMEAlreadyExists`, the apex is still on the old distribution: stop, finish step 4, and
+   plan again.
 
    ```bash
    terraform plan -out=hosting.tfplan
@@ -124,12 +127,15 @@ still points at the old one, so the records can follow without downtime.
 
 6. Verify `https://jacops.pl/` serves the new site, `https://www.jacops.pl/` redirects to the
    apex with a 301, and `http://jacops.pl/` redirects to HTTPS.
-7. Rollback if anything is wrong: set the two TXT records' value to `$OLD_H`, run
-   `associate-alias --target-distribution-id "$OLD"` for both names (the old distribution's
-   certificate still covers them), then restore the apex and www records from
-   `old-records.json`, and investigate. Do not run `terraform apply` again until the cause is
-   fixed: with `serve_domain` true it re-points the records at the new distribution.
-8. Delete the two `_jacops.pl` and `_www.jacops.pl` TXT records once the site is verified.
+7. Rollback if anything is wrong: apply with `serve_domain=false` (it removes the new
+   distribution's aliases and the apex and www records), then put the aliases back on the old
+   distribution: re-add `jacops.pl` to its `Aliases` (as in step 4), and for `www` set the
+   `_www.jacops.pl` TXT value to `$OLD_H` and run
+   `associate-alias --target-distribution-id "$OLD" --alias www.jacops.pl` (the old
+   distribution's certificate still covers both names). Restore the apex and www records from
+   `old-records.json` and investigate. Do not run a full `terraform apply` again until the cause
+   is fixed: with `serve_domain` true it re-points the records at the new distribution.
+8. Delete the `_www.jacops.pl` TXT record once the site is verified.
 
 ## 6. Retire the old site
 

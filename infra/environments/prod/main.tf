@@ -23,6 +23,12 @@ variable "serve_domain" {
   default     = true
 }
 
+variable "contact_email" {
+  description = "The public contact address the page publishes"
+  type        = string
+  default     = "jakub.igla@gmail.com"
+}
+
 provider "aws" {
   region = "eu-central-1"
 }
@@ -48,8 +54,7 @@ module "site_hosting" {
 module "cost_guard" {
   source = "../../modules/cost-guard"
 
-  # The public contact address the page publishes.
-  email = "jakub.igla@gmail.com"
+  email = var.contact_email
 }
 
 output "site_bucket" {

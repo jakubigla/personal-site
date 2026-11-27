@@ -190,7 +190,7 @@ resource "aws_cloudfront_function" "router" {
       }
       if (request.uri.endsWith("/")) {
         request.uri += "index.html";
-      } else if (request.uri.indexOf(".") === -1) {
+      } else if (request.uri.split("/").pop().indexOf(".") === -1) {
         request.uri += "/index.html";
       }
       return request;
