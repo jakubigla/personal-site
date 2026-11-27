@@ -9,10 +9,11 @@ Last updated: 2026-11-27
 ## Assumptions
 | ID | Date | Title | Validation | Owner | Status |
 |---|---|---|---|---|---|
+| A-020 | 2026-11-27 | The AWS Budgets notifications go to the contact email the page already publishes, so no other private address enters the public repo (NFR-014 AC2, NFR-034) | EN-002 review: the budget's subscriber is the published contact address, read from a variable | Jakub | open |
 | A-019 | 2026-11-27 | Act 1's overlay is drawn in the first frame over the hero, which paints beneath it and stays the LCP element; Act 1 never delays the hero's paint (FR-002 vs NFR-002 AC3) [frs: FR-002] | PO answer, autopilot decisions batch Q4; NFR-002 AC3 amended | PO | confirmed (PO, Q4) |
 | A-018 | 2026-11-27 | PO waived data-retention-and-backup, Q14 | elicitation 2026-11-27 Q14 | PO | confirmed |
 | A-017 | 2026-11-27 | PO waived scalability, Q14 | elicitation 2026-11-27 Q14 | PO | confirmed |
-| A-016 | 2026-11-27 | The existing jacops.pl Route 53 zone in Jakub's AWS account is reused, and the first terraform apply plus DNS cut-over are an attended step outside autopilot | Jakub runs the first apply and cut-over; CI only plans until then | Jakub | open |
+| A-016 | 2026-11-27 | The existing jacops.pl Route 53 zone in Jakub's AWS account is reused, and the first terraform apply plus DNS cut-over are an attended step outside autopilot | Jakub runs the first apply and cut-over; CI runs only static Terraform checks with no AWS credentials (ADR-0010) | Jakub | open |
 | A-015 | 2026-11-27 | The anonymized selected-work labels and figures as given in the brief are not identifying; any card whose combined facts would identify a client drops a fact | PO confirmed the brief table's labels and figures are cleared; cards add no client fact beyond them (autopilot decisions batch Q18) | Jakub | confirmed (PO, Q18) |
 | A-014 | 2026-11-27 | Layout holds from 360 px wide with no horizontal scroll; timeline collapses to a single column and pointer parallax is off on touch | Visual and automated checks at 360 px and touch emulation | Jakub | open |
 | A-013 | 2026-11-27 | The light theme reuses the same graph drawn in ink on paper and keeps WCAG 2.2 AA contrast over the animated background in both themes | Automated contrast check in both themes at representative scroll positions | Jakub | open |
@@ -36,3 +37,5 @@ Last updated: 2026-11-27
 ## Dependencies
 | ID | Date | Title | On | Needed by | Owner | Status |
 |---|---|---|---|---|---|---|
+| D-002 | 2026-11-27 | A read-only Terraform plan identity for the github stack needs a PO decision and a new ADR before GitHub settings as code can be built (ADR-0010 allows only the deploy role in CI) | PO decision | EN-011 | PO | open |
+| D-001 | 2026-11-27 | Client-name denylist secret is set in GitHub Actions before the build stage starts; without it every CI run fails closed (ADR-0013) [frs: FR-006, FR-009] | Jakub | EN-001 walking skeleton CI | Jakub | open |

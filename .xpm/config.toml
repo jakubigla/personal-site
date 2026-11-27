@@ -103,7 +103,7 @@ name = "web"
 type = "web-frontend"
 path = "apps/web"
 stack = "astro"
-tier = "starter"
+tier = "standard"
 
 [[component]]
 name = "infra"
@@ -111,3 +111,12 @@ type = "terraform"
 path = "infra"
 stack = "aws"
 tier = "starter"
+
+[local_run]
+start = "web:dev"
+setup = ["web:install"]
+test = "web:test"
+
+[main_regression]
+workflow = "ci.yml"
+job = "web"

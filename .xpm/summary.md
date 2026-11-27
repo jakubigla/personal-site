@@ -85,3 +85,6 @@ Hard guardrails:
 | ci-cd-oidc | GitHub Actions that build, test and deploy on merge to main, run on every PR, and reach AWS through OIDC with no long-lived keys |
 | quality-budget-checks | Automated Lighthouse, accessibility and JS-size budget checks in CI |
 | cv-pdf-build | Generates the CV PDF from the content file (print stylesheet or build step) |
+| arch-direction | The architecture direction doc (docs/architecture.md) and its ADRs that every code ticket reads |
+| design-system | The design system every screen builds on: palette, type, spacing, radius, motion tokens and core components, delivered as CSS custom properties |
+| github-as-code | The repository's GitHub settings (ruleset, merge options, security features) imported into Terraform |
