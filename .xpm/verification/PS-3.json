@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "id": "PS-3",
+  "ticket": "PS-3",
+  "title": "PS-3 acceptance criteria",
+  "kind": "product",
+  "feature_url": "https://github.com/jakubigla/personal-site/pull/21/files",
+  "feature_label": "Terraform hosting stack (diff) - PR #21 diff (not deployed)",
+  "frs": [
+    "NFR-014",
+    "NFR-019",
+    "NFR-031",
+    "NFR-034"
+  ],
+  "pr": 21,
+  "steps": [
+    {
+      "label": "Run `mise run infra:fmt` and `mise run infra:validate` and see both finish without errors."
+    },
+    {
+      "label": "Run `mise run infra:policies` and see every negative fixture rejected and `policies pass` for the real roots."
+    },
+    {
+      "label": "Open infra/modules/site-hosting/main.tf and confirm the bucket blocks public access and CloudFront has no logging, WAF or compute."
+    },
+    {
+      "label": "Open infra/modules/cost-guard and confirm a 2 USD monthly budget with notifications at 80% and 100% of actual spend."
+    },
+    {
+      "label": "Read docs/runbooks/hosting-first-apply.md and confirm it covers the first apply, the DNS cut-over and the rollback."
+    }
+  ],
+  "generated_at": "2026-11-27T15:24:51Z"
+}

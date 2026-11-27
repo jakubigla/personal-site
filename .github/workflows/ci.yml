@@ -15,6 +15,9 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+env:
+  MISE_VERSION: 2026.11.14
+
 jobs:
   baseline:
     name: baseline
@@ -52,10 +55,33 @@ jobs:
             echo "merge-conflict markers found"; exit 1
           fi
 
+  infra:
+    name: infra
+    runs-on: ${{ github.run_attempt != 1 && vars.CI_FALLBACK || fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    timeout-minutes: 10
+    # No AWS credentials: every apply is attended (ADR-0010), so CI only checks the code.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@924e7c586e33d7d4bae9c14e26c5d22e2beb6e78 # v5.3.0
+        with:
+          version: ${{ env.MISE_VERSION }}
+          cache: ${{ runner.environment == 'github-hosted' }}
+      - run: mise run infra:fmt
+      - run: mise run infra:validate
+      - name: tflint
+        run: mise run infra:lint
+        env:
+          # tflint downloads its ruleset from GitHub; a token avoids the shared-IP rate limit.
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Policies reject what they must, and the roots pass them
+        run: mise run infra:policies
+
   ci-ok:
     name: ci-ok
     if: always()
-    needs: [baseline]
+    needs: [baseline, infra]
     runs-on: ${{ github.run_attempt != 1 && vars.CI_FALLBACK || fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
     timeout-minutes: 2
     steps:
