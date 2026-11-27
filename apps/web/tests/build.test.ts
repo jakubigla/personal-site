@@ -75,11 +75,21 @@ describe("static build", () => {
   it("takes the footer link labels from the content file", () => {
     const relabelled = build(
       "footer-labels",
-      committed.replace(/^( {6}label:) GitHub$/m, "$1 Code on GitHub"),
+      committed.replace(/^( {4}- label:) GitHub$/m, "$1 Code on GitHub"),
     );
     expect(relabelled.run.status).toBe(0);
     expect(relabelled.html).toMatch(/<footer[\s\S]*>Code on GitHub<\/a>/);
     expect(base.html).not.toContain("Code on GitHub");
+  });
+
+  it("updates every link to a contact fact from its one entry in the content file", () => {
+    const moved = build(
+      "contact-moved",
+      committed.replace(/^( {2}email:).*$/m, "$1 someone@example.org"),
+    );
+    expect(moved.run.status).toBe(0);
+    expect(moved.html.match(/href="mailto:someone@example\.org"/g)).toHaveLength(2);
+    expect(moved.html).not.toMatch(/href="mailto:(?!someone@example\.org)/);
   });
 
   it("is readable without JavaScript: the text is in the HTML and no script ships", () => {
