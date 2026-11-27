@@ -6,8 +6,9 @@ test("the page reads top to bottom with JavaScript off", async ({ page }) => {
   await expect(
     page.getByRole("heading", { level: 1, name: /Principal Data Platform Architect/ }),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "LinkedIn" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "GitHub" })).toBeVisible();
+  // The hero repeats the LinkedIn link (design: secondary action), so scope to the footer.
+  await expect(page.locator("#contact").getByRole("link", { name: "LinkedIn" })).toBeVisible();
+  await expect(page.locator("#contact").getByRole("link", { name: "GitHub" })).toBeVisible();
   await expect(page.getByText("This site sets no cookies")).toBeVisible();
   await expect(page.getByRole("heading", { name: "How I deliver" })).toHaveCount(0);
 });
