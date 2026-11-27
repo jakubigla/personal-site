@@ -1,8 +1,9 @@
 + R=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9
-+ W=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/.github/workflows/github-config.yml
++ PLUGIN=/Users/jakubigla/.claude/plugins/cache/xpm/xpm/0.21.1-dev.1
++ cd /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9
 + echo '=== AC3 ==='
 === AC3 ===
-+ sed -n 1,60p /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/.github/workflows/github-config.yml
++ sed -n 1,20p .github/workflows/github-config.yml
 # Static checks for the GitHub settings stack. It holds no cloud credential and no GitHub token
 # beyond read access: only the owner plans and applies this stack, locally (ADR-0010).
 # policies/check-workflow.sh fails the build if this file ever gains a credential, an OIDC
@@ -23,64 +24,36 @@ concurrency:
   group: github-config-${{ github.ref }}
   cancel-in-progress: true
 
-env:
-  MISE_VERSION: 2026.11.14
-
-jobs:
-  static:
-    name: static
-    runs-on: ${{ github.run_attempt != 1 && vars.CI_FALLBACK || fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: jdx/mise-action@924e7c586e33d7d4bae9c14e26c5d22e2beb6e78 # v5.3.0
-        with:
-          version: ${{ env.MISE_VERSION }}
-          cache: ${{ runner.environment == 'github-hosted' }}
-      - run: mise run github:check
-        env:
-          # tflint downloads its ruleset from GitHub; the read-only token avoids the shared-IP rate limit.
-          GITHUB_TOKEN: ${{ github.token }}
-+ grep -n -E 'terraform|mise run|run:' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/.github/workflows/github-config.yml
++ grep -n run: .github/workflows/github-config.yml
 37:      - run: mise run github:check
-+ grep -n -A8 'tasks."github:' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/mise.toml
++ grep -n '"github:' -A8 mise.toml
++ grep -E 'tasks|run|depends|terraform|tflint|check'
 35:[tasks."github:fmt"]
 36-description = "Terraform format check of the GitHub settings stack"
 37-run = "terraform fmt -recursive -check -diff foundation/github"
-38-
 39:[tasks."github:validate"]
-40-description = "Validate the GitHub settings stack and plan its tests against a mocked provider, without a backend or credentials"
 41-run = [
 42-  "terraform -chdir=foundation/github init -backend=false -input=false",
 43-  "terraform -chdir=foundation/github validate",
 44-  "terraform -chdir=foundation/github test",
-45-]
-46-
 47:[tasks."github:lint"]
 48-description = "tflint over the GitHub settings stack and its module"
 49-run = [
 50-  "tflint --init --config=\"$PWD/infra/.tflint.hcl\"",
 51-  "tflint --chdir=foundation/github --config=\"$PWD/infra/.tflint.hcl\"",
 52-  "tflint --chdir=foundation/github/modules/repo --config=\"$PWD/infra/.tflint.hcl\"",
-53-]
-54-
 55:[tasks."github:policies"]
-56-description = "Checkov passes the stack, and the workflow policy rejects any credential, plan or apply"
 57-run = [
 58-  "infra/policies/check.sh foundation/github",
 59-  "foundation/github/policies/test-check-workflow.sh",
-60-]
-61-
 62:[tasks."github:check"]
 63-description = "Every static check of the GitHub settings stack; none needs a credential"
-64-depends = ["github:fmt", "github:validate", "github:lint", "github:policies"]
-+ bash /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/foundation/github/policies/check-workflow.sh /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/.github/workflows/github-config.yml
+64:depends = ["github:fmt", "github:validate", "github:lint", "github:policies"]
++ bash foundation/github/policies/check-workflow.sh .github/workflows/github-config.yml mise.toml
 workflow holds no credential and cannot plan or apply
 + echo EXIT=0
 EXIT=0
-+ bash /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/foundation/github/policies/test-check-workflow.sh
++ bash foundation/github/policies/test-check-workflow.sh
 ok   clean fixture accepted
 ok   id-token rejected
 ok   oidc-permission rejected
@@ -104,20 +77,45 @@ workflow holds no credential and cannot plan or apply
 EXIT=0
 + echo '=== AC4 ==='
 === AC4 ===
++ echo 'live doctor row:'
+live doctor row:
 + xpm doctor
++ python3 -I -c 'import sys,json;[print(json.dumps(r)) for r in json.load(sys.stdin) if r["check"]=="github-as-code"]'
+{"check": "github-as-code", "status": "info", "detail": "settings set by API (the GitHub settings as code enabler takes them into Terraform after the platform Terraform; /xpm:xpm-init to do it now)"}
 + echo EXIT=0
 EXIT=0
-+ python3 -I -c $'\nimport json,sys\nd=json.load(open(\'/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/.xpm/state/evidence/PS-9/doctor.tmp\'))\nprint([c for c in d if c[\'check\']==\'github-as-code\'])'
-[{'check': 'github-as-code', 'status': 'info', 'detail': 'settings set by API (the GitHub settings as code enabler takes them into Terraform after the platform Terraform; /xpm:xpm-init to do it now)'}]
-+ head -20
-+ grep -n -i -E 'vars-set|A-021|info|warn' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/docs/adr/0010-attended-terraform-applies.md
+++ mktemp -d
++ T=/var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.QmS0LflV5H
++ git init -q -b main /var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.QmS0LflV5H/proj
++ mkdir /var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.QmS0LflV5H/proj/.xpm
++ echo 'schema = 1'
++ python3 -I - /Users/jakubigla/.claude/plugins/cache/xpm/xpm/0.21.1-dev.1/lib /var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.QmS0LflV5H/proj
+step=start deferred: [('info', 'settings set by API (the GitHub settings as code enabler takes them into Terraform after the platform Terraform; /xpm:xpm-init to do it now)')]
+step=rendered: [('warn', 'GitHub settings are not managed as code (stopped at rendered)')]
+step=bootstrap-planned: [('warn', 'GitHub settings are not managed as code (stopped at bootstrap-planned)')]
+step=bootstrap-applied: [('warn', 'GitHub settings are not managed as code (stopped at bootstrap-applied)')]
+step=migrated: [('warn', 'GitHub settings are not managed as code (stopped at migrated)')]
+step=github-planned: [('warn', 'GitHub settings are not managed as code (stopped at github-planned)')]
+step=github-applied: [('warn', 'GitHub settings are not managed as code (stopped at github-applied)')]
++ echo EXIT=0
+EXIT=0
++ rm -rf /var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.QmS0LflV5H
 + echo '=== AC5 ==='
 === AC5 ===
-+ grep -n -i -E 'secret|OIDC|role|AWS_|aws-actions|id-token|credentials|terraform (plan|apply)' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/.github/workflows/github-config.yml
++ grep -n -i -E 'secrets\.|id-token|role-to-assume|aws-actions|AWS_|OIDC|credential' .github/workflows/github-config.yml
+1:# Static checks for the GitHub settings stack. It holds no cloud credential and no GitHub token
 3:# policies/check-workflow.sh fails the build if this file ever gains a credential, an OIDC
 32:          persist-credentials: false
-+ echo 'EXIT=0 (grep, 0 = matches listed)'
-EXIT=0 (grep, 0 = matches listed)
-+ grep -n -i 'only the owner' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/docs/runbooks/github-settings-first-plan.md
++ echo 'grep EXIT=0'
+grep EXIT=0
++ grep -n permissions -A1 .github/workflows/github-config.yml
+14:permissions:
+15-  contents: read
++ grep -n -i 'Only the owner\|holds no credential' docs/runbooks/github-settings-first-plan.md
 3:Only the owner plans and applies `foundation/github`, locally and attended (ADR-0010). CI runs the
-+ grep -n -i -E 'only the (owner|PO)' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/docs/adr/0010-attended-terraform-applies.md
+4:static checks only (`mise run github:check`) and holds no credential.
++ grep -n ADR-0010 docs/architecture.md
+62:inputs. CI never holds credentials for these roots (ADR-0010).
++ grep -n -i 'terraform \(plan\|apply\)' .github/workflows/github-config.yml
++ echo 'plan/apply grep EXIT=1'
+plan/apply grep EXIT=1
