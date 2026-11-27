@@ -1,0 +1,18 @@
+---
+import type { Content } from "../content/schema";
+
+interface Props {
+  footer: Content["footer"];
+}
+const { footer } = Astro.props;
+const { contact } = footer;
+---
+
+<footer class="section" id="contact">
+  <ul>
+    <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+    <li><a href={contact.linkedin} rel="noopener">LinkedIn</a></li>
+    <li><a href={contact.github} rel="noopener">GitHub</a></li>
+  </ul>
+  <p>{footer.entity}. {footer.privacy_note}</p>
+</footer>

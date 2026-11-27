@@ -1,0 +1,41 @@
+# The one place a tool version lives. CI installs from here, so a laptop and a runner match.
+[tools]
+node = "26.13.1"
+terraform = "1.17.2"
+tflint = "0.66.0"
+pre-commit = "4.7.0"
+
+[tasks."web:install"]
+description = "Install the web app's packages from the lockfile, scripts off"
+dir = "apps/web"
+run = "npm ci --ignore-scripts"
+
+[tasks."web:dev"]
+description = "Serve the site with hot reload at http://localhost:4321"
+dir = "apps/web"
+run = "npm run dev"
+
+[tasks."web:build"]
+description = "Build the static site into apps/web/dist"
+dir = "apps/web"
+run = "npm run build"
+
+[tasks."web:lint"]
+description = "Format check and typecheck"
+dir = "apps/web"
+run = ["npm run format:check", "npm run typecheck"]
+
+[tasks."web:test"]
+description = "Unit tests and build checks"
+dir = "apps/web"
+run = "npm test"
+
+[tasks."web:e2e-install"]
+description = "Install the Chromium that the browser specs use"
+dir = "apps/web"
+run = "npx playwright install chromium"
+
+[tasks."web:e2e"]
+description = "Browser specs against the production build"
+dir = "apps/web"
+run = "npm run e2e"

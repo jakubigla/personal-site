@@ -1,0 +1,18 @@
+---
+import { loadContent } from "../content/load";
+import Base from "../layouts/Base.astro";
+import Hero from "../sections/Hero.astro";
+import HowIDeliver from "../sections/HowIDeliver.astro";
+import Footer from "../sections/Footer.astro";
+
+const content = loadContent();
+const { sections } = content;
+---
+
+<Base title={`${content.hero.name} - ${content.hero.role}`} description={content.hero.value_statement}>
+  <main>
+    {sections.hero && <Hero hero={content.hero} />}
+    {sections.how_i_deliver && <HowIDeliver section={content.how_i_deliver} />}
+  </main>
+  {sections.footer && <Footer footer={content.footer} />}
+</Base>

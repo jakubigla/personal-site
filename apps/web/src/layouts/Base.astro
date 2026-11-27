@@ -1,0 +1,19 @@
+---
+import Head from "../head/Head.astro";
+import "../design/tokens.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <Head title={title} description={description} />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
