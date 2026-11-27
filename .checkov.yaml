@@ -32,3 +32,5 @@ skip-check:
   - CKV2_AWS_62
   # Access logging of the buckets stays off with the rest of the logging (NFR-031).
   - CKV_AWS_18
+  # The repository is public on purpose: it is the source of a public site.
+  - CKV_GIT_1
