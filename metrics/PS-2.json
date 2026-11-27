@@ -1,0 +1,592 @@
+{
+  "schema_version": 4,
+  "usage_dedupe": "message-id",
+  "id": "PS-2",
+  "ticket": "PS-2",
+  "branch": "feature/PS-2-the-site-builds-from-one-content-file",
+  "generated_at": "2026-11-27T16:35:36Z",
+  "coverage": "parent-and-subagents",
+  "subagents": {
+    "xpm:xpm-exerciser": {
+      "count": 140,
+      "output_tokens": 79552,
+      "input_tokens": 280,
+      "cache_read": 3131870,
+      "cache_create": 340891,
+      "cache_write_5m": 340891,
+      "cache_write_1h": 0,
+      "models": [
+        "claude-sonnet-5-5"
+      ]
+    },
+    "xpm:xpm-reviewer": {
+      "count": 157,
+      "output_tokens": 137399,
+      "input_tokens": 314,
+      "cache_read": 6706130,
+      "cache_create": 370376,
+      "cache_write_5m": 370376,
+      "cache_write_1h": 0,
+      "models": [
+        "claude-opus-5-5"
+      ]
+    },
+    "xpm:xpm-security-reviewer": {
+      "count": 13,
+      "output_tokens": 16844,
+      "input_tokens": 26,
+      "cache_read": 319570,
+      "cache_create": 74776,
+      "cache_write_5m": 74776,
+      "cache_write_1h": 0,
+      "models": [
+        "claude-opus-5-5"
+      ]
+    },
+    "xpm:xpm-step": {
+      "count": 322,
+      "output_tokens": 153907,
+      "input_tokens": 660,
+      "cache_read": 19119181,
+      "cache_create": 803809,
+      "cache_write_5m": 803809,
+      "cache_write_1h": 0,
+      "models": [
+        "claude-opus-5-5",
+        "claude-sonnet-5-5",
+        "opus",
+        "sonnet"
+      ]
+    }
+  },
+  "cost": {
+    "tokens": {
+      "output": 420965,
+      "input": 1590,
+      "cache_read": 44057271,
+      "cache_create": 1759836,
+      "cache_write_5m": 1589852,
+      "cache_write_1h": 169984
+    },
+    "usd": null,
+    "usd_source": null
+  },
+  "stages_source": "ledger",
+  "stages": [
+    {
+      "stage": "executing",
+      "at": "2026-11-27T14:04:57.884Z",
+      "output_tokens": 8261,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "execution-complete",
+      "at": "2026-11-27T14:10:32Z",
+      "output_tokens": 0,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "acs-exercised",
+      "at": "2026-11-27T14:29:36Z",
+      "output_tokens": 2260,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "blocked",
+      "at": "2026-11-27T14:58:48Z",
+      "output_tokens": 4886,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "correctness-review",
+      "at": "2026-11-27T15:40:30Z",
+      "output_tokens": 6391,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "evidence-published",
+      "at": "2026-11-27T16:27:38Z",
+      "output_tokens": 10484,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "quality-gate-review",
+      "at": "2026-11-27T16:34:20Z",
+      "output_tokens": 751,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "after-quality-gate-review",
+      "at": "2026-11-27T16:35:00Z",
+      "output_tokens": 230,
+      "cost_usd": null,
+      "trailing": true
+    }
+  ],
+  "diff": {
+    "files": 44,
+    "insertions": 7132,
+    "deletions": 41,
+    "code": {
+      "files": 26,
+      "insertions": 6661,
+      "deletions": 0
+    },
+    "docs": {
+      "files": 18,
+      "insertions": 471,
+      "deletions": 41
+    },
+    "measured_from": "merge-base",
+    "unavailable": false,
+    "plan_tasks": null
+  },
+  "impl_model": {
+    "configured": "sonnet",
+    "observed": [
+      "claude-opus-5-5",
+      "claude-sonnet-5-5",
+      "opus",
+      "sonnet"
+    ]
+  },
+  "attribution": {
+    "cwd": "/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2",
+    "matched_head_entries": 0
+  },
+  "sessions": 2,
+  "wall_clock": {
+    "first": "2026-11-27T14:04:57.884Z",
+    "last": "2026-11-27T16:35:33.762Z"
+  },
+  "per_session": [
+    {
+      "sessionId": "18ca31ed-bdb3-47f2-b37f-29974683afaa",
+      "entries": 158,
+      "output_tokens": 16069,
+      "first": "2026-11-27T14:04:57.884Z",
+      "last": "2026-11-27T15:40:36.072Z"
+    },
+    {
+      "sessionId": "eb505c7b-abb7-4aac-85da-b642502db128",
+      "entries": 187,
+      "output_tokens": 17194,
+      "first": "2026-11-27T15:43:23.564Z",
+      "last": "2026-11-27T16:35:33.762Z"
+    }
+  ],
+  "output_tokens": 33263,
+  "models": {
+    "claude-sonnet-5-5": {
+      "calls": 131,
+      "output_tokens": 33263,
+      "input_tokens": 310,
+      "cache_read": 14780520,
+      "cache_create": 169984,
+      "cache_write_5m": 0,
+      "cache_write_1h": 169984
+    }
+  },
+  "skills": {
+    "xpm:xpm-exercise-acs": 1,
+    "xpm:xpm-finalize-branch": 1,
+    "xpm:xpm-publish-evidence": 1,
+    "xpm:xpm-ui-design": 1
+  },
+  "dispatches": {
+    "xpm:xpm-exerciser": 2,
+    "xpm:xpm-step": 12
+  },
+  "dispatches_reported": {
+    "exercise": 2,
+    "gate": 8
+  },
+  "dispatches_reported_source": "evidence-dir",
+  "tools": {
+    "Agent": 14,
+    "Artifact": 4,
+    "Bash": 85,
+    "Edit": 2,
+    "Read": 5,
+    "Skill": 4,
+    "Write": 3
+  },
+  "profile": {
+    "skills": {
+      "xpm:xpm-exercise-acs": {
+        "count": 1
+      },
+      "xpm:xpm-finalize-branch": {
+        "count": 1
+      },
+      "xpm:xpm-publish-evidence": {
+        "count": 1
+      },
+      "xpm:xpm-ui-design": {
+        "count": 1
+      }
+    },
+    "tools": {
+      "Agent": {
+        "count": 14,
+        "total_seconds": 11,
+        "median_seconds": 1
+      },
+      "Artifact": {
+        "count": 4,
+        "total_seconds": 8,
+        "median_seconds": 2
+      },
+      "Bash": {
+        "count": 84,
+        "total_seconds": 1132,
+        "median_seconds": 2
+      },
+      "Edit": {
+        "count": 2,
+        "total_seconds": 2,
+        "median_seconds": 1
+      },
+      "Read": {
+        "count": 5,
+        "total_seconds": 9,
+        "median_seconds": 1
+      },
+      "Skill": {
+        "count": 4,
+        "total_seconds": 4,
+        "median_seconds": 1
+      },
+      "Write": {
+        "count": 3,
+        "total_seconds": 3,
+        "median_seconds": 1
+      }
+    },
+    "hooks": {
+      "fires": 57,
+      "errors": 0,
+      "by_command": {
+        "\"${CLAUDE_PLUGIN_ROOT}/hooks/autonomous-keepalive.sh\"": {
+          "fires": 19,
+          "total_ms": 2586
+        },
+        "\"${CLAUDE_PLUGIN_ROOT}/hooks/stage-keepalive.sh\"": {
+          "fires": 19,
+          "total_ms": 1242
+        },
+        "\"/Users/jakubigla/.config/iterm2/it2\" handle-agent-hook": {
+          "fires": 19,
+          "total_ms": 35267
+        }
+      }
+    },
+    "turns": {
+      "count": 19,
+      "total_seconds": 7133
+    },
+    "subagent_runs": [
+      {
+        "name": "ex-local",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T15:52:41.061Z",
+        "last": "2026-11-27T15:53:56.991Z",
+        "seconds": 75
+      },
+      {
+        "name": "agent-a32be3d8d37d8255d",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T15:44:26.325Z",
+        "last": "2026-11-27T15:52:08.126Z",
+        "seconds": 462
+      },
+      {
+        "name": "agent-acfb4a83d0ca3e34c",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T16:03:15.784Z",
+        "last": "2026-11-27T16:03:36.022Z",
+        "seconds": 21
+      },
+      {
+        "name": "agent-a0bdd107ae3e95f22",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T15:43:37.105Z",
+        "last": "2026-11-27T15:43:55.464Z",
+        "seconds": 18
+      },
+      {
+        "name": "agent-a449f58824688ae86",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T15:52:13.886Z",
+        "last": "2026-11-27T16:03:10.360Z",
+        "seconds": 657
+      },
+      {
+        "name": "agent-ae41ecfef6166d0e6",
+        "agent_type": "xpm:xpm-security-reviewer",
+        "first": "2026-11-27T16:25:39.574Z",
+        "last": "2026-11-27T16:26:18.607Z",
+        "seconds": 39
+      },
+      {
+        "name": "ex-local",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T16:28:00.667Z",
+        "last": "2026-11-27T16:29:03.924Z",
+        "seconds": 63
+      },
+      {
+        "name": "agent-a17b68e36ab574ab6",
+        "agent_type": "xpm:xpm-reviewer",
+        "first": "2026-11-27T16:16:51.329Z",
+        "last": "2026-11-27T16:17:38.439Z",
+        "seconds": 47
+      },
+      {
+        "name": "agent-a40a2e244f9c7a3c7",
+        "agent_type": "xpm:xpm-security-reviewer",
+        "first": "2026-11-27T16:18:09.072Z",
+        "last": "2026-11-27T16:24:18.261Z",
+        "seconds": 369
+      },
+      {
+        "name": "agent-a6ebc24c0b70f2e22",
+        "agent_type": "xpm:xpm-reviewer",
+        "first": "2026-11-27T16:14:02.048Z",
+        "last": "2026-11-27T16:16:00.507Z",
+        "seconds": 118
+      },
+      {
+        "name": "agent-a5187795d771f0b59",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T16:27:44.723Z",
+        "last": "2026-11-27T16:29:25.977Z",
+        "seconds": 101
+      },
+      {
+        "name": "ex-web",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T15:52:39.945Z",
+        "last": "2026-11-27T16:02:56.775Z",
+        "seconds": 617
+      },
+      {
+        "name": "agent-ae69fdad1c03d72de",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T16:03:41.442Z",
+        "last": "2026-11-27T16:27:31.249Z",
+        "seconds": 1430
+      },
+      {
+        "name": "agent-a1888ec4248715362",
+        "agent_type": "xpm:xpm-reviewer",
+        "first": "2026-11-27T16:04:25.775Z",
+        "last": "2026-11-27T16:10:55.961Z",
+        "seconds": 390
+      },
+      {
+        "name": "ex-local-2",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T16:32:26.243Z",
+        "last": "2026-11-27T16:33:03.416Z",
+        "seconds": 37
+      },
+      {
+        "name": "ex-local",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T16:30:15.401Z",
+        "last": "2026-11-27T16:30:56.448Z",
+        "seconds": 41
+      },
+      {
+        "name": "agent-a39d4bb2d47e46507",
+        "agent_type": "xpm:xpm-reviewer",
+        "first": "2026-11-27T15:37:00.578Z",
+        "last": "2026-11-27T15:39:45.105Z",
+        "seconds": 165
+      },
+      {
+        "name": "agent-a7a16cf7164e715c3",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:10:23.392Z",
+        "last": "2026-11-27T14:29:44.346Z",
+        "seconds": 1161
+      },
+      {
+        "name": "ex-local",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T15:01:08.804Z",
+        "last": "2026-11-27T15:01:59.566Z",
+        "seconds": 51
+      },
+      {
+        "name": "ex-web-2",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T14:51:36.642Z",
+        "last": "2026-11-27T14:55:06.799Z",
+        "seconds": 210
+      },
+      {
+        "name": "agent-aa04563cabf75678b",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:58:59.192Z",
+        "last": "2026-11-27T15:17:29.958Z",
+        "seconds": 1110
+      },
+      {
+        "name": "agent-a60ddfb5ad0a857e2",
+        "agent_type": "xpm:xpm-reviewer",
+        "first": "2026-11-27T15:32:43.644Z",
+        "last": "2026-11-27T15:35:17.519Z",
+        "seconds": 154
+      },
+      {
+        "name": "agent-ae3d429a40dc721e8",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:05:15.679Z",
+        "last": "2026-11-27T14:05:31.447Z",
+        "seconds": 16
+      },
+      {
+        "name": "agent-aa5cf42c7d7e389b6",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:29:51.291Z",
+        "last": "2026-11-27T14:55:30.311Z",
+        "seconds": 1539
+      },
+      {
+        "name": "ex-web",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T14:55:52.667Z",
+        "last": "2026-11-27T14:58:38.006Z",
+        "seconds": 166
+      },
+      {
+        "name": "agent-a9e55e232ff78bf16",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T15:17:36.175Z",
+        "last": "2026-11-27T15:40:23.416Z",
+        "seconds": 1367
+      },
+      {
+        "name": "agent-acfce6b5467d978f0",
+        "agent_type": "xpm:xpm-reviewer",
+        "first": "2026-11-27T15:28:48.632Z",
+        "last": "2026-11-27T15:31:17.981Z",
+        "seconds": 149
+      },
+      {
+        "name": "ex-web-2",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T15:09:42.235Z",
+        "last": "2026-11-27T15:17:06.829Z",
+        "seconds": 444
+      },
+      {
+        "name": "ex-web",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T14:30:14.229Z",
+        "last": "2026-11-27T14:51:23.779Z",
+        "seconds": 1269
+      },
+      {
+        "name": "agent-afb95bc0290bfced9",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:55:36.542Z",
+        "last": "2026-11-27T14:58:53.188Z",
+        "seconds": 197
+      },
+      {
+        "name": "ex-web",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T15:01:07.649Z",
+        "last": "2026-11-27T15:09:35.865Z",
+        "seconds": 508
+      },
+      {
+        "name": "ex-local",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T14:30:15.340Z",
+        "last": "2026-11-27T14:32:14.257Z",
+        "seconds": 119
+      },
+      {
+        "name": "agent-a834b8290f1e0a07f",
+        "agent_type": "xpm:xpm-reviewer",
+        "first": "2026-11-27T15:18:28.991Z",
+        "last": "2026-11-27T15:25:47.844Z",
+        "seconds": 439
+      }
+    ]
+  },
+  "spend": {
+    "usd": 19.014978000000003,
+    "coverage": "exact",
+    "coverage_tokens": {
+      "exact": 46787707
+    },
+    "unpriced": [],
+    "table_date": "2026-11-09",
+    "tokens": 46787707,
+    "tokens_by_model": {
+      "claude-sonnet-5-5": {
+        "input": 1018,
+        "output": 199754,
+        "cache_write_1h": 248730,
+        "cache_read": 29602327,
+        "cache_write_5m": 930717
+      },
+      "claude-opus-5-5": {
+        "input": 596,
+        "output": 222541,
+        "cache_write_5m": 659135,
+        "cache_read": 14922889
+      }
+    },
+    "sessions": 2
+  },
+  "friction": {
+    "by_kind": {
+      "script-fail": 4
+    },
+    "by_owner": {
+      "project": 2,
+      "xpm": 2
+    },
+    "records": 4
+  },
+  "quality": {
+    "evidence": {
+      "fail": 2,
+      "pass": 12,
+      "repins": 0
+    },
+    "po_outcome": null,
+    "review": {
+      "head": {
+        "asked": 1,
+        "blocker_kinds": {
+          "spec-gap": 3
+        },
+        "blockers": 3,
+        "fixed": 12,
+        "majors": 12,
+        "minors": 7,
+        "passes": 7,
+        "recorded": 5
+      }
+    },
+    "rework": {
+      "ci_autofix": 0,
+      "fix_rounds": 1,
+      "redispatches": 0
+    }
+  }
+}
