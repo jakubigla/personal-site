@@ -17,13 +17,23 @@ repos:
       - id: mixed-line-ending
         args: [--fix=lf]
       - id: check-executables-have-shebangs
-  - repo: https://github.com/jakubigla/xpm
-    rev: v0.21.0
-    hooks:
-      - id: xpm-sensitive-scan
-      - id: xpm-sensitive-scan-push
   - repo: local
     hooks:
+      # xpm's own hooks, run through the installed xpm CLI: the xpm repo is private, so CI
+      # cannot clone it as a hook repo (CI skips both ids; it makes no commit or push).
+      - id: xpm-sensitive-scan
+        name: xpm sensitive-data scan (staged lines)
+        entry: xpm sensitive scan staged
+        language: system
+        pass_filenames: false
+        always_run: true
+      - id: xpm-sensitive-scan-push
+        name: xpm pre-push (trunk check, sensitive-data scan of pushed commits)
+        entry: xpm pre_push.sh
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
       - id: terraform-fmt
         name: terraform fmt
         entry: terraform fmt
