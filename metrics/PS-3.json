@@ -4,7 +4,7 @@
   "id": "PS-3",
   "ticket": "PS-3",
   "branch": "feature/PS-3-aws-static-hosting-is-defined-in",
-  "generated_at": "2026-11-27T15:03:02Z",
+  "generated_at": "2026-11-27T15:19:05Z",
   "coverage": "parent-and-subagents",
   "subagents": {
     "xpm:xpm-exerciser": {
@@ -61,12 +61,12 @@
   },
   "cost": {
     "tokens": {
-      "output": 180281,
-      "input": 654,
-      "cache_read": 19017076,
-      "cache_create": 729667,
+      "output": 189860,
+      "input": 708,
+      "cache_read": 21071497,
+      "cache_create": 788439,
       "cache_write_5m": 608552,
-      "cache_write_1h": 121115
+      "cache_write_1h": 179887
     },
     "usd": null,
     "usd_source": null
@@ -116,16 +116,30 @@
       "trailing": false
     },
     {
-      "stage": "after-quality-gate-review",
+      "stage": "retro",
       "at": "2026-11-27T15:02:25Z",
       "output_tokens": 385,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "ready-flipped",
+      "at": "2026-11-27T15:03:10Z",
+      "output_tokens": 657,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "after-ready-flipped",
+      "at": "2026-11-27T15:09:35Z",
+      "output_tokens": 8922,
       "cost_usd": null,
       "trailing": true
     }
   ],
   "diff": {
     "files": 47,
-    "insertions": 1593,
+    "insertions": 1606,
     "deletions": 4,
     "code": {
       "files": 0,
@@ -134,7 +148,7 @@
     },
     "docs": {
       "files": 47,
-      "insertions": 1593,
+      "insertions": 1606,
       "deletions": 4
     },
     "measured_from": "merge-base",
@@ -154,36 +168,43 @@
     "cwd": "/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3",
     "matched_head_entries": 28
   },
-  "sessions": 1,
+  "sessions": 2,
   "wall_clock": {
     "first": "2026-11-27T14:04:45.996Z",
-    "last": "2026-11-27T15:02:56.709Z"
+    "last": "2026-11-27T15:19:01.195Z"
   },
   "per_session": [
     {
       "sessionId": "a71d0d06-4e07-429b-b5eb-52b3be01f6ec",
-      "entries": 202,
-      "output_tokens": 19181,
+      "entries": 215,
+      "output_tokens": 20507,
       "first": "2026-11-27T14:04:49.105Z",
-      "last": "2026-11-27T15:02:56.709Z"
+      "last": "2026-11-27T15:09:42.515Z"
+    },
+    {
+      "sessionId": "76734889-4532-4a34-aab8-cf1d765e73f1",
+      "entries": 70,
+      "output_tokens": 8253,
+      "first": "2026-11-27T15:14:43.916Z",
+      "last": "2026-11-27T15:19:01.195Z"
     }
   ],
-  "output_tokens": 19181,
+  "output_tokens": 28760,
   "models": {
     "claude-sonnet-5-5": {
-      "calls": 74,
-      "output_tokens": 19181,
-      "input_tokens": 172,
-      "cache_read": 7679024,
-      "cache_create": 121115,
+      "calls": 99,
+      "output_tokens": 28760,
+      "input_tokens": 226,
+      "cache_read": 9733445,
+      "cache_create": 179887,
       "cache_write_5m": 0,
-      "cache_write_1h": 121115
+      "cache_write_1h": 179887
     }
   },
   "skills": {
-    "xpm:xpm-finalize-branch": 1,
+    "xpm:xpm-finalize-branch": 2,
     "xpm:xpm-publish-evidence": 1,
-    "xpm:xpm-start": 1
+    "xpm:xpm-start": 2
   },
   "dispatches": {
     "xpm:xpm-step": 8
@@ -195,20 +216,23 @@
   "dispatches_reported_source": "evidence-dir",
   "tools": {
     "Agent": 8,
-    "Bash": 52,
-    "Read": 4,
-    "Skill": 3
+    "Bash": 70,
+    "Edit": 5,
+    "Read": 8,
+    "Skill": 5,
+    "TaskStop": 1,
+    "Write": 1
   },
   "profile": {
     "skills": {
       "xpm:xpm-finalize-branch": {
-        "count": 1
+        "count": 2
       },
       "xpm:xpm-publish-evidence": {
         "count": 1
       },
       "xpm:xpm-start": {
-        "count": 1
+        "count": 2
       }
     },
     "tools": {
@@ -218,42 +242,57 @@
         "median_seconds": 1
       },
       "Bash": {
-        "count": 51,
-        "total_seconds": 332,
-        "median_seconds": 2
-      },
-      "Read": {
-        "count": 4,
-        "total_seconds": 7,
+        "count": 69,
+        "total_seconds": 926,
         "median_seconds": 3
       },
+      "Edit": {
+        "count": 5,
+        "total_seconds": 5,
+        "median_seconds": 1
+      },
+      "Read": {
+        "count": 8,
+        "total_seconds": 11,
+        "median_seconds": 1
+      },
       "Skill": {
-        "count": 3,
-        "total_seconds": 2,
+        "count": 5,
+        "total_seconds": 4,
+        "median_seconds": 1
+      },
+      "TaskStop": {
+        "count": 1,
+        "total_seconds": 1,
+        "median_seconds": 1
+      },
+      "Write": {
+        "count": 1,
+        "total_seconds": 1,
         "median_seconds": 1
       }
     },
     "hooks": {
-      "fires": 27,
+      "fires": 30,
       "errors": 0,
       "by_command": {
         "\"${CLAUDE_PLUGIN_ROOT}/hooks/autonomous-keepalive.sh\"": {
-          "fires": 9,
-          "total_ms": 1008
+          "fires": 10,
+          "total_ms": 1321
         },
         "\"${CLAUDE_PLUGIN_ROOT}/hooks/stage-keepalive.sh\"": {
-          "fires": 9,
-          "total_ms": 185
+          "fires": 10,
+          "total_ms": 205
         },
         "\"/Users/jakubigla/.config/iterm2/it2\" handle-agent-hook": {
-          "fires": 9,
-          "total_ms": 1278
+          "fires": 10,
+          "total_ms": 1406
         }
       }
     },
     "turns": {
-      "count": 9,
-      "total_seconds": 337
+      "count": 10,
+      "total_seconds": 4231
     },
     "subagent_runs": [
       {
@@ -357,20 +396,20 @@
     ]
   },
   "spend": {
-    "usd": 8.371246600000001,
+    "usd": 8.9076747,
     "coverage": "exact",
     "coverage_tokens": {
-      "exact": 19927678
+      "exact": 22050504
     },
     "unpriced": [],
     "table_date": "2026-11-09",
-    "tokens": 19927678,
+    "tokens": 22050504,
     "tokens_by_model": {
       "claude-sonnet-5-5": {
-        "input": 356,
-        "output": 76614,
-        "cache_write_1h": 121115,
-        "cache_read": 11158401,
+        "input": 410,
+        "output": 86193,
+        "cache_write_1h": 179887,
+        "cache_read": 13212822,
         "cache_write_5m": 273973
       },
       "claude-opus-5-5": {
@@ -380,7 +419,7 @@
         "cache_read": 7858675
       }
     },
-    "sessions": 1
+    "sessions": 2
   },
   "friction": {
     "by_kind": {
