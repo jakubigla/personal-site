@@ -1,0 +1,99 @@
+{
+  "ticket_key": "PS-9",
+  "branch": "feature/PS-9-github-repository-settings-are-managed",
+  "local_sha": "6ed7e3d0466b48b42347c8ff6a254e30fa10277a",
+  "nonprd_sha": null,
+  "captured": "2026-11-27T21:36:05Z",
+  "exercisers_dispatched": [
+    "infra"
+  ],
+  "critical_path_ac": null,
+  "matrix": [
+    {
+      "id": "AC3",
+      "infra": {
+        "display_name": "Infrastructure (static checks)",
+        "text": "A pull request touching foundation/github gets a github-config workflow run that executes only terraform fmt, validate and the static policy checks, with no cloud credentials and no OIDC role assumed (PO decision: keep ADR-0010)",
+        "command": "bash .xpm/state/evidence/PS-9/exercise-infra.sh > exercise-infra.out 2>&1",
+        "paths": [
+          ".github/workflows/github-config.yml",
+          "foundation/github/policies/",
+          "mise.toml"
+        ],
+        "raw_artifact": "=== AC3 ==='\n=== AC3 ===\n+ sed -n 1,60p /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/.github/workflows/github-config.yml\n# Static checks for the GitHub settings stack. It holds no cloud credential and no GitHub token\n# beyond read access: only the owner plans and applies this stack, locally (ADR-0010).\n# policies/check-workflow.sh fails the build if this file ever gains a credential, an OIDC\n# permission or a plan or apply command.\nname: github-config\n\non:\n  pull_request:\n    paths:\n      - 'foundation/github/**'\n      - '.github/workflows/github-config.yml'\n      - 'mise.toml'\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: github-config-${{ github.ref }}\n  cancel-in-progress: true\n\nenv:\n  MISE_VERSION: 2026.11.14\n\njobs:\n  static:\n    name: static\n    runs-on: ${{ github.run_attempt != 1 && vars.CI_FALLBACK || fromJSON(vars.CI_RUNNER || '\"ubuntu-latest\"') }}\n    timeout-minutes: 10\n    steps:\n      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1\n        with:\n          persist-credentials: false\n      - uses: jdx/mise-action@924e7c586e33d7d4bae9c14e26c5d22e2beb6e78 # v5.3.0\n        with:\n          version: ${{ env.MISE_VERSION }}\n          cache: ${{ runner.environment == 'github-hosted' }}\n      - run: mise run github:check\n        env:\n          # tflint downloads its ruleset from GitHub; the read-only token avoids the shared-IP rate limit.\n          GITHUB_TOKEN: ${{ github.token }}\n+ grep -n -E 'terraform|mise run|run:' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/.github/workflows/github-config.yml\n37:      - run: mise run github:check\n+ grep -n -A8 'tasks.\"github:' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/mise.toml\n35:[tasks.\"github:fmt\"]\n36-description = \"Terraform format check of the GitHub settings stack\"\n37-run = \"terraform fmt -recursive -check -diff foundation/github\"\n38-\n39:[tasks.\"github:validate\"]\n40-description = \"Validate the GitHub settings stack and plan its tests against a mocked provider, without a backend or credentials\"\n41-run = [\n42-  \"terraform -chdir=foundation/github init -backend=false -input=false\",\n43-  \"terraform -chdir=foundation/github validate\",\n44-  \"terraform -chdir=foundation/github test\",\n45-]\n46-\n47:[tasks.\"github:lint\"]\n48-description = \"tflint over the GitHub settings stack and its module\"\n49-run = [\n50-  \"tflint --init --config=\\\"$PWD/infra/.tflint.hcl\\\"\",\n51-  \"tflint --chdir=foundation/github --config=\\\"$PWD/infra/.tflint.hcl\\\"\",\n52-  \"tflint --chdir=foundation/github/modules/repo --config=\\\"$PWD/infra/.tflint.hcl\\\"\",\n53-]\n54-\n55:[tasks.\"github:policies\"]\n56-description = \"Checkov passes the stack, and the workflow policy rejects any credential, plan or apply\"\n57-run = [\n58-  \"infra/policies/check.sh foundation/github\",\n59-  \"foundation/github/policies/test-check-workflow.sh\",\n60-]\n61-\n62:[tasks.\"github:check\"]\n63-description = \"Every static check of the GitHub settings stack; none needs a credential\"\n64-depends = [\"github:fmt\", \"github:validate\", \"github:lint\", \"github:policies\"]\n+ bash /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/foundation/github/policies/check-workflow.sh /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/.github/workflows/github-config.yml\nworkflow holds no credential and cannot plan or apply\n+ echo EXIT=0\nEXIT=0\n+ bash /Users/jakubigla/Project-Repo",
+        "no_visual_reason": "static file and CLI output, no rendered state",
+        "verdict_reason": "Workflow triggers on pull_request for foundation/github/**, runs only `mise run github:check` (fmt, validate, tflint, checkov, workflow policy), permissions contents: read, policy check and its 18 fixtures pass.",
+        "verdict": "pass",
+        "commit_sha": "6ed7e3d0466b48b42347c8ff6a254e30fa10277a"
+      },
+      "text": "A pull request touching foundation/github gets a github-config workflow run that executes only terraform fmt, validate and the static policy checks, with no cloud credentials and no OIDC role assumed (PO decision: keep ADR-0010)"
+    },
+    {
+      "id": "AC4",
+      "infra": {
+        "display_name": "Infrastructure (static checks)",
+        "text": "`xpm doctor`'s github-as-code row shows only the state ADR-0010 leaves: `info` (settings set by API) before the owner renders, `warn` stopped at `rendered` after it, or named free-plan gaps; doctor's `ok` needs step `vars-set`, which this stack never reaches without a CI plan identity (A-021) (EN-011 AC4, reworded to fit ADR-0010)",
+        "command": "bash .xpm/state/evidence/PS-9/exercise-infra.sh > exercise-infra.out 2>&1",
+        "paths": [
+          "foundation/github/",
+          "docs/adr/0010-attended-terraform-applies.md"
+        ],
+        "raw_artifact": "=== AC4 ==='\n=== AC4 ===\n+ xpm doctor\n+ echo EXIT=0\nEXIT=0\n+ python3 -I -c $'\\nimport json,sys\\nd=json.load(open(\\'/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/.xpm/state/evidence/PS-9/doctor.tmp\\'))\\nprint([c for c in d if c[\\'check\\']==\\'github-as-code\\'])'\n[{'check': 'github-as-code', 'status': 'info', 'detail': 'settings set by API (the GitHub settings as code enabler takes them into Terraform after the platform Terraform; /xpm:xpm-init to do it now)'}]\n+ head -20\n+ grep -n -i -E 'vars-set|A-021|info|warn' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/docs/adr/0010-attended-terraform-applies.md\n+ echo '",
+        "no_visual_reason": "static file and CLI output, no rendered state",
+        "verdict_reason": "Doctor's github-as-code row is `info` (settings set by API), the pre-render state; not `ok`.",
+        "verdict": "pass",
+        "commit_sha": "6ed7e3d0466b48b42347c8ff6a254e30fa10277a"
+      },
+      "text": "`xpm doctor`'s github-as-code row shows only the state ADR-0010 leaves: `info` (settings set by API) before the owner renders, `warn` stopped at `rendered` after it, or named free-plan gaps; doctor's `ok` needs step `vars-set`, which this stack never reaches without a CI plan identity (A-021) (EN-011 AC4, reworded to fit ADR-0010)"
+    },
+    {
+      "id": "AC5",
+      "infra": {
+        "display_name": "Infrastructure (static checks)",
+        "text": "Negative: no CI identity can plan or apply the github stack: the workflow file references no cloud credential, secret or OIDC role, and the docs state only the PO plans and applies the github stack locally (PO decision: keep ADR-0010)",
+        "command": "bash .xpm/state/evidence/PS-9/exercise-infra.sh > exercise-infra.out 2>&1",
+        "paths": [
+          ".github/workflows/github-config.yml",
+          "foundation/github/policies/",
+          "mise.toml",
+          "docs/runbooks/github-settings-first-plan.md"
+        ],
+        "raw_artifact": "=== AC5 ==='\n=== AC5 ===\n+ grep -n -i -E 'secret|OIDC|role|AWS_|aws-actions|id-token|credentials|terraform (plan|apply)' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/.github/workflows/github-config.yml\n3:# policies/check-workflow.sh fails the build if this file ever gains a credential, an OIDC\n32:          persist-credentials: false\n+ echo 'EXIT=0 (grep, 0 = matches listed)'\nEXIT=0 (grep, 0 = matches listed)\n+ grep -n -i 'only the owner' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/docs/runbooks/github-settings-first-plan.md\n3:Only the owner plans and applies `foundation/github`, locally and attended (ADR-0010). CI runs the\n+ grep -n -i -E 'only the (owner|PO)' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9/docs/adr/0010-attended-terraform-applies.md",
+        "no_visual_reason": "static file and CLI output, no rendered state",
+        "verdict_reason": "Grep of the workflow finds only a comment and persist-credentials: false; policy fixtures reject secret/oidc/plan/apply; runbook line 3 states only the owner plans and applies locally.",
+        "verdict": "pass",
+        "commit_sha": "6ed7e3d0466b48b42347c8ff6a254e30fa10277a"
+      },
+      "text": "Negative: no CI identity can plan or apply the github stack: the workflow file references no cloud credential, secret or OIDC role, and the docs state only the PO plans and applies the github stack locally (PO decision: keep ADR-0010)"
+    },
+    {
+      "id": "AC1",
+      "infra": {
+        "display_name": "Infrastructure (static checks)",
+        "verdict": "post_merge",
+        "commit_sha": null
+      },
+      "text": "[post-merge] after the owner pins and renders the foundation, `xpm init foundation status` answers step `rendered` or later; `deferred` stays true by design under ADR-0010 (no CI plan role, no repo variable) (EN-011 AC1, reworded to fit ADR-0010)"
+    },
+    {
+      "id": "AC2",
+      "infra": {
+        "display_name": "Infrastructure (static checks)",
+        "verdict": "waiting_setup",
+        "commit_sha": null
+      },
+      "text": "[needs-secret: GITHUB_TOKEN] The first local github plan (run by the PO) imported the live settings and changed nothing on GitHub (EN-011 AC2)"
+    }
+  ],
+  "summary": {
+    "infra": {
+      "passed": 3,
+      "failed": 0,
+      "pending": 0,
+      "skipped": 0,
+      "total": 3
+    }
+  },
+  "spec_path": ".xpm/evidence/PS-9/acs.md",
+  "evidence_id": "PS-9"
+}

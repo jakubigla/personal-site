@@ -1,0 +1,16 @@
+{
+ "routing": [
+  {
+   "ac_id": "AC3",
+   "surface": "infra"
+  },
+  {
+   "ac_id": "AC4",
+   "surface": "infra"
+  },
+  {
+   "ac_id": "AC5",
+   "surface": "infra"
+  }
+ ]
+}
