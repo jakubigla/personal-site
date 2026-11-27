@@ -1,0 +1,13 @@
+{
+  "enabledPlugins": {
+    "xpm@xpm": true
+  },
+  "extraKnownMarketplaces": {
+    "xpm": {
+      "source": {
+        "source": "github",
+        "repo": "jakubigla/xpm"
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+# Written by xpm-init's interview (xpm init interview save): this project's answers and
+# the settings the last interview inferred. Edit .xpm/config.toml, not this file.
+
+[project]
+has_ui = true
+
+[inferred]
+"autopilot.max_hours_per_day" = 24
+"chain.default_mode" = "fast"
+"chain.shaping" = "unshaped"
+"chain.suggest_policy" = "off"
+"elicit.max_questions" = 15
+"elicit.web_research" = true
+"evidence.mp4" = true
+"evidence.record" = "surface"
+"gates.breaker.overrides" = 3
+"gates.breaker.post_merge_red_rate" = 0.3
+"gates.breaker.revert_rate" = 0.2
+"gates.breaker.security_parks" = 3
+"orchestrator.autonomous" = true
+"orchestrator.continuous" = true
+"plan.ticket_size" = "large"
+"security.block_severity" = "high"

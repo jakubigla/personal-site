@@ -1,0 +1,99 @@
+# XPM project config. Committed; the whole team shares it.
+# Personal overrides go in .xpm/config.local.toml (gitignored).
+# Any key can be overridden per run with its env var: runtime.backend -> XPM_RUNTIME_BACKEND.
+# Full reference: `xpm config docs`.
+schema = 1
+
+[project]
+key_prefix = "PS"             # ticket keys match ^<prefix>-\d+$
+
+[agent]
+harness = "claude-code"
+cmd     = ""                  # empty = claude --name <KEY> --dangerously-skip-permissions --model <step's model>
+model   = "sonnet"            # implementer / fix-dispatch model
+
+[runtime]
+backend = "herdr"              # auto (herdr when installed, else tmux) | herdr | tmux
+session = "auto"              # tmux session / herdr session name; auto = xpm-<dir>-<hash>, this project's own
+
+[tracker]
+backend = "github"       # github | linear | jira | local
+enabled      = true           # false = repo-only chain
+mirror_tasks = false
+
+[tracker.states]              # normalized state -> backend state or label
+# in_review = "Code Review"
+
+[tracker.github]
+repo = ""                     # owner/name; empty = `gh repo view`
+
+[tracker.linear]
+team        = ""              # Linear team key, e.g. "ENG"; must equal project.key_prefix
+api_key_env = "LINEAR_API_KEY"   # the NAME of the env var, never the key
+
+[tracker.jira]
+site      = ""                # e.g. "acme.atlassian.net"
+project   = ""                # Jira project key, e.g. "ENG"; must equal project.key_prefix
+email_env = "JIRA_EMAIL"      # the NAME of the env var, never the value
+token_env = "JIRA_API_TOKEN"  # the NAME of the env var, never the value
+
+[chain]
+default_mode = "fast"       # full | fast | superfast (label mode:<m> overrides per ticket)
+shaping = "unshaped"       # auto (shaped when attended, unshaped when autonomous) | shaped | unshaped
+suggest_policy = "off"        # ask | heavier-only | off
+
+[design]
+provider = "superpowers"      # superpowers | grill-me (label design:<p> overrides per ticket)
+adapter = "claude-design"
+
+[checks]
+quick = []                    # shift-left commands, e.g. ["ruff check {files}", "mypy src"]
+
+[evidence]
+code_paths = ["scripts/", ".claude/", "apps/", "tests/", "src/", "lib/"]   # commits here invalidate evidence
+mp4 = true
+record = "surface"
+
+[orchestrator]
+wave_size    = 3
+token_budget = 0              # 0 = unlimited
+continuous = true
+granularity  = "single"       # single | theme | sweep
+queue        = "default"
+autonomous = true
+
+[improvement]
+analyze_every = 10            # units between `xpm improve analyze` runs
+level         = "project"     # project | xpm-dev
+share         = false         # allow `xpm improve share` to send xpm-owned clusters upstream
+model         = "haiku"
+upstream      = "jakubigla/xpm"
+
+[cockpit]
+port = 7420
+
+# Components (`xpm profile add|infer`) and the blueprints pin (`xpm blueprint update`) are
+# appended below as [[component]] tables and a [blueprints] table.
+
+[autopilot]
+max_hours_per_day = 24
+
+[elicit]
+max_questions = 15
+web_research = true
+
+[gates.breaker]
+overrides = 3
+post_merge_red_rate = 0.3
+revert_rate = 0.2
+security_parks = 3
+
+[plan]
+ticket_size = "large"
+
+[security]
+block_severity = "high"
+
+[blueprints]
+source = "github:jakubigla/xpm-blueprints"
+ref = "v2.0.0"
