@@ -19,7 +19,3 @@ updates:
     directory: /
     schedule:
       interval: weekly
-  - package-ecosystem: mise
-    directory: /
-    schedule:
-      interval: weekly
