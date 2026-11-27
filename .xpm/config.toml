@@ -92,7 +92,7 @@ security_parks = 3
 ticket_size = "large"
 
 [security]
-block_severity = "high"
+block_severity = "medium"
 
 [blueprints]
 source = "github:jakubigla/xpm-blueprints"

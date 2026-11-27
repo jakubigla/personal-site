@@ -9,6 +9,8 @@ Last updated: 2026-11-27
 ## Assumptions
 | ID | Date | Title | Validation | Owner | Status |
 |---|---|---|---|---|---|
+| A-018 | 2026-11-27 | PO waived data-retention-and-backup, Q14 | elicitation 2026-11-27 Q14 | PO | confirmed |
+| A-017 | 2026-11-27 | PO waived scalability, Q14 | elicitation 2026-11-27 Q14 | PO | confirmed |
 | A-016 | 2026-11-27 | The existing jacops.pl Route 53 zone in Jakub's AWS account is reused, and the first terraform apply plus DNS cut-over are an attended step outside autopilot | Jakub runs the first apply and cut-over; CI only plans until then | Jakub | open |
 | A-015 | 2026-11-27 | The anonymized selected-work labels and figures as given in the brief are not identifying; any card whose combined facts would identify a client drops a fact | Jakub reviews every work card against the traceability rule before launch | Jakub | open |
 | A-014 | 2026-11-27 | Layout holds from 360 px wide with no horizontal scroll; timeline collapses to a single column and pointer parallax is off on touch | Visual and automated checks at 360 px and touch emulation | Jakub | open |
