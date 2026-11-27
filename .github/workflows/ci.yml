@@ -21,7 +21,7 @@ env:
 jobs:
   baseline:
     name: baseline
-    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    runs-on: ${{ github.run_attempt != 1 && vars.CI_FALLBACK || fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -57,7 +57,7 @@ jobs:
 
   infra:
     name: infra
-    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    runs-on: ${{ github.run_attempt != 1 && vars.CI_FALLBACK || fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
     timeout-minutes: 10
     # No AWS credentials: every apply is attended (ADR-0010), so CI only checks the code.
     steps:
@@ -82,7 +82,7 @@ jobs:
     name: ci-ok
     if: always()
     needs: [baseline, infra]
-    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    runs-on: ${{ github.run_attempt != 1 && vars.CI_FALLBACK || fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
     timeout-minutes: 2
     steps:
       - name: Every job passed
