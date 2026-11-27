@@ -5,6 +5,8 @@ terraform = "1.17.2"
 tflint = "0.66.0"
 pre-commit = "4.7.0"
 gitleaks = "8.30.1"
+uv = "0.12.5"
+"pipx:checkov" = "3.4.11"
 
 [tasks."web:install"]
 description = "Install the web app's packages from the lockfile, scripts off"
@@ -46,19 +48,27 @@ description = "Terraform format check"
 run = "terraform fmt -recursive -check -diff infra"
 
 [tasks."infra:validate"]
-description = "Validate the prod root without a backend or credentials"
-dir = "infra/environments/prod"
-run = ["terraform init -backend=false -input=false", "terraform validate"]
+description = "Validate both roots without a backend or credentials"
+run = [
+  "terraform -chdir=infra/bootstrap init -backend=false -input=false",
+  "terraform -chdir=infra/bootstrap validate",
+  "terraform -chdir=infra/environments/prod init -backend=false -input=false",
+  "terraform -chdir=infra/environments/prod validate",
+]
 
 [tasks."infra:lint"]
-description = "tflint over the prod root"
-dir = "infra"
-# --chdir makes tflint look for its config inside environments/prod, so the committed
-# infra/.tflint.hcl is named by absolute path; without it tflint falls back to its defaults.
+description = "tflint over both roots and both modules"
 run = [
-  "tflint --init --config=\"$PWD/.tflint.hcl\"",
-  "tflint --chdir=environments/prod --config=\"$PWD/.tflint.hcl\"",
+  "tflint --init --config=\"$PWD/infra/.tflint.hcl\"",
+  "tflint --chdir=infra/bootstrap --config=\"$PWD/infra/.tflint.hcl\"",
+  "tflint --chdir=infra/environments/prod --config=\"$PWD/infra/.tflint.hcl\"",
+  "tflint --chdir=infra/modules/site-hosting --config=\"$PWD/infra/.tflint.hcl\"",
+  "tflint --chdir=infra/modules/cost-guard --config=\"$PWD/infra/.tflint.hcl\"",
 ]
+
+[tasks."infra:policies"]
+description = "Checkov policies reject their negative fixtures and the real roots pass"
+run = "infra/policies/test.sh"
 
 [tasks."repo:lint"]
 description = "Every pre-commit hook over every file"

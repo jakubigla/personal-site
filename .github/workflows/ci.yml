@@ -89,22 +89,6 @@ jobs:
           retention-days: 14
           if-no-files-found: error
 
-  infra:
-    name: infra
-    runs-on: *runner
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: jdx/mise-action@924e7c586e33d7d4bae9c14e26c5d22e2beb6e78 # v5.3.0
-        with:
-          version: ${{ env.MISE_VERSION }}
-          cache: ${{ runner.environment == 'github-hosted' }}
-      - run: mise run infra:fmt
-      - run: mise run infra:validate
-      - run: mise run infra:lint
-
   deploy:
     name: deploy
     # Inert until the attended first apply sets DEPLOY_ROLE_ARN (ADR-0010). Every check must pass
@@ -123,6 +107,29 @@ jobs:
           path: site
       - name: Publish
         run: echo "publishing the site artifact is added with the hosting module"
+
+  infra:
+    name: infra
+    runs-on: *runner
+    timeout-minutes: 10
+    # No AWS credentials: every apply is attended (ADR-0010), so CI only checks the code.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@924e7c586e33d7d4bae9c14e26c5d22e2beb6e78 # v5.3.0
+        with:
+          version: ${{ env.MISE_VERSION }}
+          cache: ${{ runner.environment == 'github-hosted' }}
+      - run: mise run infra:fmt
+      - run: mise run infra:validate
+      - name: tflint
+        run: mise run infra:lint
+        env:
+          # tflint downloads its ruleset from GitHub; a token avoids the shared-IP rate limit.
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Policies reject what they must, and the roots pass them
+        run: mise run infra:policies
 
   ci-ok:
     name: ci-ok

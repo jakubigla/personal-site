@@ -9,3 +9,15 @@ playwright-report/
 
 # Local client-name denylist for the pre-commit hook; the CI list is a secret
 .denylist.local
+
+# Terraform: state, saved plans and provider caches never enter the repo (T-10)
+*.tfstate
+*.tfstate.*
+*.tfplan
+.terraform/
+crash.log
+*.auto.tfvars
+
+# Python bytecode
+__pycache__/
+*.pyc
