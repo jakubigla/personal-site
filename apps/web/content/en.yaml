@@ -25,6 +25,12 @@ footer:
   entity: Jakub Igla JacOps
   privacy_note: This site sets no cookies and does no tracking.
   contact:
-    email: jakub.igla@gmail.com
-    linkedin: https://www.linkedin.com/in/jakubigla
-    github: https://github.com/jacops
+    email:
+      label: Email
+      address: jakub.igla@gmail.com
+    linkedin:
+      label: LinkedIn
+      href: https://www.linkedin.com/in/jakubigla
+    github:
+      label: GitHub
+      href: https://github.com/jacops

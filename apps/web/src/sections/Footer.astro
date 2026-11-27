@@ -11,9 +11,9 @@ const { contact } = footer;
 <footer id="contact">
   <p class="note">{footer.entity}. {footer.privacy_note}</p>
   <ul>
-    <li><a href={`mailto:${contact.email}`}>Email</a></li>
-    <li><a href={contact.linkedin} rel="noopener">LinkedIn</a></li>
-    <li><a href={contact.github} rel="noopener">GitHub</a></li>
+    <li><a href={`mailto:${contact.email.address}`}>{contact.email.label}</a></li>
+    <li><a href={contact.linkedin.href} rel="noopener">{contact.linkedin.label}</a></li>
+    <li><a href={contact.github.href} rel="noopener">{contact.github.label}</a></li>
   </ul>
 </footer>
 

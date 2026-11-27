@@ -30,9 +30,9 @@ export const contentSchema = z.strictObject({
     entity: text,
     privacy_note: text,
     contact: z.strictObject({
-      email: z.email(),
-      linkedin: url,
-      github: url,
+      email: z.strictObject({ label: text, address: z.email() }),
+      linkedin: z.strictObject({ label: text, href: url }),
+      github: z.strictObject({ label: text, href: url }),
     }),
   }),
 });
