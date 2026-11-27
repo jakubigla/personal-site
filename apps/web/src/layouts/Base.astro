@@ -1,5 +1,7 @@
 ---
 import Head from "../head/Head.astro";
+import "@fontsource-variable/fraunces";
+import "@fontsource-variable/manrope";
 import "../design/tokens.css";
 
 interface Props {
@@ -14,6 +16,8 @@ const { title, description } = Astro.props;
     <Head title={title} description={description} />
   </head>
   <body>
-    <slot />
+    <div class="page">
+      <slot />
+    </div>
   </body>
 </html>

@@ -3,6 +3,10 @@ import { z } from "zod";
 // Strict objects: an unknown key (a mistyped section flag, say) must fail the build, not vanish.
 const text = z.string().trim().min(1);
 const url = z.url({ protocol: /^https$/ });
+const link = z.strictObject({
+  label: text,
+  href: z.string().regex(/^(https:\/\/|mailto:)/, "must start with https:// or mailto:"),
+});
 
 export const contentSchema = z.strictObject({
   sections: z.strictObject({
@@ -15,6 +19,8 @@ export const contentSchema = z.strictObject({
     role: text,
     headline: text,
     value_statement: text,
+    primary_link: link,
+    secondary_link: link,
   }),
   how_i_deliver: z.strictObject({
     title: text,

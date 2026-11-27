@@ -1,7 +1,7 @@
-/* Editorial Stage tokens: dark is the stage, light follows the system setting. */
+/* Editorial Stage tokens: the dark stage is the one approved theme, whatever the system setting. */
 :root {
-  --font-heading: Fraunces, Georgia, serif;
-  --font-body: Manrope, system-ui, sans-serif;
+  --font-heading: "Fraunces Variable", Georgia, serif;
+  --font-body: "Manrope Variable", system-ui, sans-serif;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -24,19 +24,7 @@
   --accent: #ff8a66;
   --on-accent: #1a1210;
   --border: #3a363f;
-  color-scheme: dark light;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #f6f2ea;
-    --surface: #ece6da;
-    --text: #1a1714;
-    --muted: #5c554c;
-    --accent: #a63a1a;
-    --on-accent: #ffffff;
-    --border: #d2cabc;
-  }
+  color-scheme: dark;
 }
 
 * {
@@ -52,10 +40,32 @@ body {
   line-height: 1.5;
 }
 
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: var(--space-7) var(--space-5) var(--space-6);
+}
+
+@media (min-width: 64rem) {
+  .page {
+    padding-inline: 6rem;
+  }
+}
+
+.page > main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 h1,
 h2 {
   font-family: var(--font-heading);
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.1;
   margin: 0 0 var(--space-5);
 }
@@ -65,7 +75,5 @@ a {
 }
 
 .section {
-  max-width: 62rem;
-  margin: 0 auto;
-  padding: var(--space-8) var(--space-5);
+  padding: var(--space-7) 0;
 }
