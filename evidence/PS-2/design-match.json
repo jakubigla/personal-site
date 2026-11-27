@@ -1,0 +1,40 @@
+{
+  "key": "PS-2",
+  "judge_model": "sonnet",
+  "screens_sha256": "8c49fd388ed39998ca342c09eb9b9fe400038c94ddde9e10786e2c8ce0056d15",
+  "round": 1,
+  "next": "done",
+  "summary": {
+    "match": 0,
+    "minor": 1,
+    "mismatch": 0,
+    "unverified": 0
+  },
+  "screens": [
+    {
+      "name": "home",
+      "acs": [
+        "AC3",
+        "AC4",
+        "AC5",
+        "AC13"
+      ],
+      "verdict": "minor",
+      "differences": [
+        "desktop: The built page has a larger headline that wraps to three lines, where the mockup's headline wraps to two. This comes from the real headline text being longer, so it is a data difference and not a layout change.",
+        "desktop: The built page has slightly different vertical positions. The header sits higher (y\u224857 vs 82) and the footer sits lower (y\u2248758 vs 742). The buttons are a bit taller. The header, hero and footer are in the same order and structure.",
+        "desktop: The secondary button background looks slightly lighter in the built page than in the mockup. This is a very small colour difference.",
+        "mobile: The subheadline is set in a larger font in the build than in the mockup.",
+        "mobile: The secondary button's background is a slightly lighter fill in the build; the mockup draws it nearly transparent.",
+        "mobile: The hero block starts higher in the build and the buttons are a little taller, so vertical spacing differs by a few pixels.",
+        "mobile: The footer note wraps onto two lines in the build, which moves the footer links up slightly. The longer text comes from real data, so this is not counted as a difference."
+      ],
+      "built": {
+        "desktop": "design-shots/home@desktop.png",
+        "mobile": "design-shots/home@mobile.png"
+      },
+      "side_by_side": "design/home@side-by-side.png"
+    }
+  ],
+  "at": "2026-11-27T16:03:32Z"
+}

@@ -1,0 +1,117 @@
+
+Running 7 tests using 1 worker
+
+[1/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:52:1 › AC1: single build command emits plain static files
+../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:52:1 › AC1: single build command emits plain static files
+::xpm-ac AC1::
+
+build exit 0
+
+_astro
+index.html
+_astro/fraunces-latin-ext-wght-normal.Ca2vKHc0.woff2
+_astro/fraunces-latin-wght-normal.ukD16Tqj.woff2
+_astro/fraunces-vietnamese-wght-normal.CnvboYUG.woff2
+_astro/index.CaxNfWaj.css
+_astro/manrope-cyrillic-wght-normal.Dvxsihut.woff2
+_astro/manrope-greek-wght-normal.DL7QRZyv.woff2
+_astro/manrope-latin-ext-wght-normal.Ch3YOpNY.woff2
+_astro/manrope-latin-wght-normal.DHIcAJRg.woff2
+_astro/manrope-vietnamese-wght-normal.usUDDRr7.woff2
+
+served by a bare node static file server, no Astro runtime
+
+[2/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:64:1 › AC2: invalid content file fails the build readably
+../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:64:1 › AC2: invalid content file fails the build readably
+::xpm-ac AC2::
+
+missing field exit 1
+ 16:58:22 [ERROR] ContentError: Content file is invalid:
+  - hero.headline: Invalid input: expected string, received undefined
+16:58:22 [ERROR] [build] Caught error rendering /: ContentError: Content file is invalid:
+  - hero.headline: Invalid input: expected string, received undefined
+Content file is invalid:
+  - hero.headline: Invalid input: expected string, received undefined
+
+unknown flag exit 1
+ 16:58:23 [ERROR] ContentError: Content file is invalid:
+  - sections: Unrecognized key: "bogus_section": bogus_section
+16:58:23 [ERROR] [build] Caught error rendering /: ContentError: Content file is invalid:
+  - sections: Unrecognized key: "bogus_section": bogus_section
+Content file is invalid:
+  - sections: Unrecognized key: "bogus_section": bogus_section
+
+valid file exit 0
+
+[3/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:78:1 › AC3: headline in content file changes the hero
+../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:78:1 › AC3: headline in content file changes the hero
+::xpm-ac AC3::
+
+exit 0
+
+h1: A brand new headline
+
+base build lacks new headline; only content/en.yaml text changed
+
+shoot desktop status null error Error: spawnSync xpm ETIMEDOUT
+
+shoot mobile status null error Error: spawnSync xpm ETIMEDOUT
+
+[4/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:94:1 › AC4: section flag off removes section; how_i_deliver off by default
+../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:94:1 › AC4: section flag off removes section; how_i_deliver off by default
+::xpm-ac AC4::
+
+committed flag line: how_i_deliver: false # reserved slot, switched on by a later change
+
+flag on -> section present; flag off -> absent
+
+hero off -> no hero; footer off -> no footer
+
+[5/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:114:1 › AC5: page readable top to bottom with JavaScript disabled
+../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:114:1 › AC5: page readable top to bottom with JavaScript disabled
+::xpm-ac AC5::
+
+javaScriptEnabled option: false (config)
+
+Jakub Igla
+Principal Data Platform Architect
+
+Principal Data Platform Architect. Databricks Partner Champion.
+
+I design data platforms on Databricks and lead the teams that run them.
+
+Get in touch
+LinkedIn
+
+Jakub Igla JacOps. This site sets no cookies and does no tracking.
+
+Email
+LinkedIn
+GitHub
+
+[6/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:129:1 › AC6: local test run passes against the skeleton
+../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:129:1 › AC6: local test run passes against the skeleton
+::xpm-ac AC6::
+
+exit 0
+
+ RUN  v5.1.2 /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web
+
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  17:02:39
+   Duration  137ms (import 62%, tests 24%, transform 10%, worker 4%)
+
+
+
+
+[7/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:139:1 › AC13: markup in content renders as escaped text
+../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:139:1 › AC13: markup in content renders as escaped text
+::xpm-ac AC13::
+
+exit 0
+
+rendered h1 text: <script>alert(1)</script><img src=x onerror=alert(2)><b>bold</b>
+
+  7 passed (4.3m)

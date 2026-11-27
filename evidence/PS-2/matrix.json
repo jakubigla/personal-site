@@ -1,0 +1,649 @@
+{
+  "ticket_key": "PS-2",
+  "branch": "feature/PS-2-the-site-builds-from-one-content-file",
+  "local_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+  "nonprd_sha": null,
+  "captured": "2026-11-27T16:33:21Z",
+  "exercisers_dispatched": [
+    "web",
+    "local"
+  ],
+  "critical_path_ac": null,
+  "matrix": [
+    {
+      "id": "AC1",
+      "web": {
+        "display_name": "Web",
+        "text": "A single build command produces a directory of plain static files (HTML, CSS, assets) with no server runtime needed to serve them.",
+        "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+        "paths": [
+          "apps/web/src/",
+          "apps/web/astro.config.mjs",
+          "apps/web/package.json",
+          ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+        ],
+        "raw_artifact": "build exit 0\n\n_astro\nindex.html\n_astro/fraunces-latin-ext-wght-normal.Ca2vKHc0.woff2\n_astro/fraunces-latin-wght-normal.ukD16Tqj.woff2\n_astro/fraunces-vietnamese-wght-normal.CnvboYUG.woff2\n_astro/index.CaxNfWaj.css\n_astro/manrope-cyrillic-wght-normal.Dvxsihut.woff2\n_astro/manrope-greek-wght-normal.DL7QRZyv.woff2\n_astro/manrope-latin-ext-wght-normal.Ch3YOpNY.woff2\n_astro/manrope-latin-wght-normal.DHIcAJRg.woff2\n_astro/manrope-vietnamese-wght-normal.usUDDRr7.woff2\n\nserved by a bare node static file server, no Astro runtime\n\n[2/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:64:1 \u203a AC2: invalid content file fails the build readably\n../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:64:1 \u203a AC2: invalid content file fails the build readably",
+        "verdict": "pass",
+        "verdict_reason": "build exit 0; output lists index.html, CSS and fonts only, served by a bare node file server",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064",
+        "media": [
+          {
+            "kind": "trace",
+            "path": "media/web/AC1/trace.zip",
+            "bytes": 4239,
+            "sha256": "b49dc8fa4d5ad0c4f266648a9b9a1fef6406f322d8b48f2589d494ebffce6a95",
+            "status": "ok",
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "har",
+            "path": "media/web/AC1/http.har",
+            "bytes": 153,
+            "sha256": "7ea49b8c229472e1ca53410e3533b731a11f7afdb321e6894ba420d3eeb2073d",
+            "status": "ok",
+            "requests": 0,
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "video",
+            "status": "unavailable",
+            "reason": "no recording for this AC"
+          }
+        ],
+        "crosscheck": "no-claims"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "text": "A single build command produces a directory of plain static files (HTML, CSS, assets) with no server runtime needed to serve them. ([EN-001](https://github.com/jakubigla/personal-site/blob/main/.xpm/catalog/en/EN-001.md) AC1)",
+        "command": "",
+        "paths": [],
+        "raw_artifact": "skipped",
+        "verdict_reason": "claimed by web",
+        "verdict": "skipped",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+      },
+      "text": "A single build command produces a directory of plain static files (HTML, CSS, assets) with no server runtime needed to serve them."
+    },
+    {
+      "id": "AC2",
+      "web": {
+        "display_name": "Web",
+        "text": "The content file is validated against its schema during the build, and an invalid file (missing required field, unknown section flag) fails the build with a readable error.",
+        "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+        "paths": [
+          "apps/web/src/content/",
+          ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+        ],
+        "raw_artifact": "missing field exit 1\n 16:58:22 [ERROR] ContentError: Content file is invalid:\n  - hero.headline: Invalid input: expected string, received undefined\n16:58:22 [ERROR] [build] Caught error rendering /: ContentError: Content file is invalid:\n  - hero.headline: Invalid input: expected string, received undefined\nContent file is invalid:\n  - hero.headline: Invalid input: expected string, received undefined\n\nunknown flag exit 1\n 16:58:23 [ERROR] ContentError: Content file is invalid:\n  - sections: Unrecognized key: \"bogus_section\": bogus_section\n16:58:23 [ERROR] [build] Caught error rendering /: ContentError: Content file is invalid:\n  - sections: Unrecognized key: \"bogus_section\": bogus_section\nContent file is invalid:\n  - sections: Unrecognized key: \"bogus_section\": bogus_section\n\nvalid file exit 0\n\n[3/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:78:1 \u203a AC3: headline in content file changes the hero\n../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:78:1 \u203a AC3: headline in content file changes the hero",
+        "verdict": "pass",
+        "verdict_reason": "missing hero.headline and unknown sections key each exit 1 with a readable 'Content file is invalid' message; valid file exits 0",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064",
+        "media": [
+          {
+            "kind": "trace",
+            "path": "media/web/AC2/trace.zip",
+            "bytes": 4160,
+            "sha256": "4999327ae81261e2bcbeee8d5d3af7cf2c6ce682b1866163718b0af754559d4e",
+            "status": "ok",
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "har",
+            "path": "media/web/AC2/http.har",
+            "bytes": 8126,
+            "sha256": "d3da22fde85288736a433d67454b5dfa9d4299e0da981535bc548f442a6e7b47",
+            "status": "ok",
+            "requests": 4,
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "video",
+            "status": "unavailable",
+            "reason": "no recording for this AC"
+          }
+        ],
+        "crosscheck": "no-claims"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "text": "The content file is validated against its schema during the build, and an invalid file (missing required field, unknown section flag) fails the build with a readable error. ([EN-001](https://github.com/jakubigla/personal-site/blob/main/.xpm/catalog/en/EN-001.md) AC2)",
+        "command": "",
+        "paths": [],
+        "raw_artifact": "skipped",
+        "verdict_reason": "claimed by web",
+        "verdict": "skipped",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+      },
+      "text": "The content file is validated against its schema during the build, and an invalid file (missing required field, unknown section flag) fails the build with a readable error."
+    },
+    {
+      "id": "AC3",
+      "web": {
+        "display_name": "Web",
+        "text": "Changing the headline text in the content file and rebuilding changes the rendered hero without any edit to layout code.",
+        "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+        "paths": [
+          "apps/web/src/sections/Hero.astro",
+          "apps/web/src/content/",
+          "apps/web/content/en.yaml",
+          ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+        ],
+        "raw_artifact": "exit 0\n\nh1: A brand new headline\n\nbase build lacks new headline; only content/en.yaml text changed\n\nshoot desktop status null error Error: spawnSync xpm ETIMEDOUT\n\nshoot mobile status null error Error: spawnSync xpm ETIMEDOUT\n\n[4/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:94:1 \u203a AC4: section flag off removes section; how_i_deliver off by default\n../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:94:1 \u203a AC4: section flag off removes section; how_i_deliver off by default",
+        "verdict": "pass",
+        "verdict_reason": "rebuild with changed headline shows 'h1: A brand new headline'; base build lacks it",
+        "screenshot_path": ".xpm/state/evidence/PS-2/design-shots/home@desktop.png",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064",
+        "media": [
+          {
+            "kind": "video",
+            "path": "media/web/AC3/video.webm",
+            "bytes": 4098120,
+            "sha256": "f60364a1e8b642eb2fcc0889d8b178ee8a88ce3c6c252de0028a8a42d6475228",
+            "status": "ok",
+            "duration_s": 251.7,
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "trace",
+            "path": "media/web/AC3/trace.zip",
+            "bytes": 4107197,
+            "sha256": "f0068e966a1c692787f623d216098bb7660fa316ae7069f4d50e3e8cc92c6cdc",
+            "status": "ok",
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "har",
+            "path": "media/web/AC3/http.har",
+            "bytes": 18030,
+            "sha256": "a868afba23073048fb705da665059aeb7e89518d755f86aeba47735bc88ee029",
+            "status": "ok",
+            "requests": 7,
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          }
+        ],
+        "crosscheck": "no-claims"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "text": "Changing the headline text in the content file and rebuilding changes the rendered hero without any edit to layout code. ([EN-001](https://github.com/jakubigla/personal-site/blob/main/.xpm/catalog/en/EN-001.md) AC3)",
+        "command": "",
+        "paths": [],
+        "raw_artifact": "skipped",
+        "verdict_reason": "claimed by web",
+        "verdict": "skipped",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+      },
+      "text": "Changing the headline text in the content file and rebuilding changes the rendered hero without any edit to layout code."
+    },
+    {
+      "id": "AC4",
+      "web": {
+        "display_name": "Web",
+        "text": "Turning a section flag off in the content file removes that section from the built HTML; the \"How I deliver\" flag exists and is off by default.",
+        "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+        "paths": [
+          "apps/web/src/pages/index.astro",
+          "apps/web/src/sections/",
+          "apps/web/content/en.yaml",
+          ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+        ],
+        "raw_artifact": "committed flag line: how_i_deliver: false # reserved slot, switched on by a later change\n\nflag on -> section present; flag off -> absent\n\nhero off -> no hero; footer off -> no footer\n\n[5/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:114:1 \u203a AC5: page readable top to bottom with JavaScript disabled\n../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:114:1 \u203a AC5: page readable top to bottom with JavaScript disabled",
+        "verdict": "pass",
+        "verdict_reason": "flag is false in committed file, section absent; on -> present; hero and footer off -> absent",
+        "screenshot_path": ".xpm/state/evidence/PS-2/design-shots/home@desktop.png",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064",
+        "media": [
+          {
+            "kind": "video",
+            "path": "media/web/AC4/video.webm",
+            "bytes": 92767,
+            "sha256": "5ba88f525a6908ca1e258943c2bc129d9994ed8477060c783661e9195c539ca5",
+            "status": "ok",
+            "duration_s": 2.9,
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "trace",
+            "path": "media/web/AC4/trace.zip",
+            "bytes": 204999,
+            "sha256": "2fbf8285a21653d782349970a791d2177f84855cf0b5911da8889fa1e90eaf5f",
+            "status": "ok",
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "har",
+            "path": "media/web/AC4/http.har",
+            "bytes": 15818,
+            "sha256": "66d62958c8670b9eaef34e912077010ea878ee20a15ae2ad8f5804fcc70a196d",
+            "status": "ok",
+            "requests": 7,
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          }
+        ],
+        "crosscheck": "no-claims"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "text": "Turning a section flag off in the content file removes that section from the built HTML; the \"How I deliver\" flag exists and is off by default. ([EN-001](https://github.com/jakubigla/personal-site/blob/main/.xpm/catalog/en/EN-001.md) AC4)",
+        "command": "",
+        "paths": [],
+        "raw_artifact": "skipped",
+        "verdict_reason": "claimed by web",
+        "verdict": "skipped",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+      },
+      "text": "Turning a section flag off in the content file removes that section from the built HTML; the \"How I deliver\" flag exists and is off by default."
+    },
+    {
+      "id": "AC5",
+      "web": {
+        "display_name": "Web",
+        "text": "The built page is readable top to bottom with JavaScript disabled.",
+        "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+        "paths": [
+          "apps/web/src/",
+          "apps/web/content/en.yaml",
+          ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+        ],
+        "raw_artifact": "javaScriptEnabled option: false (config)\n\nJakub Igla\nPrincipal Data Platform Architect\n\nPrincipal Data Platform Architect. Databricks Partner Champion.\n\nI design data platforms on Databricks and lead the teams that run them.\n\nGet in touch\nLinkedIn\n\nJakub Igla JacOps. This site sets no cookies and does no tracking.\n\nEmail\nLinkedIn\nGitHub\n\n[6/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:129:1 \u203a AC6: local test run passes against the skeleton\n../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:129:1 \u203a AC6: local test run passes against the skeleton",
+        "verdict": "pass",
+        "verdict_reason": "JS-disabled page shows h1, hero, footer links and privacy note in order; no script tags in HTML",
+        "screenshot_path": ".xpm/state/evidence/PS-2/design-shots/home@desktop.png",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064",
+        "media": [
+          {
+            "kind": "video",
+            "path": "media/web/AC5/video.webm",
+            "bytes": 46717,
+            "sha256": "bcb76fe8b8594340ea56e86a28d8ae174d630fb22df554cddba7cf216d218b61",
+            "status": "ok",
+            "duration_s": 0.4,
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "trace",
+            "path": "media/web/AC5/trace.zip",
+            "bytes": 159999,
+            "sha256": "fce0d69634ac7de745c2afb11dfad04462ea8a37370ca4035cf83d5b2a1028f0",
+            "status": "ok",
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "har",
+            "path": "media/web/AC5/http.har",
+            "bytes": 9813,
+            "sha256": "dc41068076e30d9fd65034b70ab1dd3186e72df81b402df03bdd224704662070",
+            "status": "ok",
+            "requests": 4,
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          }
+        ],
+        "crosscheck": "no-claims"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "text": "The built page is readable top to bottom with JavaScript disabled. ([EN-001](https://github.com/jakubigla/personal-site/blob/main/.xpm/catalog/en/EN-001.md) AC5)",
+        "command": "",
+        "paths": [],
+        "raw_artifact": "skipped",
+        "verdict_reason": "claimed by web",
+        "verdict": "skipped",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+      },
+      "text": "The built page is readable top to bottom with JavaScript disabled."
+    },
+    {
+      "id": "AC6",
+      "web": {
+        "display_name": "Web",
+        "text": "A local test run (unit or build check) passes against the skeleton.",
+        "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+        "paths": [
+          "apps/web/src/content/schema.test.ts",
+          "apps/web/src/content/",
+          ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+        ],
+        "raw_artifact": "exit 0\n\n RUN  v5.1.2 /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web\n\n\n Test Files  1 passed (1)\n      Tests  6 passed (6)\n   Start at  17:02:39\n   Duration  137ms (import 62%, tests 24%, transform 10%, worker 4%)\n\n\n\n\n[7/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:139:1 \u203a AC13: markup in content renders as escaped text\n../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:139:1 \u203a AC13: markup in content renders as escaped text",
+        "verdict": "pass",
+        "verdict_reason": "vitest schema.test.ts exit 0, 6 passed (6)",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064",
+        "media": [
+          {
+            "kind": "trace",
+            "path": "media/web/AC6/trace.zip",
+            "bytes": 3998,
+            "sha256": "942f09b0f5dfdb0b3a3319728859d4b926557b9e4bc3af17582c3724e7b9b419",
+            "status": "ok",
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "har",
+            "path": "media/web/AC6/http.har",
+            "bytes": 153,
+            "sha256": "7ea49b8c229472e1ca53410e3533b731a11f7afdb321e6894ba420d3eeb2073d",
+            "status": "ok",
+            "requests": 0,
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "video",
+            "status": "unavailable",
+            "reason": "no recording for this AC"
+          }
+        ],
+        "crosscheck": "no-claims"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "text": "A local test run (unit or build check) passes against the skeleton. ([EN-001](https://github.com/jakubigla/personal-site/blob/main/.xpm/catalog/en/EN-001.md) AC6)",
+        "command": "",
+        "paths": [],
+        "raw_artifact": "skipped",
+        "verdict_reason": "claimed by web",
+        "verdict": "skipped",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+      },
+      "text": "A local test run (unit or build check) passes against the skeleton."
+    },
+    {
+      "id": "AC7",
+      "web": {
+        "display_name": "Web",
+        "verdict": "waiting_setup"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "verdict": "waiting_setup"
+      },
+      "text": "EN-001 AC7 foundation"
+    },
+    {
+      "id": "AC8",
+      "web": {
+        "display_name": "Web",
+        "text": "",
+        "command": "n/a",
+        "paths": [],
+        "raw_artifact": "skipped",
+        "verdict": "skipped",
+        "verdict_reason": "claimed by local",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "text": "Foundation (judgment) ...",
+        "command": "xpm evidence record --surface local --evidence-dir .xpm/state/evidence/PS-2 -- bash .xpm/state/evidence/PS-2/exercise-local.sh",
+        "paths": [
+          "apps/web/",
+          "infra/",
+          "docs/adr/",
+          "mise.toml",
+          ".github/workflows/ci.yml"
+        ],
+        "raw_artifact": "--- layout\napps/web/src:\ncontent\ndesign\nhead\nlayouts\npages\nsections\n\ndocs/adr:\n0001-two-components-web-and-infra.md\n0002-astro-static-site-framework.md\n0003-yaml-content-file-with-zod-schema.md\n0004-same-origin-act-1-gate-script.md\n0005-javascript-budget-50kb.md\n0006-low-power-thresholds-and-frame-budget.md\n0007-playwright-renders-cv-pdf-and-og-image.md\n0008-fresh-hosting-terraform.md\n0009-s3-state-backend-native-locking.md\n0010-attended-terraform-applies.md\n0011-never-delete-hashed-assets.md\n0012-github-actions-failure-email.md\n0013-client-name-denylist-secret-fail-closed.md\n0014-automated-check-toolchain.md\n0015-design-system-capability-tag.md\n0016-main-regression-job-ci-web.md\n\ninfra/environments/prod:\nproviders.tf\nversions.tf\n--- gates in mise\n9:[tasks.\"web:install\"]\n14:[tasks.\"web:dev\"]\n19:[tasks.\"web:build\"]\n24:[tasks.\"web:lint\"]\n29:[tasks.\"web:test\"]\n34:[tasks.\"web:e2e-install\"]\n39:[tasks.\"web:e2e\"]\n44:[tasks.\"infra:fmt\"]\n48:[tasks.\"infra:validate\"]\n53:[tasks.\"infra:lint\"]\n63:[tasks.\"repo:lint\"]\n67:[tasks.\"repo:secrets\"]\n71:[tasks.\"repo:denylist\"]\n75:[tasks.\"repo:test\"]\n--- tflint/eslint config\napps/web/eslint.config.js\ninfra/.tflint.hcl\n--- ADR count\n      16\n--- repo knowledge gates: actionlint, zizmor\nmise.toml:7:gitleaks = \"8.30.1\"\nmise.toml:69:run = \"gitleaks git --redact --no-banner .\"",
+        "verdict": "pass",
+        "verdict_reason": "Components have layout (apps/web/src, infra/environments/prod), 16 ADRs, tier-sized CI (one workflow, pinned mise tools); actionlint/zizmor are production-tier only and not required here",
+        "no_visual_reason": "tooling/config claim, no rendered state",
+        "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+        "media": [
+          {
+            "kind": "cast",
+            "path": "media/local/AC8/terminal.cast",
+            "bytes": 2125,
+            "sha256": "9245222b7cc15271352875c12b9b6a16c72f51697f8b4dab6bba7d89cfeafdf2",
+            "status": "ok",
+            "duration_s": 0.0,
+            "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+          }
+        ],
+        "crosscheck": "no-claims"
+      },
+      "text": "Foundation (judgment) ..."
+    },
+    {
+      "id": "AC9",
+      "web": {
+        "display_name": "Web",
+        "text": "",
+        "command": "n/a",
+        "paths": [],
+        "raw_artifact": "skipped",
+        "verdict": "skipped",
+        "verdict_reason": "claimed by local",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "text": "Local run: one documented command starts the whole stack on a clean clone (EN-001 AC9)",
+        "command": "xpm evidence record --surface local -- bash exercise-local.sh",
+        "paths": [
+          "README.md",
+          "mise.toml",
+          "apps/web/"
+        ],
+        "raw_artifact": "$ git clone -q /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2 /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone\nexit=0\n$ /usr/bin/env -C /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone git log -1 --format=%H\ne98cee7b2d11fa93c2e679200f326d892b9eac09\nexit=0\n$ test ! -e /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone/apps/web/node_modules\nexit=0\n--- loopback URLs in README Run locally body\nhttp://localhost:4321\n(nothing exported)\n$ bound 300 mise -C /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone trust\nmise WARN  No untrusted config files found.\nexit=0\n$ bound 600 mise -C /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone install\nmise all tools are installed\nexit=0\n$ bound 600 mise -C /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone run web:install\n[web:install] $ npm ci --ignore-scripts\n\nadded 303 packages, and audited 304 packages in 2s\n\n105 packages are looking for funding\n  run `npm fund` for details\n\nfound 0 vulnerabilities\nexit=0\n--- web:dev\nHTTP/1.1 200 http://localhost:4321\n<h1 data-astro-cid-yig24ztu>\n--- stopped:\nport closed\n{\"message\":\"watching for file changes...\",\"label\":null,\"level\":\"info\"}\n{\"message\":\"[200] / 15ms\",\"label\":null,\"level\":\"info\"}\n{\"message\":\"[200] / 2ms\",\"label\":null,\"level\":\"info\"}\n[web:dev] ERROR sh exited with non-zero status: no exit status\n[web:dev] ERROR task failed\n$ bound 600 mise -C /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone run web:test\n[web:test] $ npm test\n\n> web@0.0.0 test\n> vitest run\n\n\n RUN  v5.1.2 /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone/apps/web\n\n\n Test Files  3 passed (3)\n      Tests  23 passed (23)\n   Start at  17:28:32\n   Duration  7.04s (tests 98%, transform 1%, import 1%)\n\nexit=0\n",
+        "no_visual_reason": "tooling/handler-contract claim, no rendered state",
+        "verdict_reason": "clean clone at HEAD, nothing exported, web:install exit 0, web:dev served HTTP/1.1 200 on http://localhost:4321, port closed after stop, web:test 23 passed exit 0",
+        "verdict": "pass",
+        "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+        "media": [
+          {
+            "kind": "cast",
+            "path": "media/local/AC9/terminal.cast",
+            "bytes": 3865,
+            "sha256": "030d6cb4f27be1def1ec2be498ee6491dd04702871fb4ccc0c9d5e700edd4012",
+            "status": "ok",
+            "duration_s": 16.9,
+            "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+          }
+        ],
+        "crosscheck": "no-wire"
+      },
+      "text": "Local run: one documented command starts the whole stack on a clean clone (EN-001 AC9)"
+    },
+    {
+      "id": "AC10",
+      "web": {
+        "display_name": "Web",
+        "text": "",
+        "command": "n/a",
+        "paths": [],
+        "raw_artifact": "skipped",
+        "verdict": "skipped",
+        "verdict_reason": "claimed by local",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "text": "Main regression ...",
+        "command": "xpm evidence record --surface local --evidence-dir .xpm/state/evidence/PS-2 -- bash .xpm/state/evidence/PS-2/exercise-local.sh",
+        "paths": [
+          ".github/workflows/ci.yml",
+          "apps/web/e2e/",
+          "apps/web/package.json",
+          "mise.toml",
+          "docs/adr/0016-main-regression-job-ci-web.md"
+        ],
+        "raw_artifact": "--- web job steps\n2:    name: web\n20:      - run: mise run web:install\n21:      - run: mise run web:lint\n22:      - run: mise run web:test\n23:      - run: mise run web:build\n24:      - run: mise run web:e2e-install\n25:      - run: mise run web:e2e\n--- triggers\n  pull_request:\n    # edited: the denylist reads the PR title, which a squash merge writes into main's history, so\n    # a title changed without a push must re-run every job. Skipping jobs on a body-only edit would\n    # report ci-ok as skipped, which GitHub counts as passing over an earlier red run.\n    types: [opened, synchronize, reopened, edited]\n  push:\n    branches: [main, 'xpm/land/**']\n\n--- e2e task and spec files\n39:[tasks.\"web:e2e\"]\n40-description = \"Browser specs against the production build\"\n41-dir = \"apps/web\"\n42-run = \"npm run e2e\"\npage.spec.ts\n12:    \"test\": \"vitest run\",\n13:    \"e2e\": \"playwright test\",\n--- deploy needs\n113:    needs: [repo, web, infra]",
+        "verdict": "pass",
+        "verdict_reason": "web job runs web:e2e (playwright test) after web:build on pull_request and push to main; deploy needs [repo, web, infra]",
+        "no_visual_reason": "tooling/config claim, no rendered state",
+        "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+        "media": [
+          {
+            "kind": "cast",
+            "path": "media/local/AC10/terminal.cast",
+            "bytes": 1548,
+            "sha256": "3e7eddd6a2ac5920ff2b9e914f54243b59fb673f4ca178706f8ab23d2aceae7d",
+            "status": "ok",
+            "duration_s": 0.0,
+            "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+          }
+        ],
+        "crosscheck": "no-claims"
+      },
+      "text": "Main regression ..."
+    },
+    {
+      "id": "AC11",
+      "web": {
+        "display_name": "Web",
+        "text": "",
+        "command": "n/a",
+        "paths": [],
+        "raw_artifact": "skipped",
+        "verdict": "skipped",
+        "verdict_reason": "claimed by local",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "text": "Skeleton follows docs/architecture.md: apps/web with content/en.yaml and Zod schema, infra root passes fmt/validate/tflint without credentials; deploy job skipped while the role variable is unset",
+        "command": "xpm evidence record --surface local -- bash exercise-local.sh",
+        "paths": [
+          "apps/web/",
+          "infra/",
+          "mise.toml",
+          ".github/workflows/ci.yml",
+          "docs/architecture.md"
+        ],
+        "raw_artifact": "$ ls /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/content/en.yaml /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/content\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/content/en.yaml\n\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/content:\nload.ts\nschema.test.ts\nschema.ts\nexit=0\n$ bound 120 mise -C /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2 run infra:fmt\n[infra:fmt] $ terraform fmt -recursive -check -diff infra\nexit=0\n$ bound 300 mise -C /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2 run infra:validate\n[infra:validate] $ terraform init -backend=false -input=false\nInitializing provider plugins...\n- Reusing version 6.74.0 of hashicorp/aws from the dependency lock file\n- Using previously-installed hashicorp/aws v6.74.0\n\nTerraform has been successfully initialized!\n\nYou may now begin working with Terraform. Try running \"terraform plan\" to see\nany changes that are required for your infrastructure. All Terraform commands\nshould now work.\n\nIf you ever set or change modules or backend configuration for Terraform,\nrerun this command to reinitialize your working directory. If you forget, other\ncommands will detect it and remind you to do so if necessary.\n[infra:validate] $ terraform validate\nSuccess! The configuration is valid.\n\nexit=0\n$ bound 300 mise -C /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2 run infra:lint\n[infra:lint] $ tflint --init --config=\"$PWD/.tflint.hcl\"\nAll plugins are already installed\n[infra:lint] $ tflint --chdir=environments/prod --config=\"$PWD/.tflint.hcl\"\nexit=0\n--- deploy gate\n$ grep -nE ^  deploy:|    if:  /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/.github/workflows/ci.yml\n73:        if: runner.environment == 'github-hosted'\n108:  deploy:\n112:    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DEPLOY_ROLE_ARN != ''\n129:    if: always()\nexit=0\n$ grep -n DEPLOY_ROLE_ARN /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/.github/workflows/ci.yml\n110:    # Inert until the attended first apply sets DEPLOY_ROLE_ARN (ADR-0010). Every check must pass\n112:    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DEPLOY_ROLE_ARN != ''\nexit=0\n--- no cloud creds in env\n(no AWS_ vars)\n",
+        "no_visual_reason": "tooling/handler-contract claim, no rendered state",
+        "verdict_reason": "en.yaml and schema.ts exist; infra:fmt, validate, lint all exit=0 with no AWS_ vars; deploy if requires vars.DEPLOY_ROLE_ARN != ''",
+        "verdict": "pass",
+        "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+        "media": [
+          {
+            "kind": "cast",
+            "path": "media/local/AC11/terminal.cast",
+            "bytes": 3584,
+            "sha256": "62020f6049287196bb793702e89170f83509f2bc15d09d2c99277671fbb564ee",
+            "status": "ok",
+            "duration_s": 3.2,
+            "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+          }
+        ],
+        "crosscheck": "no-claims"
+      },
+      "text": "Skeleton follows docs/architecture.md: apps/web with content/en.yaml and Zod schema, infra root passes fmt/validate/tflint without credentials; deploy job skipped while the role variable is unset"
+    },
+    {
+      "id": "AC12",
+      "web": {
+        "display_name": "Web",
+        "text": "",
+        "command": "n/a",
+        "paths": [],
+        "raw_artifact": "skipped",
+        "verdict": "skipped",
+        "verdict_reason": "claimed by local",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "text": "Negative: a denied term fails the CI denylist check without printing it, and the check fails closed when the secret is missing (ADR-0013)",
+        "command": "xpm evidence record --surface local -- bash exercise-local.sh",
+        "paths": [
+          "scripts/denylist-check.sh",
+          "scripts/denylist-check.test.sh",
+          ".github/workflows/ci.yml",
+          "docs/adr/0013-client-name-denylist-secret-fail-closed.md"
+        ],
+        "raw_artifact": "$ bound 120 bash /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/scripts/denylist-check.test.sh\nok   a denied term fails the check\nok   the term is never printed\nok   the offending file is named\nok   matching ignores case\nok   a denied term in a file name fails\nok   a file name holding a term is not echoed\nok   a clean tree passes\nok   a missing denylist fails closed\nok   an empty denylist fails closed\nok   a blank-only denylist fails closed\nok   the local file feeds the check\nok   the hook may skip when no list exists\nok   only the named files are scanned\nok   a named file holding a term fails\nok   a non-ASCII file name is still scanned\nok   a denied term in a non-ASCII file name fails\nok   a non-ASCII file name holding a term is not echoed\nok   a denied term in a commit message fails\nok   a message's term is never printed\nok   the offending commit is named\nok   commits outside the range are not read\nok   messages are read only when a range is given\nok   an unreadable range fails closed\nok   a denied term in the title fails\nok   the title's term is never printed\nok   a clean title passes\nall passed\nexit=0\n--- content file with placeholder term\ndenylist-check: denied term in en.yaml\ndenylist-check: failed; terms are never printed\nexit=1\nterm not printed\n--- denylist secret missing\ndenylist-check: no denylist found (set DENYLIST or create .denylist.local); failing closed\nexit=2\n--- CI wiring\n$ grep -nE repo:denylist|DENYLIST /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/.github/workflows/ci.yml\n54:        run: mise run repo:denylist\n56:          DENYLIST: ${{ secrets.DENYLIST }}\n57:          DENYLIST_COMMITS: ${{ github.event_name == 'pull_request' && format('{0}..{1}', github.event.pull_request.base.sha, github.event.pull_request.head.sha) || '' }}\n58:          DENYLIST_TITLE: ${{ github.event.pull_request.title }}\nexit=0\n",
+        "no_visual_reason": "tooling/handler-contract claim, no rendered state",
+        "verdict_reason": "script tests all passed incl. fail-closed; placeholder term in en.yaml exit=1 with 'term not printed'; missing DENYLIST exit=2 failing closed",
+        "verdict": "pass",
+        "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+        "media": [
+          {
+            "kind": "cast",
+            "path": "media/local/AC12/terminal.cast",
+            "bytes": 2874,
+            "sha256": "7be5c788034b37a53c80329a68c4baf9d5c15ead0373ed91d24886b1d78dfb79",
+            "status": "ok",
+            "duration_s": 1.4,
+            "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+          }
+        ],
+        "crosscheck": "no-claims"
+      },
+      "text": "Negative: a denied term fails the CI denylist check without printing it, and the check fails closed when the secret is missing (ADR-0013)"
+    },
+    {
+      "id": "AC13",
+      "web": {
+        "display_name": "Web",
+        "text": "Negative: content-file text that contains HTML markup or a script tag renders as escaped text in the built page, never as markup or script.",
+        "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+        "paths": [
+          "apps/web/src/sections/",
+          "apps/web/src/pages/index.astro",
+          ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+        ],
+        "raw_artifact": "exit 0\n\nrendered h1 text: <script>alert(1)</script><img src=x onerror=alert(2)><b>bold</b>\n\n  7 passed (4.3m)",
+        "verdict": "pass",
+        "verdict_reason": "built HTML has escaped &lt;script&gt;, no <script/<img/<b>; h1 text shows the literal markup",
+        "screenshot_path": ".xpm/state/evidence/PS-2/design-shots/home@desktop.png",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064",
+        "media": [
+          {
+            "kind": "video",
+            "path": "media/web/AC13/video.webm",
+            "bytes": 115863,
+            "sha256": "2f381886e4f8e62e80a0b016bf33d325881af68f7a23a4e25d3a75be603dc516",
+            "status": "ok",
+            "duration_s": 1.1,
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "trace",
+            "path": "media/web/AC13/trace.zip",
+            "bytes": 260061,
+            "sha256": "78d3239460ce77aa93d987a134b25820fbbcb82834191920da1e4459203ad413",
+            "status": "ok",
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          },
+          {
+            "kind": "har",
+            "path": "media/web/AC13/http.har",
+            "bytes": 11817,
+            "sha256": "ddab71a6ad19892594e70bfc774848f812f99ad5e116bdf5c941d02c0c216538",
+            "status": "ok",
+            "requests": 5,
+            "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+          }
+        ],
+        "crosscheck": "no-claims"
+      },
+      "local": {
+        "display_name": "Local tooling",
+        "text": "Negative: content-file text that contains HTML markup or a script tag renders as escaped text in the built page, never as markup or script.",
+        "command": "",
+        "paths": [],
+        "raw_artifact": "skipped",
+        "verdict_reason": "claimed by web",
+        "verdict": "skipped",
+        "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+      },
+      "text": "Negative: content-file text that contains HTML markup or a script tag renders as escaped text in the built page, never as markup or script."
+    }
+  ],
+  "summary": {
+    "web": {
+      "passed": 7,
+      "failed": 0,
+      "pending": 0,
+      "skipped": 5,
+      "total": 12
+    },
+    "local": {
+      "passed": 5,
+      "failed": 0,
+      "pending": 0,
+      "skipped": 7,
+      "total": 12
+    }
+  },
+  "spec_path": ".xpm/evidence/PS-2/acs.md",
+  "evidence_id": "PS-2"
+}

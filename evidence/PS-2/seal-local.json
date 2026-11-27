@@ -1,0 +1,75 @@
+{
+ "version": 1,
+ "surface": "local",
+ "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+ "sealed_at": "2026-11-27T16:32:55Z",
+ "files": [
+  {
+   "path": "media/local/AC9/terminal.cast",
+   "kind": "cast",
+   "ac": "AC9",
+   "sha256": "030d6cb4f27be1def1ec2be498ee6491dd04702871fb4ccc0c9d5e700edd4012",
+   "bytes": 3865,
+   "recorder": "asciinema==2.4.0",
+   "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+   "sealed_at": "2026-11-27T16:28:45Z",
+   "duration_s": 16.9
+  },
+  {
+   "path": "media/local/AC11/terminal.cast",
+   "kind": "cast",
+   "ac": "AC11",
+   "sha256": "62020f6049287196bb793702e89170f83509f2bc15d09d2c99277671fbb564ee",
+   "bytes": 3584,
+   "recorder": "asciinema==2.4.0",
+   "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+   "sealed_at": "2026-11-27T16:28:45Z",
+   "duration_s": 3.2
+  },
+  {
+   "path": "media/local/AC12/terminal.cast",
+   "kind": "cast",
+   "ac": "AC12",
+   "sha256": "7be5c788034b37a53c80329a68c4baf9d5c15ead0373ed91d24886b1d78dfb79",
+   "bytes": 2874,
+   "recorder": "asciinema==2.4.0",
+   "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+   "sealed_at": "2026-11-27T16:28:45Z",
+   "duration_s": 1.4
+  },
+  {
+   "path": "media/local/AC8/terminal.cast",
+   "kind": "cast",
+   "ac": "AC8",
+   "sha256": "9245222b7cc15271352875c12b9b6a16c72f51697f8b4dab6bba7d89cfeafdf2",
+   "bytes": 2125,
+   "recorder": "asciinema==2.4.0",
+   "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+   "sealed_at": "2026-11-27T16:30:39Z",
+   "duration_s": 0.0
+  },
+  {
+   "path": "media/local/AC10/terminal.cast",
+   "kind": "cast",
+   "ac": "AC10",
+   "sha256": "3e7eddd6a2ac5920ff2b9e914f54243b59fb673f4ca178706f8ab23d2aceae7d",
+   "bytes": 1548,
+   "recorder": "asciinema==2.4.0",
+   "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+   "sealed_at": "2026-11-27T16:30:39Z",
+   "duration_s": 0.0
+  },
+  {
+   "path": "media/local/AC7/terminal.cast",
+   "kind": "cast",
+   "ac": "AC7",
+   "sha256": "9570aba10cde74096358f0b80be1c5446df01b9560c0b637164e3f54e367ca72",
+   "bytes": 5898,
+   "recorder": "asciinema==2.4.0",
+   "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+   "sealed_at": "2026-11-27T16:32:55Z",
+   "duration_s": 7.9
+  }
+ ],
+ "not_recorded": []
+}

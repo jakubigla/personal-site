@@ -1,0 +1,169 @@
+{
+ "exerciser": "web",
+ "display_name": "Web",
+ "acs": [
+  {
+   "id": "AC1",
+   "text": "A single build command produces a directory of plain static files (HTML, CSS, assets) with no server runtime needed to serve them.",
+   "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+   "paths": [
+    "apps/web/src/",
+    "apps/web/astro.config.mjs",
+    "apps/web/package.json",
+    ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+   ],
+   "raw_artifact": "build exit 0\n\n_astro\nindex.html\n_astro/fraunces-latin-ext-wght-normal.Ca2vKHc0.woff2\n_astro/fraunces-latin-wght-normal.ukD16Tqj.woff2\n_astro/fraunces-vietnamese-wght-normal.CnvboYUG.woff2\n_astro/index.CaxNfWaj.css\n_astro/manrope-cyrillic-wght-normal.Dvxsihut.woff2\n_astro/manrope-greek-wght-normal.DL7QRZyv.woff2\n_astro/manrope-latin-ext-wght-normal.Ch3YOpNY.woff2\n_astro/manrope-latin-wght-normal.DHIcAJRg.woff2\n_astro/manrope-vietnamese-wght-normal.usUDDRr7.woff2\n\nserved by a bare node static file server, no Astro runtime\n\n[2/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:64:1 \u203a AC2: invalid content file fails the build readably\n../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:64:1 \u203a AC2: invalid content file fails the build readably",
+   "verdict": "pass",
+   "verdict_reason": "build exit 0; output lists index.html, CSS and fonts only, served by a bare node file server"
+  },
+  {
+   "id": "AC2",
+   "text": "The content file is validated against its schema during the build, and an invalid file (missing required field, unknown section flag) fails the build with a readable error.",
+   "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+   "paths": [
+    "apps/web/src/content/",
+    ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+   ],
+   "raw_artifact": "missing field exit 1\n 16:58:22 [ERROR] ContentError: Content file is invalid:\n  - hero.headline: Invalid input: expected string, received undefined\n16:58:22 [ERROR] [build] Caught error rendering /: ContentError: Content file is invalid:\n  - hero.headline: Invalid input: expected string, received undefined\nContent file is invalid:\n  - hero.headline: Invalid input: expected string, received undefined\n\nunknown flag exit 1\n 16:58:23 [ERROR] ContentError: Content file is invalid:\n  - sections: Unrecognized key: \"bogus_section\": bogus_section\n16:58:23 [ERROR] [build] Caught error rendering /: ContentError: Content file is invalid:\n  - sections: Unrecognized key: \"bogus_section\": bogus_section\nContent file is invalid:\n  - sections: Unrecognized key: \"bogus_section\": bogus_section\n\nvalid file exit 0\n\n[3/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:78:1 \u203a AC3: headline in content file changes the hero\n../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:78:1 \u203a AC3: headline in content file changes the hero",
+   "verdict": "pass",
+   "verdict_reason": "missing hero.headline and unknown sections key each exit 1 with a readable 'Content file is invalid' message; valid file exits 0"
+  },
+  {
+   "id": "AC3",
+   "text": "Changing the headline text in the content file and rebuilding changes the rendered hero without any edit to layout code.",
+   "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+   "paths": [
+    "apps/web/src/sections/Hero.astro",
+    "apps/web/src/content/",
+    "apps/web/content/en.yaml",
+    ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+   ],
+   "raw_artifact": "exit 0\n\nh1: A brand new headline\n\nbase build lacks new headline; only content/en.yaml text changed\n\nshoot desktop status null error Error: spawnSync xpm ETIMEDOUT\n\nshoot mobile status null error Error: spawnSync xpm ETIMEDOUT\n\n[4/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:94:1 \u203a AC4: section flag off removes section; how_i_deliver off by default\n../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:94:1 \u203a AC4: section flag off removes section; how_i_deliver off by default",
+   "verdict": "pass",
+   "verdict_reason": "rebuild with changed headline shows 'h1: A brand new headline'; base build lacks it",
+   "screenshot_path": ".xpm/state/evidence/PS-2/design-shots/home@desktop.png"
+  },
+  {
+   "id": "AC4",
+   "text": "Turning a section flag off in the content file removes that section from the built HTML; the \"How I deliver\" flag exists and is off by default.",
+   "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+   "paths": [
+    "apps/web/src/pages/index.astro",
+    "apps/web/src/sections/",
+    "apps/web/content/en.yaml",
+    ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+   ],
+   "raw_artifact": "committed flag line: how_i_deliver: false # reserved slot, switched on by a later change\n\nflag on -> section present; flag off -> absent\n\nhero off -> no hero; footer off -> no footer\n\n[5/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:114:1 \u203a AC5: page readable top to bottom with JavaScript disabled\n../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:114:1 \u203a AC5: page readable top to bottom with JavaScript disabled",
+   "verdict": "pass",
+   "verdict_reason": "flag is false in committed file, section absent; on -> present; hero and footer off -> absent",
+   "screenshot_path": ".xpm/state/evidence/PS-2/design-shots/home@desktop.png"
+  },
+  {
+   "id": "AC5",
+   "text": "The built page is readable top to bottom with JavaScript disabled.",
+   "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+   "paths": [
+    "apps/web/src/",
+    "apps/web/content/en.yaml",
+    ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+   ],
+   "raw_artifact": "javaScriptEnabled option: false (config)\n\nJakub Igla\nPrincipal Data Platform Architect\n\nPrincipal Data Platform Architect. Databricks Partner Champion.\n\nI design data platforms on Databricks and lead the teams that run them.\n\nGet in touch\nLinkedIn\n\nJakub Igla JacOps. This site sets no cookies and does no tracking.\n\nEmail\nLinkedIn\nGitHub\n\n[6/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:129:1 \u203a AC6: local test run passes against the skeleton\n../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:129:1 \u203a AC6: local test run passes against the skeleton",
+   "verdict": "pass",
+   "verdict_reason": "JS-disabled page shows h1, hero, footer links and privacy note in order; no script tags in HTML",
+   "screenshot_path": ".xpm/state/evidence/PS-2/design-shots/home@desktop.png"
+  },
+  {
+   "id": "AC6",
+   "text": "A local test run (unit or build check) passes against the skeleton.",
+   "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+   "paths": [
+    "apps/web/src/content/schema.test.ts",
+    "apps/web/src/content/",
+    ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+   ],
+   "raw_artifact": "exit 0\n\n RUN  v5.1.2 /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web\n\n\n Test Files  1 passed (1)\n      Tests  6 passed (6)\n   Start at  17:02:39\n   Duration  137ms (import 62%, tests 24%, transform 10%, worker 4%)\n\n\n\n\n[7/7] ../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:139:1 \u203a AC13: markup in content renders as escaped text\n../../.xpm/state/evidence/PS-2/exercise-web.spec.ts:139:1 \u203a AC13: markup in content renders as escaped text",
+   "verdict": "pass",
+   "verdict_reason": "vitest schema.test.ts exit 0, 6 passed (6)"
+  },
+  {
+   "id": "AC13",
+   "text": "Negative: content-file text that contains HTML markup or a script tag renders as escaped text in the built page, never as markup or script.",
+   "command": "XPM_EVIDENCE_DIR=<evidence_dir> PORT=53763 xpm evidence record --surface web -- playwright test --config exercise-web.config.ts",
+   "paths": [
+    "apps/web/src/sections/",
+    "apps/web/src/pages/index.astro",
+    ".xpm/state/evidence/PS-2/exercise-web.spec.ts"
+   ],
+   "raw_artifact": "exit 0\n\nrendered h1 text: <script>alert(1)</script><img src=x onerror=alert(2)><b>bold</b>\n\n  7 passed (4.3m)",
+   "verdict": "pass",
+   "verdict_reason": "built HTML has escaped &lt;script&gt;, no <script/<img/<b>; h1 text shows the literal markup",
+   "screenshot_path": ".xpm/state/evidence/PS-2/design-shots/home@desktop.png"
+  },
+  {
+   "id": "AC7",
+   "text": "",
+   "command": "n/a",
+   "paths": [],
+   "raw_artifact": "skipped",
+   "verdict": "skipped",
+   "verdict_reason": "claimed by local"
+  },
+  {
+   "id": "AC8",
+   "text": "",
+   "command": "n/a",
+   "paths": [],
+   "raw_artifact": "skipped",
+   "verdict": "skipped",
+   "verdict_reason": "claimed by local"
+  },
+  {
+   "id": "AC9",
+   "text": "",
+   "command": "n/a",
+   "paths": [],
+   "raw_artifact": "skipped",
+   "verdict": "skipped",
+   "verdict_reason": "claimed by local"
+  },
+  {
+   "id": "AC10",
+   "text": "",
+   "command": "n/a",
+   "paths": [],
+   "raw_artifact": "skipped",
+   "verdict": "skipped",
+   "verdict_reason": "claimed by local"
+  },
+  {
+   "id": "AC11",
+   "text": "",
+   "command": "n/a",
+   "paths": [],
+   "raw_artifact": "skipped",
+   "verdict": "skipped",
+   "verdict_reason": "claimed by local"
+  },
+  {
+   "id": "AC12",
+   "text": "",
+   "command": "n/a",
+   "paths": [],
+   "raw_artifact": "skipped",
+   "verdict": "skipped",
+   "verdict_reason": "claimed by local"
+  }
+ ],
+ "summary": {
+  "passed": 7,
+  "failed": 0,
+  "pending": 0,
+  "skipped": 6,
+  "total": 13
+ },
+ "branch": "feature/PS-2-the-site-builds-from-one-content-file",
+ "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064",
+ "deployed_sha": null,
+ "deploy_run_id": null,
+ "run_state": "complete"
+}

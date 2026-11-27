@@ -1,0 +1,62 @@
+{
+ "version": 1,
+ "surface": "web",
+ "acs": {
+  "AC1": {
+   "result": "no-claims",
+   "claims": [],
+   "contradiction": null,
+   "warnings": [],
+   "source": "out",
+   "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+  },
+  "AC13": {
+   "result": "no-claims",
+   "claims": [],
+   "contradiction": null,
+   "warnings": [],
+   "source": "out",
+   "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+  },
+  "AC2": {
+   "result": "no-claims",
+   "claims": [],
+   "contradiction": null,
+   "warnings": [],
+   "source": "out",
+   "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+  },
+  "AC3": {
+   "result": "no-claims",
+   "claims": [],
+   "contradiction": null,
+   "warnings": [],
+   "source": "out",
+   "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+  },
+  "AC4": {
+   "result": "no-claims",
+   "claims": [],
+   "contradiction": null,
+   "warnings": [],
+   "source": "out",
+   "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+  },
+  "AC5": {
+   "result": "no-claims",
+   "claims": [],
+   "contradiction": null,
+   "warnings": [],
+   "source": "out",
+   "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+  },
+  "AC6": {
+   "result": "no-claims",
+   "claims": [],
+   "contradiction": null,
+   "warnings": [],
+   "source": "out",
+   "commit_sha": "61624e937caf6ec3b32fb7b277d3d66a2f417064"
+  }
+ }
+}

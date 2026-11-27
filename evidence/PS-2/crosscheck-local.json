@@ -1,0 +1,78 @@
+{
+ "version": 1,
+ "surface": "local",
+ "acs": {
+  "AC10": {
+   "result": "no-claims",
+   "claims": [],
+   "contradiction": null,
+   "warnings": [],
+   "source": "cast",
+   "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+  },
+  "AC11": {
+   "result": "no-claims",
+   "claims": [],
+   "contradiction": null,
+   "warnings": [],
+   "source": "cast",
+   "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+  },
+  "AC12": {
+   "result": "no-claims",
+   "claims": [],
+   "contradiction": null,
+   "warnings": [],
+   "source": "cast",
+   "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+  },
+  "AC7": {
+   "result": "no-wire",
+   "claims": [
+    {
+     "source": "status",
+     "line": 17,
+     "method": null,
+     "path": null,
+     "status": 200,
+     "matched": false,
+     "log_lines": []
+    }
+   ],
+   "contradiction": null,
+   "warnings": [
+    "no usable HAR for this AC (not recorded)"
+   ],
+   "source": "cast",
+   "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+  },
+  "AC8": {
+   "result": "no-claims",
+   "claims": [],
+   "contradiction": null,
+   "warnings": [],
+   "source": "cast",
+   "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+  },
+  "AC9": {
+   "result": "no-wire",
+   "claims": [
+    {
+     "source": "status",
+     "line": 29,
+     "method": null,
+     "path": null,
+     "status": 200,
+     "matched": false,
+     "log_lines": []
+    }
+   ],
+   "contradiction": null,
+   "warnings": [
+    "no usable HAR for this AC (not recorded)"
+   ],
+   "source": "cast",
+   "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+  }
+ }
+}

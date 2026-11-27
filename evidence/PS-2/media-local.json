@@ -1,0 +1,86 @@
+{
+ "surface": "local",
+ "planned": [
+  "cast"
+ ],
+ "skipped": [],
+ "acs": {
+  "AC9": [
+   {
+    "kind": "cast",
+    "path": "media/local/AC9/terminal.cast",
+    "bytes": 3865,
+    "sha256": "030d6cb4f27be1def1ec2be498ee6491dd04702871fb4ccc0c9d5e700edd4012",
+    "status": "ok",
+    "duration_s": 16.9,
+    "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+   }
+  ],
+  "AC11": [
+   {
+    "kind": "cast",
+    "path": "media/local/AC11/terminal.cast",
+    "bytes": 3584,
+    "sha256": "62020f6049287196bb793702e89170f83509f2bc15d09d2c99277671fbb564ee",
+    "status": "ok",
+    "duration_s": 3.2,
+    "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+   }
+  ],
+  "AC12": [
+   {
+    "kind": "cast",
+    "path": "media/local/AC12/terminal.cast",
+    "bytes": 2874,
+    "sha256": "7be5c788034b37a53c80329a68c4baf9d5c15ead0373ed91d24886b1d78dfb79",
+    "status": "ok",
+    "duration_s": 1.4,
+    "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+   }
+  ],
+  "AC8": [
+   {
+    "kind": "cast",
+    "path": "media/local/AC8/terminal.cast",
+    "bytes": 2125,
+    "sha256": "9245222b7cc15271352875c12b9b6a16c72f51697f8b4dab6bba7d89cfeafdf2",
+    "status": "ok",
+    "duration_s": 0.0,
+    "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+   }
+  ],
+  "AC10": [
+   {
+    "kind": "cast",
+    "path": "media/local/AC10/terminal.cast",
+    "bytes": 1548,
+    "sha256": "3e7eddd6a2ac5920ff2b9e914f54243b59fb673f4ca178706f8ab23d2aceae7d",
+    "status": "ok",
+    "duration_s": 0.0,
+    "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+   }
+  ],
+  "AC7": [
+   {
+    "kind": "cast",
+    "path": "media/local/AC7/terminal.cast",
+    "bytes": 5898,
+    "sha256": "9570aba10cde74096358f0b80be1c5446df01b9560c0b637164e3f54e367ca72",
+    "status": "ok",
+    "duration_s": 7.9,
+    "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+   }
+  ]
+ },
+ "unassigned": [],
+ "unavailable": {},
+ "warnings": [
+  "mp4: agg not on PATH - casts only (xpm doctor names the install)"
+ ],
+ "run_acs": [
+  "AC7"
+ ],
+ "recorders": {
+  "cast": "asciinema==2.4.0"
+ }
+}
