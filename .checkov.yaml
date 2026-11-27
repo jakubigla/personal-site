@@ -34,3 +34,10 @@ skip-check:
   - CKV_AWS_18
   # The repository is public on purpose: it is the source of a public site.
   - CKV_GIT_1
+  # The only classic branch protection is foundation/github's adopted one: it exists only when the
+  # live repository already had it and reproduces it as it is (the first plan changes nothing).
+  # Two approvals cannot be met by a solo maintainer, and signed commits would block the existing
+  # history's workflow; tightening either is its own reviewed change, and the default ruleset is
+  # where xpm sets branch rules.
+  - CKV_GIT_5
+  - CKV_GIT_6

@@ -159,10 +159,8 @@ resource "github_repository_ruleset" "default" {
 
 # Kept as it was live on adoption; removing it is its own reviewed tightening, never a side effect.
 resource "github_branch_protection" "legacy" {
-  # It reproduces the live protection, so its review count and signing rule are whatever was live;
-  # a solo maintainer cannot meet two approvals, and the ruleset is where xpm sets the rules.
-  # checkov:skip=CKV_GIT_5:adopted as live; tightened only in its own reviewed change
-  # checkov:skip=CKV_GIT_6:adopted as live; tightened only in its own reviewed change
+  # It reproduces the live protection, so its review count and signing rule are whatever was live
+  # (.checkov.yaml says why CKV_GIT_5 and CKV_GIT_6 are skipped); the ruleset is where xpm sets rules.
   count = local.legacy == null ? 0 : 1
 
   repository_id                   = github_repository.main.node_id
