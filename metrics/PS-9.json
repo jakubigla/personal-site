@@ -1,0 +1,486 @@
+{
+  "schema_version": 4,
+  "usage_dedupe": "message-id",
+  "id": "PS-9",
+  "ticket": "PS-9",
+  "branch": "feature/PS-9-github-repository-settings-are-managed",
+  "generated_at": "2026-11-27T21:38:21Z",
+  "coverage": "parent-and-subagents",
+  "subagents": {
+    "xpm:xpm-exerciser": {
+      "count": 21,
+      "output_tokens": 9505,
+      "input_tokens": 42,
+      "cache_read": 259959,
+      "cache_create": 63494,
+      "cache_write_5m": 63494,
+      "cache_write_1h": 0,
+      "models": [
+        "claude-sonnet-5-5"
+      ]
+    },
+    "xpm:xpm-reviewer": {
+      "count": 87,
+      "output_tokens": 67673,
+      "input_tokens": 174,
+      "cache_read": 3679586,
+      "cache_create": 191479,
+      "cache_write_5m": 191479,
+      "cache_write_1h": 0,
+      "models": [
+        "claude-opus-5-5"
+      ]
+    },
+    "xpm:xpm-security-reviewer": {
+      "count": 16,
+      "output_tokens": 13303,
+      "input_tokens": 32,
+      "cache_read": 337297,
+      "cache_create": 56558,
+      "cache_write_5m": 56558,
+      "cache_write_1h": 0,
+      "models": [
+        "claude-opus-5-5"
+      ]
+    },
+    "xpm:xpm-step": {
+      "count": 202,
+      "output_tokens": 91233,
+      "input_tokens": 408,
+      "cache_read": 9275708,
+      "cache_create": 575736,
+      "cache_write_5m": 575736,
+      "cache_write_1h": 0,
+      "models": [
+        "claude-opus-5-5",
+        "claude-sonnet-5-5",
+        "opus",
+        "sonnet"
+      ]
+    }
+  },
+  "cost": {
+    "tokens": {
+      "output": 207043,
+      "input": 872,
+      "cache_read": 20139457,
+      "cache_create": 1098024,
+      "cache_write_5m": 887267,
+      "cache_write_1h": 210757
+    },
+    "usd": null,
+    "usd_source": null
+  },
+  "stages_source": "ledger",
+  "stages": [
+    {
+      "stage": "blocked",
+      "at": "2026-11-27T18:01:59.757Z",
+      "output_tokens": 7159,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "executing",
+      "at": "2026-11-27T18:23:21Z",
+      "output_tokens": 5205,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "execution-complete",
+      "at": "2026-11-27T20:42:59Z",
+      "output_tokens": 0,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "acs-exercised",
+      "at": "2026-11-27T20:45:29Z",
+      "output_tokens": 703,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "correctness-review",
+      "at": "2026-11-27T20:46:42Z",
+      "output_tokens": 8756,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "evidence-published",
+      "at": "2026-11-27T21:35:08Z",
+      "output_tokens": 2567,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "quality-gate-review",
+      "at": "2026-11-27T21:37:21Z",
+      "output_tokens": 939,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "after-quality-gate-review",
+      "at": "2026-11-27T21:38:01Z",
+      "output_tokens": 0,
+      "cost_usd": null,
+      "trailing": true
+    }
+  ],
+  "diff": {
+    "files": 18,
+    "insertions": 765,
+    "deletions": 9,
+    "code": {
+      "files": 0,
+      "insertions": 0,
+      "deletions": 0
+    },
+    "docs": {
+      "files": 18,
+      "insertions": 765,
+      "deletions": 9
+    },
+    "measured_from": "merge-base",
+    "unavailable": false,
+    "plan_tasks": null
+  },
+  "impl_model": {
+    "configured": "sonnet",
+    "observed": [
+      "claude-opus-5-5",
+      "claude-sonnet-5-5",
+      "opus",
+      "sonnet"
+    ]
+  },
+  "attribution": {
+    "cwd": "/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-9",
+    "matched_head_entries": 60
+  },
+  "sessions": 2,
+  "wall_clock": {
+    "first": "2026-11-27T18:01:59.757Z",
+    "last": "2026-11-27T21:38:00.493Z"
+  },
+  "per_session": [
+    {
+      "sessionId": "7d4a31d4-63a0-4d2c-b0e4-4db79c21bccc",
+      "entries": 139,
+      "output_tokens": 14945,
+      "first": "2026-11-27T18:02:02.824Z",
+      "last": "2026-11-27T20:57:59.318Z"
+    },
+    {
+      "sessionId": "f1fb8680-3e4b-40d3-836f-a6eb8087728c",
+      "entries": 102,
+      "output_tokens": 10384,
+      "first": "2026-11-27T20:58:52.150Z",
+      "last": "2026-11-27T21:38:00.493Z"
+    }
+  ],
+  "output_tokens": 25329,
+  "models": {
+    "claude-sonnet-5-5": {
+      "calls": 87,
+      "output_tokens": 25329,
+      "input_tokens": 216,
+      "cache_read": 6586907,
+      "cache_create": 210757,
+      "cache_write_5m": 0,
+      "cache_write_1h": 210757
+    }
+  },
+  "skills": {
+    "xpm:xpm-finalize-branch": 1,
+    "xpm:xpm-publish-evidence": 1,
+    "xpm:xpm-start": 2
+  },
+  "dispatches": {
+    "xpm:xpm-step": 13
+  },
+  "dispatches_reported": {
+    "exercise": 1,
+    "gate": 8
+  },
+  "dispatches_reported_source": "evidence-dir",
+  "tools": {
+    "Agent": 13,
+    "Bash": 55,
+    "Read": 7,
+    "Skill": 4
+  },
+  "profile": {
+    "skills": {
+      "xpm:xpm-finalize-branch": {
+        "count": 1
+      },
+      "xpm:xpm-publish-evidence": {
+        "count": 1
+      },
+      "xpm:xpm-start": {
+        "count": 2
+      }
+    },
+    "tools": {
+      "Agent": {
+        "count": 13,
+        "total_seconds": 10,
+        "median_seconds": 1
+      },
+      "Bash": {
+        "count": 54,
+        "total_seconds": 1584,
+        "median_seconds": 2
+      },
+      "Read": {
+        "count": 7,
+        "total_seconds": 27,
+        "median_seconds": 4
+      },
+      "Skill": {
+        "count": 4,
+        "total_seconds": 4,
+        "median_seconds": 1
+      }
+    },
+    "hooks": {
+      "fires": 45,
+      "errors": 0,
+      "by_command": {
+        "\"${CLAUDE_PLUGIN_ROOT}/hooks/autonomous-keepalive.sh\"": {
+          "fires": 15,
+          "total_ms": 1753
+        },
+        "\"${CLAUDE_PLUGIN_ROOT}/hooks/stage-keepalive.sh\"": {
+          "fires": 15,
+          "total_ms": 874
+        },
+        "\"/Users/jakubigla/.config/iterm2/it2\" handle-agent-hook": {
+          "fires": 15,
+          "total_ms": 2083
+        }
+      }
+    },
+    "turns": {
+      "count": 15,
+      "total_seconds": 1698
+    },
+    "subagent_runs": [
+      {
+        "name": "agent-a341b71bc8a6a368b",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T18:04:20.127Z",
+        "last": "2026-11-27T18:04:44.099Z",
+        "seconds": 24
+      },
+      {
+        "name": "agent-a81b5def551a5797d",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T18:03:03.208Z",
+        "last": "2026-11-27T18:03:19.008Z",
+        "seconds": 16
+      },
+      {
+        "name": "agent-a3d695e78e81e3a87",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T19:45:11.353Z",
+        "last": "2026-11-27T19:45:28.476Z",
+        "seconds": 17
+      },
+      {
+        "name": "agent-a2340a9b5ab500b01",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T20:42:47.939Z",
+        "last": "2026-11-27T20:45:36.957Z",
+        "seconds": 169
+      },
+      {
+        "name": "agent-af7033c8b894731cd",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T20:45:43.602Z",
+        "last": "2026-11-27T20:46:47.484Z",
+        "seconds": 64
+      },
+      {
+        "name": "agent-afc44ce7d3f7d43f5",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T18:03:31.179Z",
+        "last": "2026-11-27T18:03:47.500Z",
+        "seconds": 16
+      },
+      {
+        "name": "ex-infra",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T20:46:03.126Z",
+        "last": "2026-11-27T20:46:32.747Z",
+        "seconds": 29
+      },
+      {
+        "name": "agent-aea108d71f4e745b4",
+        "agent_type": "xpm:xpm-reviewer",
+        "first": "2026-11-27T20:47:56.451Z",
+        "last": "2026-11-27T20:53:16.634Z",
+        "seconds": 320
+      },
+      {
+        "name": "agent-adeec446127cb9a76",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T20:46:53.928Z",
+        "last": "2026-11-27T20:55:26.342Z",
+        "seconds": 513
+      },
+      {
+        "name": "ex-infra",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T21:35:26.293Z",
+        "last": "2026-11-27T21:36:01.666Z",
+        "seconds": 35
+      },
+      {
+        "name": "agent-a8ea09ae892b9b1f8",
+        "agent_type": "xpm:xpm-security-reviewer",
+        "first": "2026-11-27T21:30:13.722Z",
+        "last": "2026-11-27T21:31:58.674Z",
+        "seconds": 105
+      },
+      {
+        "name": "agent-afd76f5a5d8847aeb",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T21:02:03.715Z",
+        "last": "2026-11-27T21:16:14.664Z",
+        "seconds": 851
+      },
+      {
+        "name": "agent-a38b1eaed4448469e",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T20:59:32.006Z",
+        "last": "2026-11-27T20:59:48.029Z",
+        "seconds": 16
+      },
+      {
+        "name": "agent-a6da94aa88880743f",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T21:01:02.119Z",
+        "last": "2026-11-27T21:01:20.792Z",
+        "seconds": 18
+      },
+      {
+        "name": "agent-afc92ec0533022d86",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T21:16:20.663Z",
+        "last": "2026-11-27T21:17:34.504Z",
+        "seconds": 74
+      },
+      {
+        "name": "agent-af3f3bd2a3202311e",
+        "agent_type": "xpm:xpm-reviewer",
+        "first": "2026-11-27T21:18:23.135Z",
+        "last": "2026-11-27T21:23:30.314Z",
+        "seconds": 307
+      },
+      {
+        "name": "agent-a9fa6f0f286cb8155",
+        "agent_type": "xpm:xpm-security-reviewer",
+        "first": "2026-11-27T21:33:16.016Z",
+        "last": "2026-11-27T21:34:00.432Z",
+        "seconds": 44
+      },
+      {
+        "name": "agent-a4a3307352b0e6529",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T21:17:41.901Z",
+        "last": "2026-11-27T21:35:06.100Z",
+        "seconds": 1045
+      },
+      {
+        "name": "agent-ae2de6612aca56877",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T21:35:13.175Z",
+        "last": "2026-11-27T21:36:16.922Z",
+        "seconds": 63
+      },
+      {
+        "name": "agent-a9bb9c6c6b380ed29",
+        "agent_type": "xpm:xpm-reviewer",
+        "first": "2026-11-27T21:26:59.816Z",
+        "last": "2026-11-27T21:29:32.120Z",
+        "seconds": 153
+      },
+      {
+        "name": "ex-infra",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T21:16:39.763Z",
+        "last": "2026-11-27T21:17:21.971Z",
+        "seconds": 42
+      }
+    ]
+  },
+  "spend": {
+    "usd": 10.405593099999997,
+    "coverage": "exact",
+    "coverage_tokens": {
+      "exact": 21445396
+    },
+    "unpriced": [],
+    "table_date": "2026-11-09",
+    "tokens": 21445396,
+    "tokens_by_model": {
+      "claude-sonnet-5-5": {
+        "input": 484,
+        "output": 78880,
+        "cache_write_1h": 210757,
+        "cache_read": 10887038,
+        "cache_write_5m": 467015
+      },
+      "claude-opus-5-5": {
+        "input": 388,
+        "output": 128163,
+        "cache_write_5m": 420252,
+        "cache_read": 9252419
+      }
+    },
+    "sessions": 2
+  },
+  "friction": {
+    "by_kind": {
+      "other": 1,
+      "script-fail": 3
+    },
+    "by_owner": {
+      "project": 3,
+      "xpm": 1
+    },
+    "records": 4
+  },
+  "quality": {
+    "evidence": {
+      "fail": 2,
+      "pass": 3,
+      "repins": 0
+    },
+    "po_outcome": null,
+    "review": {
+      "head": {
+        "asked": 0,
+        "blocker_kinds": {
+          "spec-gap": 2
+        },
+        "blockers": 2,
+        "fixed": 7,
+        "majors": 6,
+        "minors": 8,
+        "passes": 3,
+        "recorded": 4
+      }
+    },
+    "rework": {
+      "ci_autofix": 0,
+      "fix_rounds": 1,
+      "redispatches": 0
+    }
+  }
+}
