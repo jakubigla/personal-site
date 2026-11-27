@@ -10,6 +10,12 @@ hero:
   role: Principal Data Platform Architect
   headline: Principal Data Platform Architect. Databricks Partner Champion.
   value_statement: I design data platforms on Databricks and lead the teams that run them.
+  primary_link:
+    label: Get in touch
+    href: mailto:jakub.igla@gmail.com
+  secondary_link:
+    label: LinkedIn
+    href: https://www.linkedin.com/in/jakubigla
 
 how_i_deliver:
   title: How I deliver

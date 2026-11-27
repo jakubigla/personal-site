@@ -8,11 +8,35 @@ const { footer } = Astro.props;
 const { contact } = footer;
 ---
 
-<footer class="section" id="contact">
+<footer id="contact">
+  <p class="note">{footer.entity}. {footer.privacy_note}</p>
   <ul>
-    <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+    <li><a href={`mailto:${contact.email}`}>Email</a></li>
     <li><a href={contact.linkedin} rel="noopener">LinkedIn</a></li>
     <li><a href={contact.github} rel="noopener">GitHub</a></li>
   </ul>
-  <p>{footer.entity}. {footer.privacy_note}</p>
 </footer>
+
+<style>
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4) var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+  }
+  .note {
+    margin: 0;
+    color: var(--muted);
+  }
+  ul {
+    display: flex;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>
