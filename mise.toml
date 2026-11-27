@@ -1,0 +1,33 @@
+# The one place a tool version lives. CI installs from here, so a laptop and a runner match.
+[tools]
+terraform = "1.17.2"
+tflint = "0.66.0"
+uv = "0.12.5"
+"pipx:checkov" = "3.4.11"
+
+[tasks."infra:fmt"]
+description = "Terraform format check"
+run = "terraform fmt -recursive -check -diff infra"
+
+[tasks."infra:validate"]
+description = "Validate both roots without a backend or credentials"
+run = [
+  "terraform -chdir=infra/bootstrap init -backend=false -input=false",
+  "terraform -chdir=infra/bootstrap validate",
+  "terraform -chdir=infra/environments/prod init -backend=false -input=false",
+  "terraform -chdir=infra/environments/prod validate",
+]
+
+[tasks."infra:lint"]
+description = "tflint over both roots and both modules"
+run = [
+  "tflint --init --config=\"$PWD/infra/.tflint.hcl\"",
+  "tflint --chdir=infra/bootstrap --config=\"$PWD/infra/.tflint.hcl\"",
+  "tflint --chdir=infra/environments/prod --config=\"$PWD/infra/.tflint.hcl\"",
+  "tflint --chdir=infra/modules/site-hosting --config=\"$PWD/infra/.tflint.hcl\"",
+  "tflint --chdir=infra/modules/cost-guard --config=\"$PWD/infra/.tflint.hcl\"",
+]
+
+[tasks."infra:policies"]
+description = "Checkov policies reject their negative fixtures and the real roots pass"
+run = "infra/policies/test.sh"
