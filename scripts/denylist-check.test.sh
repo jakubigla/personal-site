@@ -61,4 +61,23 @@ printf 'about %s\n' "$term" >content.yaml
 git add . && DENYLIST="$term" "$check" clean.txt >/dev/null 2>&1; expect "only the named files are scanned" 0 $?
 DENYLIST="$term" "$check" content.yaml >/dev/null 2>&1; expect "a named file holding a term fails" 1 $?
 
+# Squash merges copy branch commit messages and the PR title into main's history, so CI reads them too.
+new_repo
+git add . && git commit -qm "start"
+base="$(git rev-parse HEAD)"
+printf 'more\n' >>clean.txt && git commit -qam "notes from the $term call"
+out="$(DENYLIST="$term" DENYLIST_COMMITS="$base..HEAD" "$check" 2>&1)"; code=$?
+expect "a denied term in a commit message fails" 1 "$code"
+case "$out" in *"$term"*) echo "FAIL the term was printed from a message"; fails=$((fails + 1)) ;; *) echo "ok   a message's term is never printed" ;; esac
+case "$out" in *"$(git rev-parse --short HEAD)"*) echo "ok   the offending commit is named" ;; *) echo "FAIL the offending commit is not named"; fails=$((fails + 1)) ;; esac
+DENYLIST="$term" DENYLIST_COMMITS="HEAD..HEAD" "$check" >/dev/null 2>&1; expect "commits outside the range are not read" 0 $?
+DENYLIST="$term" "$check" >/dev/null 2>&1; expect "messages are read only when a range is given" 0 $?
+DENYLIST="$term" DENYLIST_COMMITS="no-such-ref..HEAD" "$check" >/dev/null 2>&1; expect "an unreadable range fails closed" 2 $?
+
+new_repo
+git add . && out="$(DENYLIST="$term" DENYLIST_TITLE="Add the $term case study" "$check" 2>&1)"; code=$?
+expect "a denied term in the title fails" 1 "$code"
+case "$out" in *"$term"*) echo "FAIL the term was printed from the title"; fails=$((fails + 1)) ;; *) echo "ok   the title's term is never printed" ;; esac
+DENYLIST="$term" DENYLIST_TITLE="Add the case study" "$check" >/dev/null 2>&1; expect "a clean title passes" 0 $?
+
 [ "$fails" = 0 ] && echo "all passed" || { echo "$fails failed"; exit 1; }

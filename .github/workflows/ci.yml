@@ -20,7 +20,9 @@ env:
 jobs:
   repo:
     name: repo
-    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    # Where every job runs, written once here and reused through the alias below. A PR from a fork
+    # never reaches the self-hosted runner CI_RUNNER names: its code would run on a developer's machine.
+    runs-on: &runner ${{ vars.CI_RUNNER && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && fromJSON(vars.CI_RUNNER) || 'ubuntu-latest' }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -43,13 +45,17 @@ jobs:
         run: mise run repo:test
       - name: Client-name denylist
         # Fails closed when the secret is unset (ADR-0013): a missing list must never pass silently.
+        # On a PR it also reads the branch's commit messages and the PR title: squash merges copy
+        # both into main's history.
         run: mise run repo:denylist
         env:
           DENYLIST: ${{ secrets.DENYLIST }}
+          DENYLIST_COMMITS: ${{ github.event_name == 'pull_request' && format('{0}..{1}', github.event.pull_request.base.sha, github.event.pull_request.head.sha) || '' }}
+          DENYLIST_TITLE: ${{ github.event.pull_request.title }}
 
   web:
     name: web
-    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    runs-on: *runner
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -81,7 +87,7 @@ jobs:
 
   infra:
     name: infra
-    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    runs-on: *runner
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -93,18 +99,15 @@ jobs:
           cache: ${{ runner.environment == 'github-hosted' }}
       - run: mise run infra:fmt
       - run: mise run infra:validate
-      - name: tflint
-        run: mise run infra:lint
-        env:
-          # tflint downloads its ruleset from GitHub; a token avoids the shared-IP rate limit.
-          GITHUB_TOKEN: ${{ github.token }}
+      - run: mise run infra:lint
 
   deploy:
     name: deploy
-    # Inert until the attended first apply sets DEPLOY_ROLE_ARN (ADR-0010); the web job must pass first.
+    # Inert until the attended first apply sets DEPLOY_ROLE_ARN (ADR-0010). Every check must pass
+    # first: a failed denylist or secret scan must never reach the public site.
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DEPLOY_ROLE_ARN != ''
-    needs: [web]
-    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    needs: [repo, web, infra]
+    runs-on: *runner
     timeout-minutes: 15
     permissions:
       contents: read
@@ -121,7 +124,7 @@ jobs:
     name: ci-ok
     if: always()
     needs: [repo, web, infra, deploy]
-    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    runs-on: *runner
     timeout-minutes: 2
     steps:
       - name: Every job passed or was skipped

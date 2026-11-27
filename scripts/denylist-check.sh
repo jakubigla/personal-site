@@ -7,6 +7,8 @@
 #   denylist-check.sh [--optional] [file...]
 #
 # --optional lets a local hook skip when no list is on the machine; CI never passes it.
+# DENYLIST_COMMITS (a rev range such as base..head) adds those commits' messages, and
+# DENYLIST_TITLE (a PR title) adds that text: a squash merge copies both into main's history.
 set -u
 
 optional=0
@@ -58,6 +60,24 @@ for f in "${files[@]}"; do
     bad=1
   fi
 done
+
+if [ -n "${DENYLIST_COMMITS:-}" ]; then
+  shas="$(git rev-list "$DENYLIST_COMMITS" --)" || {
+    echo "denylist-check: cannot read the commits in DENYLIST_COMMITS; failing closed" >&2
+    exit 2
+  }
+  for sha in $shas; do
+    if git log -1 --format=%B "$sha" | grep -qiFf "$terms"; then
+      echo "denylist-check: denied term in the message of commit $(git rev-parse --short "$sha")" >&2
+      bad=1
+    fi
+  done
+fi
+
+if [ -n "${DENYLIST_TITLE:-}" ] && printf '%s\n' "$DENYLIST_TITLE" | grep -qiFf "$terms"; then
+  echo "denylist-check: denied term in DENYLIST_TITLE (the pull request title)" >&2
+  bad=1
+fi
 
 if [ "$bad" = 1 ]; then
   echo "denylist-check: failed; terms are never printed" >&2
