@@ -19,6 +19,16 @@ variable "bucket_name" {
   type        = string
 }
 
+variable "serve_domain" {
+  description = <<-EOT
+    Attach the apex and www aliases to the distribution and point their records at it. False
+    only for the first apply: the old site's distribution still holds the aliases, and CloudFront
+    refuses an alias another distribution uses until it is moved (runbook step 5).
+  EOT
+  type        = bool
+  default     = true
+}
+
 locals {
   www = "www.${var.domain}"
   # CloudFront managed policy CachingOptimized: every response is cached at the edge,
@@ -193,7 +203,7 @@ resource "aws_cloudfront_distribution" "site" {
   is_ipv6_enabled     = true
   http_version        = "http2and3"
   default_root_object = "index.html"
-  aliases             = [var.domain, local.www]
+  aliases             = var.serve_domain ? [var.domain, local.www] : []
   price_class         = "PriceClass_100"
 
   origin {
@@ -250,10 +260,10 @@ resource "aws_cloudfront_distribution" "site" {
 # --------------------------------------------------------------- records
 
 resource "aws_route53_record" "alias" {
-  for_each = {
+  for_each = var.serve_domain ? {
     for pair in setproduct([var.domain, local.www], ["A", "AAAA"]) :
     "${pair[0]}-${pair[1]}" => { name = pair[0], type = pair[1] }
-  }
+  } : {}
 
   zone_id = data.aws_route53_zone.this.zone_id
   name    = each.value.name
@@ -274,4 +284,8 @@ output "bucket_name" {
 
 output "distribution_id" {
   value = aws_cloudfront_distribution.site.id
+}
+
+output "distribution_domain" {
+  value = aws_cloudfront_distribution.site.domain_name
 }

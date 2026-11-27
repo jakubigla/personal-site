@@ -25,6 +25,7 @@ PY
 
 run_fixture public-bucket CKV_AWS_53
 run_fixture open-bucket-policy CKV_PS_001
+run_fixture unscoped-bucket-policy CKV_PS_001
 run_fixture no-oac CKV_PS_002
 run_fixture plain-http CKV_PS_003
 run_fixture old-tls CKV_PS_003

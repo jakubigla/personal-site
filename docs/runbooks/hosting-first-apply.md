@@ -29,33 +29,29 @@ commit it. The bucket is versioned, encrypted, private and has `prevent_destroy`
 
 ## 3. First apply of the hosting root
 
+The current page is served by the old 2021 distribution, which holds the `jacops.pl` and
+`www.jacops.pl` aliases. CloudFront refuses to create a distribution with an alias another
+distribution already uses (`CNAMEAlreadyExists`), so the first apply runs with
+`serve_domain=false`: the distribution gets no aliases and the apex and www records are left
+alone. Everything else, the bucket policy included, is created.
+
 ```bash
 cd infra/environments/prod
 terraform init
-terraform plan -out=hosting.tfplan
+terraform plan -var serve_domain=false -out=hosting.tfplan
 ```
 
-Read the plan. Expect new: the site bucket and its policy, the CloudFront distribution, origin
-access control, response headers policy, the router function, the certificate and its
-validation records, the apex and www `A`/`AAAA` records, and the budget. Expect no WAF, NAT
-gateway, compute or logging resource. Then:
+Read the plan. Expect new: the site bucket, its public access block, ownership, encryption and
+policy, the CloudFront distribution with no aliases, origin access control, response headers
+policy, the router function, the certificate and its validation records, and the budget.
+Expect no apex or www record, and no WAF, NAT gateway, compute or logging resource. Then:
 
 ```bash
 terraform apply hosting.tfplan
 ```
 
-The apply creates the validation records, waits for the certificate, and creates the
-distribution. **It also replaces the apex and www records in the zone** (`allow_overwrite`),
-so the cut-over happens at the end of this step, before any content is uploaded. To keep the
-old page live until the new one is ready, apply with the records held back:
-
-```bash
-terraform apply -target=module.site_hosting.aws_acm_certificate_validation.site \
-                -target=module.site_hosting.aws_cloudfront_distribution.site \
-                -target=module.cost_guard
-```
-
-and run the full apply in step 5.
+The apply creates the validation records, waits for the certificate and creates the
+distribution. The old page stays live: nothing it uses is touched.
 
 Confirm the budget subscription: AWS emails the contact address; open it if it asks you to
 confirm.
@@ -64,35 +60,115 @@ confirm.
 
 Upload the built site to the bucket named by `terraform output site_bucket` (the deploy job
 does this once its role exists), then invalidate if needed. Check the distribution on its own
-`*.cloudfront.net` name, forcing the host header:
+`*.cloudfront.net` name (it has no alias yet, so a `jacops.pl` host header would reach the old
+distribution):
 
 ```bash
-D=$(terraform output -raw distribution_id)
-H=$(aws cloudfront get-distribution --id "$D" --query 'Distribution.DomainName' --output text)
-curl -sI --resolve jacops.pl:443:"$(dig +short "$H" | head -1)" https://jacops.pl/ | head -20
+H=$(terraform output -raw distribution_domain)
+curl -sI https://"$H"/ | head -20             # 200 with the new site
 curl -sI https://"$H"/does-not-exist        # 404 with the custom page
 curl -sI http://"$H"/                         # 301 to https
 ```
 
 You should see `strict-transport-security`, `content-security-policy`,
-`x-content-type-options`, `referrer-policy` and `x-frame-options` on every response.
+`x-content-type-options`, `referrer-policy` and `x-frame-options` on every response. Do not go
+on until all three answer as shown.
 
-## 5. DNS cut-over from the current page
+## 5. Cut-over: move the aliases, then the records
 
-1. Note the current apex and www records (`aws route53 list-resource-record-sets`) and the old
-   distribution id, so the move can be reversed.
-2. Lower the TTL of those records to 60 seconds and wait the old TTL.
-3. Run the full `terraform apply`. The apex and www records now alias the new distribution.
-4. Verify `https://jacops.pl/` serves the new site, `https://www.jacops.pl/` redirects to the
+The cut-over is the alias move. `aws cloudfront associate-alias` moves an alias from the old
+distribution to the new one in one call; the new one's certificate covers both names. From
+that moment CloudFront serves the alias from the new distribution, even to clients whose DNS
+still points at the old one, so the records can follow without downtime.
+
+1. Note the old state so the move can be reversed:
+
+   ```bash
+   ZONE=$(aws route53 list-hosted-zones-by-name --dns-name jacops.pl \
+     --query 'HostedZones[0].Id' --output text)
+   aws route53 list-resource-record-sets --hosted-zone-id "$ZONE" > old-records.json
+   OLD=<old distribution id>     # aws cloudfront list-distributions; the one with the aliases
+   OLD_H=$(aws cloudfront get-distribution --id "$OLD" --query 'Distribution.DomainName' --output text)
+   NEW=$(terraform output -raw distribution_id)
+   NEW_H=$(terraform output -raw distribution_domain)
+   ```
+
+   Keep `old-records.json` outside the repo.
+2. Lower the TTL of any non-alias apex or www record to 60 seconds and wait the old TTL.
+3. Prove you own the names to CloudFront: create `_jacops.pl` and `_www.jacops.pl` TXT records
+   whose value is `$NEW_H`:
+
+   ```bash
+   for n in _jacops.pl _www.jacops.pl; do
+     aws route53 change-resource-record-sets --hosted-zone-id "$ZONE" --change-batch \
+       '{"Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'"$n"'","Type":"TXT","TTL":60,"ResourceRecords":[{"Value":"\"'"$NEW_H"'\""}]}}]}'
+   done
+   ```
+
+4. Move the aliases:
+
+   ```bash
+   aws cloudfront associate-alias --target-distribution-id "$NEW" --alias jacops.pl
+   aws cloudfront associate-alias --target-distribution-id "$NEW" --alias www.jacops.pl
+   ```
+
+5. Point the records at the new distribution with the full apply (`serve_domain` defaults to
+   true). The plan must show the four apex and www `A`/`AAAA` records created and **no change to
+   the distribution**: its aliases already match after the move. A plan that changes the
+   distribution means the move did not complete; stop and check `associate-alias`.
+
+   ```bash
+   terraform plan -out=hosting.tfplan
+   terraform apply hosting.tfplan
+   ```
+
+6. Verify `https://jacops.pl/` serves the new site, `https://www.jacops.pl/` redirects to the
    apex with a 301, and `http://jacops.pl/` redirects to HTTPS.
-5. Rollback if anything is wrong: re-create the noted records pointing at the old
-   distribution, then investigate.
-6. Keep the old resources for at least a week. Retire them (old distribution, bucket, any
-   leftover records) only after the new site has served traffic cleanly; never before the
-   records point at the new distribution.
+7. Rollback if anything is wrong: set the two TXT records' value to `$OLD_H`, run
+   `associate-alias --target-distribution-id "$OLD"` for both names (the old distribution's
+   certificate still covers them), then restore the apex and www records from
+   `old-records.json`, and investigate. Do not run `terraform apply` again until the cause is
+   fixed: with `serve_domain` true it re-points the records at the new distribution.
+8. Delete the two `_jacops.pl` and `_www.jacops.pl` TXT records once the site is verified.
 
-## 6. After the cut-over
+## 6. Retire the old site
+
+Keep the old resources for at least a week, until the new site has served traffic cleanly.
+The old 2021 Terraform state still holds the apex and www records, which now alias the new
+distribution through `allow_overwrite`: a `terraform destroy` there would delete them and take
+the site offline.
+
+1. In the old stack's root, remove its record resources from its state first, so no destroy
+   can touch them:
+
+   ```bash
+   terraform state list | grep aws_route53_record    # every record the old state holds
+   terraform state rm <each apex and www record address>
+   ```
+
+   Keep any record the old state holds that is not the apex or www site record (MX, TXT,
+   verification) out of the destroy the same way, or leave the old stack in place and delete the
+   old distribution and bucket by hand instead.
+2. Disable, then delete, the old distribution (it has no aliases left), and empty and delete the
+   old bucket.
+3. Remove every old record that served the old site, by name and type, as listed in
+   `old-records.json`: anything that pointed at the old distribution (`$OLD_H`) or at an S3
+   website or bucket endpoint, other than the four records step 5 replaced.
+4. Check that no record dangles: every CloudFront or S3 target left in the zone must be the new
+   distribution. This prints nothing when the zone is clean:
+
+   ```bash
+   aws route53 list-resource-record-sets --hosted-zone-id "$ZONE" --output json \
+     | jq -r --arg new "$NEW_H." '.ResourceRecordSets[]
+         | {n: .Name, t: .Type, v: ((.AliasTarget.DNSName // "") + " " + ([.ResourceRecords[]?.Value] | join(" ")))}
+         | select(.v | test("cloudfront\\.net|amazonaws\\.com"; "i"))
+         | select((.v | ascii_downcase | ltrimstr(" ") | rtrimstr(" ")) != ($new | ascii_downcase))
+         | "\(.n) \(.t) \(.v)"'
+   ```
+
+## 7. After the cut-over
 
 Raise the TTLs if you lowered them, and check the budget exists in AWS Budgets at 2 USD per
 month with alerts at 80% and 100% of actual spend. Later infrastructure changes follow steps
-1 and 3 only.
+1 and 3 only, without `-var serve_domain=false`: once the aliases have moved, the default
+keeps them and the records in place.

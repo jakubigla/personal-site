@@ -17,6 +17,12 @@ terraform {
   }
 }
 
+variable "serve_domain" {
+  description = "False only for the first apply, before the aliases move (docs/runbooks/hosting-first-apply.md)"
+  type        = bool
+  default     = true
+}
+
 provider "aws" {
   region = "eu-central-1"
 }
@@ -34,8 +40,9 @@ module "site_hosting" {
     aws.us_east_1 = aws.us_east_1
   }
 
-  domain      = "jacops.pl"
-  bucket_name = "jacops-pl-site"
+  domain       = "jacops.pl"
+  bucket_name  = "jacops-pl-site"
+  serve_domain = var.serve_domain
 }
 
 module "cost_guard" {
@@ -51,4 +58,8 @@ output "site_bucket" {
 
 output "distribution_id" {
   value = module.site_hosting.distribution_id
+}
+
+output "distribution_domain" {
+  value = module.site_hosting.distribution_domain
 }
