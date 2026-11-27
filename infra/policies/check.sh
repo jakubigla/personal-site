@@ -12,7 +12,7 @@ root="${1:?usage: check.sh [--require-budget] <terraform root>}"
 out="$(mktemp)"
 trap 'rm -f "$out"' EXIT
 
-checkov -d "$root" --config-file "$here/.checkov.yaml" --external-checks-dir "$here/policies/checks" \
+checkov -d "$root" --config-file "$here/../.checkov.yaml" --external-checks-dir "$here/policies/checks" \
   -o json >"$out" || true
 
 python3 -I - "$out" "$require_budget" <<'PY'

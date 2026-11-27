@@ -1,10 +1,16 @@
-# Built-in Checkov checks skipped on purpose; the custom policies in policies/checks
-# guard the same ground where it matters.
+# The one Checkov config. It sits at the repo root so a scan run from here (`checkov -d .`, as
+# a repo-wide security scan does) applies the same rules as infra/policies/check.sh.
+# Built-in checks skipped on purpose; the custom policies in infra/policies/checks guard the same
+# ground where it matters.
 framework:
   - terraform
 skip-download: true
 external-checks-dir:
-  - policies/checks
+  - infra/policies/checks
+# The negative fixtures are insecure on purpose: each exists to be rejected by the check
+# infra/policies/test.sh names for it, which runs them from their own directory, outside this file.
+skip-path:
+  - infra/policies/tests
 skip-check:
   # No WAF: it would break the 2 USD cap (NFR-019); CKV_PS_007 fails a change that adds one.
   - CKV_AWS_68

@@ -9,8 +9,10 @@ status=0
 run_fixture() { # fixture, check id
   local out
   out="$(mktemp)"
-  checkov -d "$here/policies/tests/$1" --framework terraform --skip-download \
-    --external-checks-dir "$here/policies/checks" --check "$2" --compact --quiet -o json >"$out" || true
+  # From the fixture's own directory: Checkov falls back to a .checkov.yaml in the working
+  # directory, and the repo-root one skips every fixture.
+  (cd "$here/policies/tests/$1" && checkov -d . --framework terraform --skip-download \
+    --external-checks-dir "$here/policies/checks" --check "$2" --compact --quiet -o json) >"$out" || true
   if python3 -I - "$out" "$2" <<'PY'
 import json, sys
 data = json.load(open(sys.argv[1]))
