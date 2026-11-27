@@ -1,0 +1,21 @@
+{
+  "ticket": "PS-2",
+  "adapter": "claude-design",
+  "link": "https://claude.ai/artifact/8UE7rGsNQdHg5xgaygey4C",
+  "screens": [
+    {
+      "name": "home",
+      "acs": [
+        "AC3",
+        "AC4",
+        "AC5",
+        "AC13"
+      ],
+      "png": "home@desktop.png",
+      "sha256": "189adfc93cec939ae2f2d95cc43b241c9d1b5695fb538a9af3482b0dca54dcee",
+      "mobile_png": "home@mobile.png",
+      "mobile_sha256": "34055bec882cd791a0744a9851cb6a99ab619864cd79cd6d34c3e2d31350863b",
+      "state": "built static page with the placeholder content file; JavaScript off; dark theme; hero and footer enabled, How I deliver flag off"
+    }
+  ]
+}
