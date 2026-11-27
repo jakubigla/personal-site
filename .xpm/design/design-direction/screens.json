@@ -2,30 +2,18 @@
   "ticket": "design-direction",
   "adapter": "claude-design",
   "link": "https://claude.ai/artifact/G1fVTJT7cpMHcxukbTptFz",
+  "direction": {
+    "tokens_sha256": "5b12865fd9b13ed4194400c489195d9343a27c477edbdaf54277c1515da0bdeb",
+    "doc_sha256": "d5c03d7411b976abb8bbc89fe155ad4976d68b21e66d7cddadc1c192a6313307"
+  },
   "screens": [
     {
-      "name": "option-a",
+      "name": "direction",
       "acs": [],
-      "png": "option-a@desktop.png",
-      "sha256": "66f8f6de49c9bdc5001ba03bc7362d0042c7c982c517cc28425d360bc80fd7c5",
-      "mobile_png": "option-a@mobile.png",
-      "mobile_sha256": "c21836354152483ee018297cbdeffe3eefd37b40f8356d4bd9aa3efeebc88805"
-    },
-    {
-      "name": "option-b",
-      "acs": [],
-      "png": "option-b@desktop.png",
-      "sha256": "758e272be3f46725c574f2f0484dcb0a131dfce318fc038ab305fc47549de4cf",
-      "mobile_png": "option-b@mobile.png",
-      "mobile_sha256": "4ad5f2c2b72a8a876f0c83e2608bb678a809e5121ebaad386b52b2f286e8ceae"
-    },
-    {
-      "name": "option-c",
-      "acs": [],
-      "png": "option-c@desktop.png",
-      "sha256": "3d6e4bda495da945ef506c808bc36a02942073a8d5eae14479c2a6497d168746",
-      "mobile_png": "option-c@mobile.png",
-      "mobile_sha256": "032206f6f1fafdea21ffdf8561ea6b2fca81abeeafc583d51507353d80a395c8"
+      "png": "direction@desktop.png",
+      "sha256": "d53e6ed867a3b41902e1983fe3b5b6fd52d6801f687505d035194e0fabfe47b3",
+      "mobile_png": "direction@mobile.png",
+      "mobile_sha256": "53fa9b1e5e2fbd9a01db46533472130741aebc16f200663500f61f167f5c9e27"
     }
   ]
 }
