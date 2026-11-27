@@ -9,7 +9,7 @@ Last updated: 2026-11-27
 ## Assumptions
 | ID | Date | Title | Validation | Owner | Status |
 |---|---|---|---|---|---|
-| A-021 | 2026-11-27 | The github foundation stays `deferred` (status never reaches vars-set) because ADR-0010 gives CI no plan role or repo variable and xpm has no attended-only path; the owner pins, renders, plans and applies locally (EN-011 AC1) | `xpm init foundation status` answers step `rendered` or later after the owner's pin and render; docs/runbooks/github-settings-first-plan.md | Jakub | open |
+| A-021 | 2026-11-27 | The github foundation stays `deferred` (status never reaches vars-set) because ADR-0010 gives CI no plan role or repo variable and xpm has no attended-only path; the owner pins, renders, plans and applies locally, and `xpm doctor`'s github-as-code row stays info or stopped at rendered, never ok (EN-011 AC1, AC4) | `xpm init foundation status` answers step `rendered` or later after the owner's pin and render; docs/runbooks/github-settings-first-plan.md | Jakub | open |
 | A-020 | 2026-11-27 | The AWS Budgets notifications go to the contact email the page already publishes, so no other private address enters the public repo (NFR-014 AC2, NFR-034) | EN-002 review: the budget's subscriber is the published contact address, read from a variable | Jakub | open |
 | A-019 | 2026-11-27 | Act 1's overlay is drawn in the first frame over the hero, which paints beneath it and stays the LCP element; Act 1 never delays the hero's paint (FR-002 vs NFR-002 AC3) [frs: FR-002] | PO answer, autopilot decisions batch Q4; NFR-002 AC3 amended | PO | confirmed (PO, Q4) |
 | A-018 | 2026-11-27 | PO waived data-retention-and-backup, Q14 | elicitation 2026-11-27 Q14 | PO | confirmed |
