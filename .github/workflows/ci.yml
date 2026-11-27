@@ -4,6 +4,10 @@ name: ci
 
 on:
   pull_request:
+    # edited: the denylist reads the PR title, which a squash merge writes into main's history, so
+    # a title changed without a push must re-run every job. Skipping jobs on a body-only edit would
+    # report ci-ok as skipped, which GitHub counts as passing over an earlier red run.
+    types: [opened, synchronize, reopened, edited]
   push:
     branches: [main, 'xpm/land/**']
 
