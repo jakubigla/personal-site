@@ -1,0 +1,424 @@
+{
+  "schema_version": 4,
+  "usage_dedupe": "message-id",
+  "id": "PS-3",
+  "ticket": "PS-3",
+  "branch": "feature/PS-3-aws-static-hosting-is-defined-in",
+  "generated_at": "2026-11-27T15:03:02Z",
+  "coverage": "parent-and-subagents",
+  "subagents": {
+    "xpm:xpm-exerciser": {
+      "count": 21,
+      "output_tokens": 13931,
+      "input_tokens": 42,
+      "cache_read": 418367,
+      "cache_create": 52738,
+      "cache_write_5m": 52738,
+      "cache_write_1h": 0,
+      "models": [
+        "claude-sonnet-5-5"
+      ]
+    },
+    "xpm:xpm-reviewer": {
+      "count": 53,
+      "output_tokens": 48663,
+      "input_tokens": 106,
+      "cache_read": 2256719,
+      "cache_create": 130279,
+      "cache_write_5m": 130279,
+      "cache_write_1h": 0,
+      "models": [
+        "claude-opus-5-5"
+      ]
+    },
+    "xpm:xpm-security-reviewer": {
+      "count": 16,
+      "output_tokens": 17826,
+      "input_tokens": 32,
+      "cache_read": 427194,
+      "cache_create": 71789,
+      "cache_write_5m": 71789,
+      "cache_write_1h": 0,
+      "models": [
+        "claude-opus-5-5"
+      ]
+    },
+    "xpm:xpm-step": {
+      "count": 147,
+      "output_tokens": 80680,
+      "input_tokens": 302,
+      "cache_read": 8235772,
+      "cache_create": 353746,
+      "cache_write_5m": 353746,
+      "cache_write_1h": 0,
+      "models": [
+        "claude-opus-5-5",
+        "claude-sonnet-5-5",
+        "opus",
+        "sonnet"
+      ]
+    }
+  },
+  "cost": {
+    "tokens": {
+      "output": 180281,
+      "input": 654,
+      "cache_read": 19017076,
+      "cache_create": 729667,
+      "cache_write_5m": 608552,
+      "cache_write_1h": 121115
+    },
+    "usd": null,
+    "usd_source": null
+  },
+  "stages_source": "ledger",
+  "stages": [
+    {
+      "stage": "executing",
+      "at": "2026-11-27T14:04:45.996Z",
+      "output_tokens": 2391,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "execution-complete",
+      "at": "2026-11-27T14:06:31Z",
+      "output_tokens": 0,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "acs-exercised",
+      "at": "2026-11-27T14:29:35Z",
+      "output_tokens": 6460,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "correctness-review",
+      "at": "2026-11-27T14:35:09Z",
+      "output_tokens": 5675,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "evidence-published",
+      "at": "2026-11-27T14:57:27Z",
+      "output_tokens": 3602,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "quality-gate-review",
+      "at": "2026-11-27T15:01:47Z",
+      "output_tokens": 668,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "after-quality-gate-review",
+      "at": "2026-11-27T15:02:25Z",
+      "output_tokens": 385,
+      "cost_usd": null,
+      "trailing": true
+    }
+  ],
+  "diff": {
+    "files": 47,
+    "insertions": 1593,
+    "deletions": 4,
+    "code": {
+      "files": 0,
+      "insertions": 0,
+      "deletions": 0
+    },
+    "docs": {
+      "files": 47,
+      "insertions": 1593,
+      "deletions": 4
+    },
+    "measured_from": "merge-base",
+    "unavailable": false,
+    "plan_tasks": null
+  },
+  "impl_model": {
+    "configured": "sonnet",
+    "observed": [
+      "claude-opus-5-5",
+      "claude-sonnet-5-5",
+      "opus",
+      "sonnet"
+    ]
+  },
+  "attribution": {
+    "cwd": "/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3",
+    "matched_head_entries": 28
+  },
+  "sessions": 1,
+  "wall_clock": {
+    "first": "2026-11-27T14:04:45.996Z",
+    "last": "2026-11-27T15:02:56.709Z"
+  },
+  "per_session": [
+    {
+      "sessionId": "a71d0d06-4e07-429b-b5eb-52b3be01f6ec",
+      "entries": 202,
+      "output_tokens": 19181,
+      "first": "2026-11-27T14:04:49.105Z",
+      "last": "2026-11-27T15:02:56.709Z"
+    }
+  ],
+  "output_tokens": 19181,
+  "models": {
+    "claude-sonnet-5-5": {
+      "calls": 74,
+      "output_tokens": 19181,
+      "input_tokens": 172,
+      "cache_read": 7679024,
+      "cache_create": 121115,
+      "cache_write_5m": 0,
+      "cache_write_1h": 121115
+    }
+  },
+  "skills": {
+    "xpm:xpm-finalize-branch": 1,
+    "xpm:xpm-publish-evidence": 1,
+    "xpm:xpm-start": 1
+  },
+  "dispatches": {
+    "xpm:xpm-step": 8
+  },
+  "dispatches_reported": {
+    "exercise": 1,
+    "gate": 8
+  },
+  "dispatches_reported_source": "evidence-dir",
+  "tools": {
+    "Agent": 8,
+    "Bash": 52,
+    "Read": 4,
+    "Skill": 3
+  },
+  "profile": {
+    "skills": {
+      "xpm:xpm-finalize-branch": {
+        "count": 1
+      },
+      "xpm:xpm-publish-evidence": {
+        "count": 1
+      },
+      "xpm:xpm-start": {
+        "count": 1
+      }
+    },
+    "tools": {
+      "Agent": {
+        "count": 8,
+        "total_seconds": 6,
+        "median_seconds": 1
+      },
+      "Bash": {
+        "count": 51,
+        "total_seconds": 332,
+        "median_seconds": 2
+      },
+      "Read": {
+        "count": 4,
+        "total_seconds": 7,
+        "median_seconds": 3
+      },
+      "Skill": {
+        "count": 3,
+        "total_seconds": 2,
+        "median_seconds": 1
+      }
+    },
+    "hooks": {
+      "fires": 27,
+      "errors": 0,
+      "by_command": {
+        "\"${CLAUDE_PLUGIN_ROOT}/hooks/autonomous-keepalive.sh\"": {
+          "fires": 9,
+          "total_ms": 1008
+        },
+        "\"${CLAUDE_PLUGIN_ROOT}/hooks/stage-keepalive.sh\"": {
+          "fires": 9,
+          "total_ms": 185
+        },
+        "\"/Users/jakubigla/.config/iterm2/it2\" handle-agent-hook": {
+          "fires": 9,
+          "total_ms": 1278
+        }
+      }
+    },
+    "turns": {
+      "count": 9,
+      "total_seconds": 337
+    },
+    "subagent_runs": [
+      {
+        "name": "agent-a1ececcad0debf337",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:31:28.610Z",
+        "last": "2026-11-27T14:31:43.309Z",
+        "seconds": 15
+      },
+      {
+        "name": "agent-ad224fc694ce46140",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:05:37.535Z",
+        "last": "2026-11-27T14:05:51.604Z",
+        "seconds": 14
+      },
+      {
+        "name": "agent-ae9e4c4081dd7351a",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:31:03.705Z",
+        "last": "2026-11-27T14:31:14.335Z",
+        "seconds": 11
+      },
+      {
+        "name": "ex-infra",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T14:33:07.708Z",
+        "last": "2026-11-27T14:34:59.522Z",
+        "seconds": 112
+      },
+      {
+        "name": "agent-a56bebd1ae57961aa",
+        "agent_type": "xpm:xpm-security-reviewer",
+        "first": "2026-11-27T14:50:24.554Z",
+        "last": "2026-11-27T14:52:30.934Z",
+        "seconds": 126
+      },
+      {
+        "name": "agent-a4588a8630e1a505d",
+        "agent_type": "xpm:xpm-reviewer",
+        "first": "2026-11-27T14:46:10.327Z",
+        "last": "2026-11-27T14:49:41.242Z",
+        "seconds": 211
+      },
+      {
+        "name": "agent-a9ecbd2f2ebd70e0b",
+        "agent_type": "xpm:xpm-security-reviewer",
+        "first": "2026-11-27T14:55:25.291Z",
+        "last": "2026-11-27T14:56:23.022Z",
+        "seconds": 58
+      },
+      {
+        "name": "agent-ac720efea67ba9728",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:06:16.561Z",
+        "last": "2026-11-27T14:30:08.962Z",
+        "seconds": 1432
+      },
+      {
+        "name": "agent-ac143833e7299a612",
+        "agent_type": "xpm:xpm-reviewer",
+        "first": "2026-11-27T14:35:59.443Z",
+        "last": "2026-11-27T14:42:21.540Z",
+        "seconds": 382
+      },
+      {
+        "name": "agent-a44033d1b60b87def",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:31:49.752Z",
+        "last": "2026-11-27T14:32:03.752Z",
+        "seconds": 14
+      },
+      {
+        "name": "agent-a1391ac76a54388f2",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:57:36.357Z",
+        "last": "2026-11-27T15:00:16.568Z",
+        "seconds": 160
+      },
+      {
+        "name": "agent-a4939b6b0a74fe080",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:32:52.923Z",
+        "last": "2026-11-27T14:35:13.509Z",
+        "seconds": 141
+      },
+      {
+        "name": "agent-a84378bc3b73bfc9d",
+        "agent_type": "xpm:xpm-step",
+        "first": "2026-11-27T14:35:19.501Z",
+        "last": "2026-11-27T14:57:23.428Z",
+        "seconds": 1324
+      },
+      {
+        "name": "ex-infra",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-27T14:57:52.700Z",
+        "last": "2026-11-27T14:59:57.885Z",
+        "seconds": 125
+      }
+    ]
+  },
+  "spend": {
+    "usd": 8.371246600000001,
+    "coverage": "exact",
+    "coverage_tokens": {
+      "exact": 19927678
+    },
+    "unpriced": [],
+    "table_date": "2026-11-09",
+    "tokens": 19927678,
+    "tokens_by_model": {
+      "claude-sonnet-5-5": {
+        "input": 356,
+        "output": 76614,
+        "cache_write_1h": 121115,
+        "cache_read": 11158401,
+        "cache_write_5m": 273973
+      },
+      "claude-opus-5-5": {
+        "input": 298,
+        "output": 103667,
+        "cache_write_5m": 334579,
+        "cache_read": 7858675
+      }
+    },
+    "sessions": 1
+  },
+  "friction": {
+    "by_kind": {
+      "missing-context": 1,
+      "script-fail": 2,
+      "unclear-instruction": 1
+    },
+    "by_owner": {
+      "project": 2,
+      "xpm": 2
+    },
+    "records": 4
+  },
+  "quality": {
+    "evidence": {
+      "fail": 0,
+      "pass": 10,
+      "repins": 0
+    },
+    "po_outcome": null,
+    "review": {
+      "head": {
+        "asked": 0,
+        "blocker_kinds": {
+          "spec-gap": 1
+        },
+        "blockers": 1,
+        "fixed": 4,
+        "majors": 3,
+        "minors": 6,
+        "passes": 2,
+        "recorded": 5
+      }
+    },
+    "rework": {
+      "ci_autofix": 0,
+      "fix_rounds": 1,
+      "redispatches": 0
+    }
+  }
+}
