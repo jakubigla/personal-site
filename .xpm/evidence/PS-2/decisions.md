@@ -1,0 +1,4 @@
+- typecheck is tsc --noEmit over the .ts files only: @astrojs/check does not yet accept TypeScript 7 as a peer, so .astro files are covered by the build and the Vitest build checks.
+- The denylist check fails closed with exit 2 whenever no list exists; only the local pre-commit hook passes --optional so a laptop without .denylist.local can still commit. CI never passes it, so CI stays red until the DENYLIST secret is set (RAID D-001).
+- Playwright specs run with JavaScript disabled for the whole suite, and use astro preview --ignore-lock because Astro 7 preview otherwise refuses a second instance.
+- The deploy job is gated on the DEPLOY_ROLE_ARN repository variable and only downloads the site artifact; the publish steps belong to the hosting work. Secret scanner jobs (gitleaks) are left out: the starter-tier floor is the xpm hooks plus GitHub secret scanning.
