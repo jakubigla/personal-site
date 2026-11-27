@@ -1,64 +1,9 @@
 {
  "version": 1,
  "surface": "local",
- "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
- "sealed_at": "2026-11-27T16:32:55Z",
+ "head": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0",
+ "sealed_at": "2026-11-27T18:09:10Z",
  "files": [
-  {
-   "path": "media/local/AC9/terminal.cast",
-   "kind": "cast",
-   "ac": "AC9",
-   "sha256": "030d6cb4f27be1def1ec2be498ee6491dd04702871fb4ccc0c9d5e700edd4012",
-   "bytes": 3865,
-   "recorder": "asciinema==2.4.0",
-   "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
-   "sealed_at": "2026-11-27T16:28:45Z",
-   "duration_s": 16.9
-  },
-  {
-   "path": "media/local/AC11/terminal.cast",
-   "kind": "cast",
-   "ac": "AC11",
-   "sha256": "62020f6049287196bb793702e89170f83509f2bc15d09d2c99277671fbb564ee",
-   "bytes": 3584,
-   "recorder": "asciinema==2.4.0",
-   "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
-   "sealed_at": "2026-11-27T16:28:45Z",
-   "duration_s": 3.2
-  },
-  {
-   "path": "media/local/AC12/terminal.cast",
-   "kind": "cast",
-   "ac": "AC12",
-   "sha256": "7be5c788034b37a53c80329a68c4baf9d5c15ead0373ed91d24886b1d78dfb79",
-   "bytes": 2874,
-   "recorder": "asciinema==2.4.0",
-   "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
-   "sealed_at": "2026-11-27T16:28:45Z",
-   "duration_s": 1.4
-  },
-  {
-   "path": "media/local/AC8/terminal.cast",
-   "kind": "cast",
-   "ac": "AC8",
-   "sha256": "9245222b7cc15271352875c12b9b6a16c72f51697f8b4dab6bba7d89cfeafdf2",
-   "bytes": 2125,
-   "recorder": "asciinema==2.4.0",
-   "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
-   "sealed_at": "2026-11-27T16:30:39Z",
-   "duration_s": 0.0
-  },
-  {
-   "path": "media/local/AC10/terminal.cast",
-   "kind": "cast",
-   "ac": "AC10",
-   "sha256": "3e7eddd6a2ac5920ff2b9e914f54243b59fb673f4ca178706f8ab23d2aceae7d",
-   "bytes": 1548,
-   "recorder": "asciinema==2.4.0",
-   "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
-   "sealed_at": "2026-11-27T16:30:39Z",
-   "duration_s": 0.0
-  },
   {
    "path": "media/local/AC7/terminal.cast",
    "kind": "cast",
@@ -69,6 +14,61 @@
    "head": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
    "sealed_at": "2026-11-27T16:32:55Z",
    "duration_s": 7.9
+  },
+  {
+   "path": "media/local/AC9/terminal.cast",
+   "kind": "cast",
+   "ac": "AC9",
+   "sha256": "79e09492cfa36de67f7900f5e2093921174f94463b5ff8db28611e0fa0a4fc74",
+   "bytes": 2590,
+   "recorder": "asciinema==2.4.0",
+   "head": "1a3b7e2ff308a901c0f0e90df9988e31d19b9eb3",
+   "sealed_at": "2026-11-27T18:03:42Z",
+   "duration_s": 13.5
+  },
+  {
+   "path": "media/local/AC10/terminal.cast",
+   "kind": "cast",
+   "ac": "AC10",
+   "sha256": "6552c23b2fb3554d6ae7f14246efef589e956120aba0ba788c6eafc7b1f4c9ce",
+   "bytes": 1684,
+   "recorder": "asciinema==2.4.0",
+   "head": "1a3b7e2ff308a901c0f0e90df9988e31d19b9eb3",
+   "sealed_at": "2026-11-27T18:03:42Z",
+   "duration_s": 0.0
+  },
+  {
+   "path": "media/local/AC8/terminal.cast",
+   "kind": "cast",
+   "ac": "AC8",
+   "sha256": "e67710fdf36109eb5d9172bcda9af025005b240e4d10409b5ff1833c574998d6",
+   "bytes": 5285,
+   "recorder": "asciinema==2.4.0",
+   "head": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0",
+   "sealed_at": "2026-11-27T18:05:53Z",
+   "duration_s": 0.1
+  },
+  {
+   "path": "media/local/AC11/terminal.cast",
+   "kind": "cast",
+   "ac": "AC11",
+   "sha256": "ccd6613fa71159f0438a1830b2a3b80bbf45bce18a421e7b1f5448b58b78d46b",
+   "bytes": 3548,
+   "recorder": "asciinema==2.4.0",
+   "head": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0",
+   "sealed_at": "2026-11-27T18:05:53Z",
+   "duration_s": 6.7
+  },
+  {
+   "path": "media/local/AC12/terminal.cast",
+   "kind": "cast",
+   "ac": "AC12",
+   "sha256": "7daaba6c2f94a650b36669f29a0016eab06382727fd28c279f0844f1d049c651",
+   "bytes": 2511,
+   "recorder": "asciinema==2.4.0",
+   "head": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0",
+   "sealed_at": "2026-11-27T18:09:10Z",
+   "duration_s": 1.8
   }
  ],
  "not_recorded": []

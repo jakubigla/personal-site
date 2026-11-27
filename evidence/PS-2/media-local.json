@@ -5,61 +5,6 @@
  ],
  "skipped": [],
  "acs": {
-  "AC9": [
-   {
-    "kind": "cast",
-    "path": "media/local/AC9/terminal.cast",
-    "bytes": 3865,
-    "sha256": "030d6cb4f27be1def1ec2be498ee6491dd04702871fb4ccc0c9d5e700edd4012",
-    "status": "ok",
-    "duration_s": 16.9,
-    "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
-   }
-  ],
-  "AC11": [
-   {
-    "kind": "cast",
-    "path": "media/local/AC11/terminal.cast",
-    "bytes": 3584,
-    "sha256": "62020f6049287196bb793702e89170f83509f2bc15d09d2c99277671fbb564ee",
-    "status": "ok",
-    "duration_s": 3.2,
-    "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
-   }
-  ],
-  "AC12": [
-   {
-    "kind": "cast",
-    "path": "media/local/AC12/terminal.cast",
-    "bytes": 2874,
-    "sha256": "7be5c788034b37a53c80329a68c4baf9d5c15ead0373ed91d24886b1d78dfb79",
-    "status": "ok",
-    "duration_s": 1.4,
-    "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
-   }
-  ],
-  "AC8": [
-   {
-    "kind": "cast",
-    "path": "media/local/AC8/terminal.cast",
-    "bytes": 2125,
-    "sha256": "9245222b7cc15271352875c12b9b6a16c72f51697f8b4dab6bba7d89cfeafdf2",
-    "status": "ok",
-    "duration_s": 0.0,
-    "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
-   }
-  ],
-  "AC10": [
-   {
-    "kind": "cast",
-    "path": "media/local/AC10/terminal.cast",
-    "bytes": 1548,
-    "sha256": "3e7eddd6a2ac5920ff2b9e914f54243b59fb673f4ca178706f8ab23d2aceae7d",
-    "status": "ok",
-    "duration_s": 0.0,
-    "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
-   }
-  ],
   "AC7": [
    {
     "kind": "cast",
@@ -70,6 +15,61 @@
     "duration_s": 7.9,
     "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
    }
+  ],
+  "AC9": [
+   {
+    "kind": "cast",
+    "path": "media/local/AC9/terminal.cast",
+    "bytes": 2590,
+    "sha256": "79e09492cfa36de67f7900f5e2093921174f94463b5ff8db28611e0fa0a4fc74",
+    "status": "ok",
+    "duration_s": 13.5,
+    "commit_sha": "1a3b7e2ff308a901c0f0e90df9988e31d19b9eb3"
+   }
+  ],
+  "AC10": [
+   {
+    "kind": "cast",
+    "path": "media/local/AC10/terminal.cast",
+    "bytes": 1684,
+    "sha256": "6552c23b2fb3554d6ae7f14246efef589e956120aba0ba788c6eafc7b1f4c9ce",
+    "status": "ok",
+    "duration_s": 0.0,
+    "commit_sha": "1a3b7e2ff308a901c0f0e90df9988e31d19b9eb3"
+   }
+  ],
+  "AC8": [
+   {
+    "kind": "cast",
+    "path": "media/local/AC8/terminal.cast",
+    "bytes": 5285,
+    "sha256": "e67710fdf36109eb5d9172bcda9af025005b240e4d10409b5ff1833c574998d6",
+    "status": "ok",
+    "duration_s": 0.1,
+    "commit_sha": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0"
+   }
+  ],
+  "AC11": [
+   {
+    "kind": "cast",
+    "path": "media/local/AC11/terminal.cast",
+    "bytes": 3548,
+    "sha256": "ccd6613fa71159f0438a1830b2a3b80bbf45bce18a421e7b1f5448b58b78d46b",
+    "status": "ok",
+    "duration_s": 6.7,
+    "commit_sha": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0"
+   }
+  ],
+  "AC12": [
+   {
+    "kind": "cast",
+    "path": "media/local/AC12/terminal.cast",
+    "bytes": 2511,
+    "sha256": "7daaba6c2f94a650b36669f29a0016eab06382727fd28c279f0844f1d049c651",
+    "status": "ok",
+    "duration_s": 1.8,
+    "commit_sha": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0"
+   }
   ]
  },
  "unassigned": [],
@@ -78,7 +78,7 @@
   "mp4: agg not on PATH - casts only (xpm doctor names the install)"
  ],
  "run_acs": [
-  "AC7"
+  "AC12"
  ],
  "recorders": {
   "cast": "asciinema==2.4.0"

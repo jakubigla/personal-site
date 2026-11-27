@@ -1,9 +1,9 @@
 {
   "ticket_key": "PS-2",
   "branch": "feature/PS-2-the-site-builds-from-one-content-file",
-  "local_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+  "local_sha": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0",
   "nonprd_sha": null,
-  "captured": "2026-11-27T16:33:21Z",
+  "captured": "2026-11-27T18:09:20Z",
   "exercisers_dispatched": [
     "web",
     "local"
@@ -349,11 +349,13 @@
       "id": "AC7",
       "web": {
         "display_name": "Web",
-        "verdict": "waiting_setup"
+        "verdict": "waiting_setup",
+        "commit_sha": null
       },
       "local": {
         "display_name": "Local tooling",
-        "verdict": "waiting_setup"
+        "verdict": "waiting_setup",
+        "commit_sha": null
       },
       "text": "EN-001 AC7 foundation"
     },
@@ -371,34 +373,41 @@
       },
       "local": {
         "display_name": "Local tooling",
-        "text": "Foundation (judgment) ...",
-        "command": "xpm evidence record --surface local --evidence-dir .xpm/state/evidence/PS-2 -- bash .xpm/state/evidence/PS-2/exercise-local.sh",
+        "text": "Foundation (judgment): for each component web and infra, the module layout, the first ADRs, the import boundaries and how much CI it gets follow its tier and its blueprint's knowledge",
+        "command": "xpm evidence record --surface local --evidence-dir .xpm/state/evidence/PS-2 -- bash exercise-local.sh",
         "paths": [
-          "apps/web/",
-          "infra/",
           "docs/adr/",
+          "docs/architecture.md",
+          ".github/workflows/ci.yml",
           "mise.toml",
-          ".github/workflows/ci.yml"
+          ".pre-commit-config.yaml",
+          "apps/web/package.json",
+          "apps/web/src/",
+          "infra/"
         ],
-        "raw_artifact": "--- layout\napps/web/src:\ncontent\ndesign\nhead\nlayouts\npages\nsections\n\ndocs/adr:\n0001-two-components-web-and-infra.md\n0002-astro-static-site-framework.md\n0003-yaml-content-file-with-zod-schema.md\n0004-same-origin-act-1-gate-script.md\n0005-javascript-budget-50kb.md\n0006-low-power-thresholds-and-frame-budget.md\n0007-playwright-renders-cv-pdf-and-og-image.md\n0008-fresh-hosting-terraform.md\n0009-s3-state-backend-native-locking.md\n0010-attended-terraform-applies.md\n0011-never-delete-hashed-assets.md\n0012-github-actions-failure-email.md\n0013-client-name-denylist-secret-fail-closed.md\n0014-automated-check-toolchain.md\n0015-design-system-capability-tag.md\n0016-main-regression-job-ci-web.md\n\ninfra/environments/prod:\nproviders.tf\nversions.tf\n--- gates in mise\n9:[tasks.\"web:install\"]\n14:[tasks.\"web:dev\"]\n19:[tasks.\"web:build\"]\n24:[tasks.\"web:lint\"]\n29:[tasks.\"web:test\"]\n34:[tasks.\"web:e2e-install\"]\n39:[tasks.\"web:e2e\"]\n44:[tasks.\"infra:fmt\"]\n48:[tasks.\"infra:validate\"]\n53:[tasks.\"infra:lint\"]\n63:[tasks.\"repo:lint\"]\n67:[tasks.\"repo:secrets\"]\n71:[tasks.\"repo:denylist\"]\n75:[tasks.\"repo:test\"]\n--- tflint/eslint config\napps/web/eslint.config.js\ninfra/.tflint.hcl\n--- ADR count\n      16\n--- repo knowledge gates: actionlint, zizmor\nmise.toml:7:gitleaks = \"8.30.1\"\nmise.toml:69:run = \"gitleaks git --redact --no-banner .\"",
+        "raw_artifact": "--- tier chosen (ADR-0001)\n21:Chosen option: \"web (web-frontend, apps/web, astro), infra (terraform, infra, aws)\", because static files only (NFR-018) plus Terraform hosting (NFR-020) make two deployable units; plain aws stack because it is one site, one account, one environment (foundation.md section 1); starter tier until section 1 revisits it.\n--- workflows (repo-wide: one)\nci.yml\n--- jobs\n11:  push:\n25:  repo:\n60:  web:\n92:  deploy:\n111:  infra:\n134:  ci-ok:\n--- web layout\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/content:\nload.ts\nschema.test.ts\nschema.ts\n\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/design:\ntokens.css\n\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/head:\nHead.astro\n\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/layouts:\nBase.astro\n\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/pages:\nindex.astro\n\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/sections:\nFooter.astro\nHero.astro\nHowIDeliver.astro\n--- infra layout\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/infra/bootstrap:\nmain.tf\n\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/infra/environments:\nprod\n\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/infra/modules:\ncost-guard\nsite-hosting\n--- module versions.tf / provider block in modules (must be none)\nno provider/backend in modules\nls: /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/infra/modules/*/versions.tf: No such file or directory\n--- import boundaries: motion/graph/gate dirs must not exist or import content; sections not imported\nls: /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/graph: No such file or directory\nls: /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/motion: No such file or directory\nno non-page imports of sections\ndesign/head import content check done\n--- one owner per tool: prettier/eslint/tsc pins\n11:    \"lint\": \"eslint .\",\n12:    \"test\": \"vitest run\",\n13:    \"e2e\": \"playwright test\",\n14:    \"format:check\": \"prettier --check .\"\n24:    \"@eslint/js\": \"^10.0.1\",\n25:    \"@playwright/test\": \"^1.65.1\",\n27:    \"eslint\": \"^10.15.0\",\n28:    \"prettier\": \"^3.10.1\",\n29:    \"typescript\": \"~6.0.3\",\n30:    \"typescript-eslint\": \"^8.74.0\",\n31:    \"vitest\": \"^5.1.2\"\nno second pin in pre-commit\n--- pinned tools in mise.toml\n# The one place a tool version lives. CI installs from here, so a laptop and a runner match.\n[tools]\nnode = \"26.13.1\"\nterraform = \"1.17.2\"\ntflint = \"0.66.0\"\npre-commit = \"4.7.0\"\ngitleaks = \"8.30.1\"\nuv = \"0.12.5\"\n\"pipx:checkov\" = \"3.4.11\"\n\n--- state ignore lines\n14:*.tfstate\n15:*.tfstate.*\n17:.terraform/\n--- terraform_fmt hook\n37:      - id: terraform-fmt\n--- tflint config\nconfig {\n  call_module_type = \"local\"\n}\n\nplugin \"terraform\" {\n  enabled = true\n  preset  = \"recommended\"\n}\n--- lock files\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/package-lock.json\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/infra/bootstrap/.terraform.lock.hcl\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/infra/environments/prod/.terraform.lock.hcl\n--- no production-tier extras (actionlint/zizmor/sbom/canary)\nnone present\n--- standard-tier extras present?\nnone\n--- ci-ok\n2:# `mise run <task>` runs locally. ci-ok is the one required check and follows every job.\n9:    # report ci-ok as skipped, which GitHub counts as passing over an earlier red run.\n134:  ci-ok:\n135:    name: ci-ok\n\n--- (read after run) module version declarations\ninfra/modules/site-hosting/main.tf:2: required_version = \">= 1.10\"\ninfra/modules/cost-guard/main.tf:2: required_version = \">= 1.10\"\n",
         "verdict": "pass",
-        "verdict_reason": "Components have layout (apps/web/src, infra/environments/prod), 16 ADRs, tier-sized CI (one workflow, pinned mise tools); actionlint/zizmor are production-tier only and not required here",
-        "no_visual_reason": "tooling/config claim, no rendered state",
-        "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+        "no_visual_reason": "tooling and layout claim, no rendered state",
+        "verdict_reason": "Starter tier per ADR-0001; one workflow, one ci-ok, pinned tools in one place, no production extras; module layout and import boundaries hold (minor: modules declare versions in main.tf, not versions.tf)",
+        "commit_sha": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0",
         "media": [
           {
             "kind": "cast",
             "path": "media/local/AC8/terminal.cast",
-            "bytes": 2125,
-            "sha256": "9245222b7cc15271352875c12b9b6a16c72f51697f8b4dab6bba7d89cfeafdf2",
+            "bytes": 5285,
+            "sha256": "e67710fdf36109eb5d9172bcda9af025005b240e4d10409b5ff1833c574998d6",
             "status": "ok",
-            "duration_s": 0.0,
-            "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+            "duration_s": 0.1,
+            "commit_sha": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0"
           }
         ],
         "crosscheck": "no-claims"
       },
-      "text": "Foundation (judgment) ..."
+      "infra": {
+        "display_name": "Infrastructure (static checks)",
+        "verdict": "not_run"
+      },
+      "text": "Foundation (judgment): for each component web and infra, the module layout, the first ADRs, the import boundaries and how much CI it gets follow its tier and its blueprint's knowledge"
     },
     {
       "id": "AC9",
@@ -414,32 +423,38 @@
       },
       "local": {
         "display_name": "Local tooling",
-        "text": "Local run: one documented command starts the whole stack on a clean clone (EN-001 AC9)",
-        "command": "xpm evidence record --surface local -- bash exercise-local.sh",
+        "text": "Local run",
+        "command": "xpm evidence record --surface local --evidence-dir /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/.xpm/state/evidence/PS-2 -- bash /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/.xpm/state/evidence/PS-2/exercise-local.sh",
         "paths": [
           "README.md",
           "mise.toml",
-          "apps/web/"
+          "apps/web/package.json",
+          "apps/web/src/",
+          "apps/web/content/"
         ],
-        "raw_artifact": "$ git clone -q /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2 /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone\nexit=0\n$ /usr/bin/env -C /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone git log -1 --format=%H\ne98cee7b2d11fa93c2e679200f326d892b9eac09\nexit=0\n$ test ! -e /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone/apps/web/node_modules\nexit=0\n--- loopback URLs in README Run locally body\nhttp://localhost:4321\n(nothing exported)\n$ bound 300 mise -C /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone trust\nmise WARN  No untrusted config files found.\nexit=0\n$ bound 600 mise -C /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone install\nmise all tools are installed\nexit=0\n$ bound 600 mise -C /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone run web:install\n[web:install] $ npm ci --ignore-scripts\n\nadded 303 packages, and audited 304 packages in 2s\n\n105 packages are looking for funding\n  run `npm fund` for details\n\nfound 0 vulnerabilities\nexit=0\n--- web:dev\nHTTP/1.1 200 http://localhost:4321\n<h1 data-astro-cid-yig24ztu>\n--- stopped:\nport closed\n{\"message\":\"watching for file changes...\",\"label\":null,\"level\":\"info\"}\n{\"message\":\"[200] / 15ms\",\"label\":null,\"level\":\"info\"}\n{\"message\":\"[200] / 2ms\",\"label\":null,\"level\":\"info\"}\n[web:dev] ERROR sh exited with non-zero status: no exit status\n[web:dev] ERROR task failed\n$ bound 600 mise -C /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone run web:test\n[web:test] $ npm test\n\n> web@0.0.0 test\n> vitest run\n\n\n RUN  v5.1.2 /private/tmp/claude-501/-Users-jakubigla-Project-Repositories-Personal-personal-site--claude-worktrees-PS-2/eb505c7b-abb7-4aac-85da-b642502db128/scratchpad/run/clone/apps/web\n\n\n Test Files  3 passed (3)\n      Tests  23 passed (23)\n   Start at  17:28:32\n   Duration  7.04s (tests 98%, transform 1%, import 1%)\n\nexit=0\n",
-        "no_visual_reason": "tooling/handler-contract claim, no rendered state",
-        "verdict_reason": "clean clone at HEAD, nothing exported, web:install exit 0, web:dev served HTTP/1.1 200 on http://localhost:4321, port closed after stop, web:test 23 passed exit 0",
+        "raw_artifact": "clone exit 0\n1a3b7e2ff308a901c0f0e90df9988e31d19b9eb3\n== README Run locally section (to first ###)\n## Run locally\n\nNeeds [mise](https://mise.jdx.dev) and nothing else: it installs Node, Terraform, tflint,\npre-commit and gitleaks at the pinned versions. No environment variable is needed; the site reads only the\ncommitted content file, which holds published details only.\n\n1. `mise trust && mise install` - installs the pinned tools.\n2. `mise run web:install` - installs the web packages from the lockfile.\n3. `mise run web:dev` - serves the site at http://localhost:4321 and reloads on edits.\n4. Stop it with Ctrl-C in that terminal.\n\n== loopback URLs in section\nhttp://localhost:4321\nmise trusted /private/tmp/claude-501/ps2clone.D2UNC4/repo\ntrust exit 0\nmise all tools are installed\nmise install exit 0\n[web:install] $ npm ci --ignore-scripts\n\nadded 303 packages, and audited 304 packages in 2s\n\n105 packages are looking for funding\n  run `npm fund` for details\n\nfound 0 vulnerabilities\nweb:install exit 0\ncurl exit 0\nHTTP/1.1 200 OK\n1\n{\"message\":\"watching for file changes...\",\"label\":null,\"level\":\"info\"}\n{\"message\":\"[200] / 14ms\",\"label\":null,\"level\":\"info\"}\n{\"message\":\"[200] / 2ms\",\"label\":null,\"level\":\"info\"}\n[web:dev] ERROR sh exited with non-zero status: no exit status\n[web:dev] ERROR task failed\n[web:test] $ npm test\n\n> web@0.0.0 test\n> vitest run\n\n\n RUN  v5.1.2 /private/tmp/claude-501/ps2clone.D2UNC4/repo/apps/web\n\n\n Test Files  3 passed (3)\n      Tests  23 passed (23)\n   Start at  19:03:29\n   Duration  7.10s (tests 98%, import 1%, transform 1%)\n\nweb:test exit 0",
+        "verdict_reason": "Clean clone: mise install, web:install exit 0, web:dev served http://localhost:4321 with HTTP/1.1 200 OK (the only URL in the README section), web:test exit 0 with 23 passed, no env exported.",
         "verdict": "pass",
-        "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+        "no_visual_reason": "tooling/CLI transcript, no rendered state",
+        "commit_sha": "1a3b7e2ff308a901c0f0e90df9988e31d19b9eb3",
         "media": [
           {
             "kind": "cast",
             "path": "media/local/AC9/terminal.cast",
-            "bytes": 3865,
-            "sha256": "030d6cb4f27be1def1ec2be498ee6491dd04702871fb4ccc0c9d5e700edd4012",
+            "bytes": 2590,
+            "sha256": "79e09492cfa36de67f7900f5e2093921174f94463b5ff8db28611e0fa0a4fc74",
             "status": "ok",
-            "duration_s": 16.9,
-            "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+            "duration_s": 13.5,
+            "commit_sha": "1a3b7e2ff308a901c0f0e90df9988e31d19b9eb3"
           }
         ],
         "crosscheck": "no-wire"
       },
-      "text": "Local run: one documented command starts the whole stack on a clean clone (EN-001 AC9)"
+      "infra": {
+        "display_name": "Infrastructure (static checks)",
+        "verdict": "not_run"
+      },
+      "text": "Local run"
     },
     {
       "id": "AC10",
@@ -455,34 +470,37 @@
       },
       "local": {
         "display_name": "Local tooling",
-        "text": "Main regression ...",
-        "command": "xpm evidence record --surface local --evidence-dir .xpm/state/evidence/PS-2 -- bash .xpm/state/evidence/PS-2/exercise-local.sh",
+        "text": "Main regression",
+        "command": "xpm evidence record --surface local --evidence-dir /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/.xpm/state/evidence/PS-2 -- bash /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/.xpm/state/evidence/PS-2/exercise-local.sh",
         "paths": [
           ".github/workflows/ci.yml",
+          "docs/adr/0016-main-regression-job-ci-web.md",
           "apps/web/e2e/",
-          "apps/web/package.json",
-          "mise.toml",
-          "docs/adr/0016-main-regression-job-ci-web.md"
+          "apps/web/package.json"
         ],
-        "raw_artifact": "--- web job steps\n2:    name: web\n20:      - run: mise run web:install\n21:      - run: mise run web:lint\n22:      - run: mise run web:test\n23:      - run: mise run web:build\n24:      - run: mise run web:e2e-install\n25:      - run: mise run web:e2e\n--- triggers\n  pull_request:\n    # edited: the denylist reads the PR title, which a squash merge writes into main's history, so\n    # a title changed without a push must re-run every job. Skipping jobs on a body-only edit would\n    # report ci-ok as skipped, which GitHub counts as passing over an earlier red run.\n    types: [opened, synchronize, reopened, edited]\n  push:\n    branches: [main, 'xpm/land/**']\n\n--- e2e task and spec files\n39:[tasks.\"web:e2e\"]\n40-description = \"Browser specs against the production build\"\n41-dir = \"apps/web\"\n42-run = \"npm run e2e\"\npage.spec.ts\n12:    \"test\": \"vitest run\",\n13:    \"e2e\": \"playwright test\",\n--- deploy needs\n113:    needs: [repo, web, infra]",
+        "raw_artifact": "== triggers\n\non:\n  pull_request:\n    # edited: the denylist reads the PR title, which a squash merge writes into main's history, so\n    # a title changed without a push must re-run every job. Skipping jobs on a body-only edit would\n    # report ci-ok as skipped, which GitHub counts as passing over an earlier red run.\n    types: [opened, synchronize, reopened, edited]\n  push:\n    branches: [main, 'xpm/land/**']\n\npermissions:\n== web job steps\n20:      - run: mise run web:install\n21:      - run: mise run web:lint\n22:      - run: mise run web:test\n23:      - run: mise run web:build\n24:      - run: mise run web:e2e-install\n25:      - run: mise run web:e2e\n== deploy job\n5:    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DEPLOY_ROLE_ARN != ''\n6:    needs: [repo, web, infra]\n== web job has no paths filter or if\n0\n== playwright specs\npage.spec.ts\n13:    \"e2e\": \"playwright test\",\n== ADR-0016 exists\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/docs/adr/0016-main-regression-job-ci-web.md",
+        "verdict_reason": "ci.yml triggers on pull_request and push to main; web job runs web:e2e (Playwright) with no if-gate; deploy needs [repo, web, infra]; ADR-0016 exists.",
         "verdict": "pass",
-        "verdict_reason": "web job runs web:e2e (playwright test) after web:build on pull_request and push to main; deploy needs [repo, web, infra]",
-        "no_visual_reason": "tooling/config claim, no rendered state",
-        "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+        "no_visual_reason": "tooling/CLI transcript, no rendered state",
+        "commit_sha": "1a3b7e2ff308a901c0f0e90df9988e31d19b9eb3",
         "media": [
           {
             "kind": "cast",
             "path": "media/local/AC10/terminal.cast",
-            "bytes": 1548,
-            "sha256": "3e7eddd6a2ac5920ff2b9e914f54243b59fb673f4ca178706f8ab23d2aceae7d",
+            "bytes": 1684,
+            "sha256": "6552c23b2fb3554d6ae7f14246efef589e956120aba0ba788c6eafc7b1f4c9ce",
             "status": "ok",
             "duration_s": 0.0,
-            "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+            "commit_sha": "1a3b7e2ff308a901c0f0e90df9988e31d19b9eb3"
           }
         ],
         "crosscheck": "no-claims"
       },
-      "text": "Main regression ..."
+      "infra": {
+        "display_name": "Infrastructure (static checks)",
+        "verdict": "not_run"
+      },
+      "text": "Main regression"
     },
     {
       "id": "AC11",
@@ -498,34 +516,39 @@
       },
       "local": {
         "display_name": "Local tooling",
-        "text": "Skeleton follows docs/architecture.md: apps/web with content/en.yaml and Zod schema, infra root passes fmt/validate/tflint without credentials; deploy job skipped while the role variable is unset",
-        "command": "xpm evidence record --surface local -- bash exercise-local.sh",
+        "text": "The skeleton follows the module map and walking skeleton of docs/architecture.md: apps/web and an infra root that passes fmt, validate and tflint with no cloud credentials; the deploy job exists and is skipped while the deploy role variable is unset.",
+        "command": "xpm evidence record --surface local --evidence-dir .xpm/state/evidence/PS-2 -- bash exercise-local.sh",
         "paths": [
           "apps/web/",
           "infra/",
           "mise.toml",
           ".github/workflows/ci.yml",
-          "docs/architecture.md"
+          "docs/architecture.md",
+          ".xpm/state/evidence/PS-2/exercise-local.sh"
         ],
-        "raw_artifact": "$ ls /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/content/en.yaml /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/content\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/content/en.yaml\n\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/content:\nload.ts\nschema.test.ts\nschema.ts\nexit=0\n$ bound 120 mise -C /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2 run infra:fmt\n[infra:fmt] $ terraform fmt -recursive -check -diff infra\nexit=0\n$ bound 300 mise -C /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2 run infra:validate\n[infra:validate] $ terraform init -backend=false -input=false\nInitializing provider plugins...\n- Reusing version 6.74.0 of hashicorp/aws from the dependency lock file\n- Using previously-installed hashicorp/aws v6.74.0\n\nTerraform has been successfully initialized!\n\nYou may now begin working with Terraform. Try running \"terraform plan\" to see\nany changes that are required for your infrastructure. All Terraform commands\nshould now work.\n\nIf you ever set or change modules or backend configuration for Terraform,\nrerun this command to reinitialize your working directory. If you forget, other\ncommands will detect it and remind you to do so if necessary.\n[infra:validate] $ terraform validate\nSuccess! The configuration is valid.\n\nexit=0\n$ bound 300 mise -C /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2 run infra:lint\n[infra:lint] $ tflint --init --config=\"$PWD/.tflint.hcl\"\nAll plugins are already installed\n[infra:lint] $ tflint --chdir=environments/prod --config=\"$PWD/.tflint.hcl\"\nexit=0\n--- deploy gate\n$ grep -nE ^  deploy:|    if:  /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/.github/workflows/ci.yml\n73:        if: runner.environment == 'github-hosted'\n108:  deploy:\n112:    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DEPLOY_ROLE_ARN != ''\n129:    if: always()\nexit=0\n$ grep -n DEPLOY_ROLE_ARN /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/.github/workflows/ci.yml\n110:    # Inert until the attended first apply sets DEPLOY_ROLE_ARN (ADR-0010). Every check must pass\n112:    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DEPLOY_ROLE_ARN != ''\nexit=0\n--- no cloud creds in env\n(no AWS_ vars)\n",
-        "no_visual_reason": "tooling/handler-contract claim, no rendered state",
-        "verdict_reason": "en.yaml and schema.ts exist; infra:fmt, validate, lint all exit=0 with no AWS_ vars; deploy if requires vars.DEPLOY_ROLE_ARN != ''",
+        "raw_artifact": "--- skeleton files\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/astro.config.mjs\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/content/en.yaml\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/apps/web/src/content/schema.ts\n/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/infra/environments/prod/main.tf\n19:    \"astro\": \"^7.4.13\",\n21:    \"zod\": \"^4.6.7\"\n--- no AWS creds in env\nok\n--- mise run infra:fmt\nEXIT infra:fmt=0\n[infra:fmt] $ terraform fmt -recursive -check -diff infra\n--- mise run infra:validate\nEXIT infra:validate=0\n- Reusing version 6.74.0 of hashicorp/aws from the dependency lock file\n- Using previously-installed hashicorp/aws v6.74.0\n\nTerraform has been successfully initialized!\n\nYou may now begin working with Terraform. Try running \"terraform plan\" to see\nany changes that are required for your infrastructure. All Terraform commands\nshould now work.\n\nIf you ever set or change modules or backend configuration for Terraform,\nrerun this command to reinitialize your working directory. If you forget, other\ncommands will detect it and remind you to do so if necessary.\n[infra:validate] $ terraform -chdir=infra/environments/prod validate\nSuccess! The configuration is valid.\n\n--- mise run infra:lint\nEXIT infra:lint=0\n[infra:lint] $ tflint --init --config=\"$PWD/infra/.tflint.hcl\"\nAll plugins are already installed\n[infra:lint] $ tflint --chdir=infra/bootstrap --config=\"$PWD/infra/.tflint.hcl\"\n[infra:lint] $ tflint --chdir=infra/environments/prod --config=\"$PWD/infra/.tfl\u2026\n[infra:lint] $ tflint --chdir=infra/modules/site-hosting --config=\"$PWD/infra/.\u2026\n[infra:lint] $ tflint --chdir=infra/modules/cost-guard --config=\"$PWD/infra/.tf\u2026\n--- deploy job guard\n91-\n92:  deploy:\n93-    name: deploy\n94-    # Inert until the attended first apply sets DEPLOY_ROLE_ARN (ADR-0010). Every check must pass\n95-    # first: a failed denylist or secret scan must never reach the public site.\n94:    # Inert until the attended first apply sets DEPLOY_ROLE_ARN (ADR-0010). Every check must pass\n96:    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DEPLOY_ROLE_ARN != ''\n--- DEPLOY_ROLE_ARN variable set?\nCI_FALLBACK\tubuntu-latest\t2026-11-27T15:22:06Z\nCI_RUNNER\t[\"self-hosted\",\"site-mac\"]\t2026-11-27T09:54:27Z\n--- ci-ok accepts skipped\n146:            [ \"$r\" = \"success\" ] || [ \"$r\" = \"skipped\" ] || { echo \"a job ended $r\"; exit 1; }\n",
         "verdict": "pass",
-        "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+        "no_visual_reason": "tooling and layout claim, no rendered state",
+        "verdict_reason": "infra:fmt, infra:validate, infra:lint all EXIT 0 without AWS creds; deploy job gated on vars.DEPLOY_ROLE_ARN != '' and the variable is not listed; web skeleton files exist",
+        "commit_sha": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0",
         "media": [
           {
             "kind": "cast",
             "path": "media/local/AC11/terminal.cast",
-            "bytes": 3584,
-            "sha256": "62020f6049287196bb793702e89170f83509f2bc15d09d2c99277671fbb564ee",
+            "bytes": 3548,
+            "sha256": "ccd6613fa71159f0438a1830b2a3b80bbf45bce18a421e7b1f5448b58b78d46b",
             "status": "ok",
-            "duration_s": 3.2,
-            "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+            "duration_s": 6.7,
+            "commit_sha": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0"
           }
         ],
         "crosscheck": "no-claims"
       },
-      "text": "Skeleton follows docs/architecture.md: apps/web with content/en.yaml and Zod schema, infra root passes fmt/validate/tflint without credentials; deploy job skipped while the role variable is unset"
+      "infra": {
+        "display_name": "Infrastructure (static checks)",
+        "verdict": "not_run"
+      },
+      "text": "The skeleton follows the module map and walking skeleton of docs/architecture.md: apps/web and an infra root that passes fmt, validate and tflint with no cloud credentials; the deploy job exists and is skipped while the deploy role variable is unset."
     },
     {
       "id": "AC12",
@@ -541,33 +564,38 @@
       },
       "local": {
         "display_name": "Local tooling",
-        "text": "Negative: a denied term fails the CI denylist check without printing it, and the check fails closed when the secret is missing (ADR-0013)",
-        "command": "xpm evidence record --surface local -- bash exercise-local.sh",
+        "text": "Negative: a content file or fixture holding a term from the client-name denylist fails the CI denylist check without printing the term, and the check fails closed when the denylist secret is missing (ADR-0013).",
+        "command": "xpm evidence record --surface local --evidence-dir .xpm/state/evidence/PS-2 -- bash .xpm/state/evidence/PS-2/exercise-local.sh",
+        "raw_artifact": "--- CI wiring: secret fed to the check\n54:        run: mise run repo:denylist\n56:          DENYLIST: ${{ secrets.DENYLIST }}\n--- fixture repo: content file holding a placeholder term\n--- negative: denied term present\nEXIT=1\ndenylist-check: denied term in content.yaml\ndenylist-check: failed; terms are never printed\nTERM PRINTED: no\n--- fail closed: DENYLIST unset, no .denylist.local\nEXIT=2\ndenylist-check: no denylist found (set DENYLIST or create .denylist.local); failing closed\n--- fail closed: DENYLIST empty\nEXIT=2\ndenylist-check: no denylist found (set DENYLIST or create .denylist.local); failing closed\n--- positive control: clean file only\nEXIT=0\ndenylist-check: clean (1 files)\n--- mise run repo:test (behaviour tests)\nEXIT=0\n[repo:test] $ bash scripts/denylist-check.test.sh\nok   a denied term fails the check\nok   the term is never printed\nok   the offending file is named\nok   matching ignores case\nok   a denied term in a file name fails\nok   a file name holding a term is not echoed\nok   a clean tree passes\nok   a missing denylist fails closed\nok   an empty denylist fails closed\nok   a blank-only denylist fails closed\nok   the local file feeds the check\nok   the hook may skip when no list exists\nok   only the named files are scanned\nok   a named file holding a term fails\nok   a non-ASCII file name is still scanned\nok   a denied term in a non-ASCII file name fails\nok   a non-ASCII file name holding a term is not echoed\nok   a denied term in a commit message fails\nok   a message's term is never printed\nok   the offending commit is named\nok   commits outside the range are not read\nok   messages are read only when a range is given\nok   an unreadable range fails closed\nok   a denied term in the title fails\nok   the title's term is never printed\nok   a clean title passes\nall passed",
+        "verdict_reason": "Fixture with placeholder term exits 1 naming only the file, term not printed; unset and empty DENYLIST exit 2 failing closed; repo:test all passed.",
+        "verdict": "pass",
         "paths": [
           "scripts/denylist-check.sh",
           "scripts/denylist-check.test.sh",
+          "mise.toml",
           ".github/workflows/ci.yml",
-          "docs/adr/0013-client-name-denylist-secret-fail-closed.md"
+          ".xpm/state/evidence/PS-2/exercise-local.sh"
         ],
-        "raw_artifact": "$ bound 120 bash /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/scripts/denylist-check.test.sh\nok   a denied term fails the check\nok   the term is never printed\nok   the offending file is named\nok   matching ignores case\nok   a denied term in a file name fails\nok   a file name holding a term is not echoed\nok   a clean tree passes\nok   a missing denylist fails closed\nok   an empty denylist fails closed\nok   a blank-only denylist fails closed\nok   the local file feeds the check\nok   the hook may skip when no list exists\nok   only the named files are scanned\nok   a named file holding a term fails\nok   a non-ASCII file name is still scanned\nok   a denied term in a non-ASCII file name fails\nok   a non-ASCII file name holding a term is not echoed\nok   a denied term in a commit message fails\nok   a message's term is never printed\nok   the offending commit is named\nok   commits outside the range are not read\nok   messages are read only when a range is given\nok   an unreadable range fails closed\nok   a denied term in the title fails\nok   the title's term is never printed\nok   a clean title passes\nall passed\nexit=0\n--- content file with placeholder term\ndenylist-check: denied term in en.yaml\ndenylist-check: failed; terms are never printed\nexit=1\nterm not printed\n--- denylist secret missing\ndenylist-check: no denylist found (set DENYLIST or create .denylist.local); failing closed\nexit=2\n--- CI wiring\n$ grep -nE repo:denylist|DENYLIST /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-2/.github/workflows/ci.yml\n54:        run: mise run repo:denylist\n56:          DENYLIST: ${{ secrets.DENYLIST }}\n57:          DENYLIST_COMMITS: ${{ github.event_name == 'pull_request' && format('{0}..{1}', github.event.pull_request.base.sha, github.event.pull_request.head.sha) || '' }}\n58:          DENYLIST_TITLE: ${{ github.event.pull_request.title }}\nexit=0\n",
-        "no_visual_reason": "tooling/handler-contract claim, no rendered state",
-        "verdict_reason": "script tests all passed incl. fail-closed; placeholder term in en.yaml exit=1 with 'term not printed'; missing DENYLIST exit=2 failing closed",
-        "verdict": "pass",
-        "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09",
+        "no_visual_reason": "CLI exit codes and output; no rendered state",
+        "commit_sha": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0",
         "media": [
           {
             "kind": "cast",
             "path": "media/local/AC12/terminal.cast",
-            "bytes": 2874,
-            "sha256": "7be5c788034b37a53c80329a68c4baf9d5c15ead0373ed91d24886b1d78dfb79",
+            "bytes": 2511,
+            "sha256": "7daaba6c2f94a650b36669f29a0016eab06382727fd28c279f0844f1d049c651",
             "status": "ok",
-            "duration_s": 1.4,
-            "commit_sha": "e98cee7b2d11fa93c2e679200f326d892b9eac09"
+            "duration_s": 1.8,
+            "commit_sha": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0"
           }
         ],
         "crosscheck": "no-claims"
       },
-      "text": "Negative: a denied term fails the CI denylist check without printing it, and the check fails closed when the secret is missing (ADR-0013)"
+      "infra": {
+        "display_name": "Infrastructure (static checks)",
+        "verdict": "not_run"
+      },
+      "text": "Negative: a content file or fixture holding a term from the client-name denylist fails the CI denylist check without printing the term, and the check fails closed when the denylist secret is missing (ADR-0013)."
     },
     {
       "id": "AC13",
