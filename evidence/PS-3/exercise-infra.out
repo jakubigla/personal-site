@@ -1,0 +1,608 @@
++ bash /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/policies/check.sh --require-budget /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/environments/prod
++ echo CHECK_PROD_EXIT=0
++ bash /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/policies/check.sh /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap
++ echo CHECK_BOOTSTRAP_EXIT=0
++ bash /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/policies/test.sh
++ echo TEST_EXIT=0
++ echo '=== AC1 ==='
+=== AC1 ===
++ terraform fmt -check -recursive /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra
++ echo FMT_EXIT=0
+FMT_EXIT=0
++ for d in bootstrap environments/prod
++ terraform -chdir=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap init -backend=false -input=false
+Initializing provider plugins...
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Using previously-installed hashicorp/aws v6.74.0
+
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
++ echo INIT_EXIT=0
+INIT_EXIT=0
++ terraform -chdir=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap validate
+Success! The configuration is valid.
+
++ echo VALIDATE_EXIT=0
+VALIDATE_EXIT=0
++ for d in bootstrap environments/prod
++ terraform -chdir=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/environments/prod init -backend=false -input=false
+Initializing modules...
+
+Initializing provider plugins...
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Using previously-installed hashicorp/aws v6.74.0
+
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
++ echo INIT_EXIT=0
+INIT_EXIT=0
++ terraform -chdir=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/environments/prod validate
+Success! The configuration is valid.
+
++ echo VALIDATE_EXIT=0
+VALIDATE_EXIT=0
++ for d in infra/bootstrap infra/environments/prod infra/modules/site-hosting infra/modules/cost-guard
++ tflint --chdir=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap --config=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/.tflint.hcl
++ echo 'TFLINT_EXIT=0 infra/bootstrap'
+TFLINT_EXIT=0 infra/bootstrap
++ for d in infra/bootstrap infra/environments/prod infra/modules/site-hosting infra/modules/cost-guard
++ tflint --chdir=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/environments/prod --config=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/.tflint.hcl
++ echo 'TFLINT_EXIT=0 infra/environments/prod'
+TFLINT_EXIT=0 infra/environments/prod
++ for d in infra/bootstrap infra/environments/prod infra/modules/site-hosting infra/modules/cost-guard
++ tflint --chdir=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting --config=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/.tflint.hcl
++ echo 'TFLINT_EXIT=0 infra/modules/site-hosting'
+TFLINT_EXIT=0 infra/modules/site-hosting
++ for d in infra/bootstrap infra/environments/prod infra/modules/site-hosting infra/modules/cost-guard
++ tflint --chdir=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/cost-guard --config=/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/.tflint.hcl
++ echo 'TFLINT_EXIT=0 infra/modules/cost-guard'
+TFLINT_EXIT=0 infra/modules/cost-guard
++ echo '=== AC2 ==='
+=== AC2 ===
++ cat /var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.DG0pZFVBxB/check.out
+policies pass
+CHECK_PROD_EXIT=0
+policies pass
+CHECK_BOOTSTRAP_EXIT=0
++ cat /var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.DG0pZFVBxB/test.out
+ok   public-bucket rejected by CKV_AWS_53
+ok   open-bucket-policy rejected by CKV_PS_001
+ok   unscoped-bucket-policy rejected by CKV_PS_001
+ok   no-oac rejected by CKV_PS_002
+ok   plain-http rejected by CKV_PS_003
+ok   old-tls rejected by CKV_PS_003
+ok   headers-incomplete rejected by CKV_PS_004
+ok   no-custom-404 rejected by CKV_PS_005
+ok   no-www-redirect rejected by CKV_PS_006
+ok   waf rejected by CKV_PS_007
+ok   nat-gateway rejected by CKV_PS_007
+ok   compute rejected by CKV_PS_007
+ok   logging rejected by CKV_PS_008
+ok   realtime-logging rejected by CKV_PS_008
+ok   log-store rejected by CKV_PS_008
+ok   budget-wrong rejected by CKV_PS_009
+ok   budget-missing rejected by CKV_PS_009 presence
+policies pass
+policies pass
+TEST_EXIT=0
++ grep -n -E 'block_public|restrict_public|origin_access_control|aws_s3_bucket_policy|cloudfront.amazonaws.com|SourceArn' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf
+52:  block_public_acls       = true
+53:  block_public_policy     = true
+55:  restrict_public_buckets = true
+74:resource "aws_s3_bucket_policy" "site" {
+82:        Principal = { Service = "cloudfront.amazonaws.com" }
+86:          StringEquals = { "AWS:SourceArn" = aws_cloudfront_distribution.site.arn }
+139:resource "aws_cloudfront_origin_access_control" "site" {
+141:  origin_access_control_origin_type = "s3"
+212:    origin_access_control_id = aws_cloudfront_origin_access_control.site.id
++ echo '=== AC3 ==='
+=== AC3 ===
++ cat /var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.DG0pZFVBxB/test.out
+ok   public-bucket rejected by CKV_AWS_53
+ok   open-bucket-policy rejected by CKV_PS_001
+ok   unscoped-bucket-policy rejected by CKV_PS_001
+ok   no-oac rejected by CKV_PS_002
+ok   plain-http rejected by CKV_PS_003
+ok   old-tls rejected by CKV_PS_003
+ok   headers-incomplete rejected by CKV_PS_004
+ok   no-custom-404 rejected by CKV_PS_005
+ok   no-www-redirect rejected by CKV_PS_006
+ok   waf rejected by CKV_PS_007
+ok   nat-gateway rejected by CKV_PS_007
+ok   compute rejected by CKV_PS_007
+ok   logging rejected by CKV_PS_008
+ok   realtime-logging rejected by CKV_PS_008
+ok   log-store rejected by CKV_PS_008
+ok   budget-wrong rejected by CKV_PS_009
+ok   budget-missing rejected by CKV_PS_009 presence
+policies pass
+policies pass
+TEST_EXIT=0
++ grep -n -E 'viewer_protocol_policy|response_headers_policy|strict_transport|content_security|content_type_options|referrer_policy|frame_options|custom_error_response|404' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf
+146:resource "aws_cloudfront_response_headers_policy" "security" {
+150:    strict_transport_security {
+156:    content_security_policy {
+157:      content_security_policy = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+160:    content_type_options {
+163:    referrer_policy {
+164:      referrer_policy = "strict-origin-when-cross-origin"
+167:    frame_options {
+217:    viewer_protocol_policy     = "redirect-to-https"
+222:    response_headers_policy_id = aws_cloudfront_response_headers_policy.security.id
+230:  # A private bucket answers 403 for a missing key, so both codes serve the 404 page.
+231:  custom_error_response {
+233:    response_code         = 404
+234:    response_page_path    = "/404.html"
+238:  custom_error_response {
+239:    error_code            = 404
+240:    response_code         = 404
+241:    response_page_path    = "/404.html"
++ echo '=== AC4 ==='
+=== AC4 ===
++ cat /var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.DG0pZFVBxB/test.out
+ok   public-bucket rejected by CKV_AWS_53
+ok   open-bucket-policy rejected by CKV_PS_001
+ok   unscoped-bucket-policy rejected by CKV_PS_001
+ok   no-oac rejected by CKV_PS_002
+ok   plain-http rejected by CKV_PS_003
+ok   old-tls rejected by CKV_PS_003
+ok   headers-incomplete rejected by CKV_PS_004
+ok   no-custom-404 rejected by CKV_PS_005
+ok   no-www-redirect rejected by CKV_PS_006
+ok   waf rejected by CKV_PS_007
+ok   nat-gateway rejected by CKV_PS_007
+ok   compute rejected by CKV_PS_007
+ok   logging rejected by CKV_PS_008
+ok   realtime-logging rejected by CKV_PS_008
+ok   log-store rejected by CKV_PS_008
+ok   budget-wrong rejected by CKV_PS_009
+ok   budget-missing rejected by CKV_PS_009 presence
+policies pass
+policies pass
+TEST_EXIT=0
++ grep -n -i -E 'www|aws_cloudfront_function|301|Location' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf
+13:  description = "Apex domain; the www host redirects to it"
+24:    Attach the apex and www aliases to the distribution and point their records at it. False
+33:  www = "www.${var.domain}"
+110:  subject_alternative_names = [local.www]
+174:# Viewer-request function: www redirects to the apex; directory paths resolve to
+176:resource "aws_cloudfront_function" "router" {
+184:      if (host === "${local.www}") {
+186:          statusCode: 301,
+188:          headers: { location: { value: "https://${var.domain}" + request.uri } }
+206:  aliases             = var.serve_domain ? [var.domain, local.www] : []
+226:      function_arn = aws_cloudfront_function.router.arn
+264:    for pair in setproduct([var.domain, local.www], ["A", "AAAA"]) :
++ echo '=== AC5 ==='
+=== AC5 ===
++ cat /var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.DG0pZFVBxB/check.out
+policies pass
+CHECK_PROD_EXIT=0
+policies pass
+CHECK_BOOTSTRAP_EXIT=0
++ grep -n -E '^resource' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/cost-guard/main.tf /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/environments/prod/main.tf /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap/main.tf
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/cost-guard/main.tf:22:resource "aws_budgets_budget" "monthly" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:46:resource "aws_s3_bucket" "site" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:50:resource "aws_s3_bucket_public_access_block" "site" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:58:resource "aws_s3_bucket_ownership_controls" "site" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:65:resource "aws_s3_bucket_server_side_encryption_configuration" "site" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:74:resource "aws_s3_bucket_policy" "site" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:107:resource "aws_acm_certificate" "site" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:118:resource "aws_route53_record" "validation" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:131:resource "aws_acm_certificate_validation" "site" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:139:resource "aws_cloudfront_origin_access_control" "site" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:146:resource "aws_cloudfront_response_headers_policy" "security" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:176:resource "aws_cloudfront_function" "router" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:201:resource "aws_cloudfront_distribution" "site" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf:262:resource "aws_route53_record" "alias" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap/main.tf:17:resource "aws_s3_bucket" "state" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap/main.tf:25:resource "aws_s3_bucket_versioning" "state" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap/main.tf:32:resource "aws_s3_bucket_server_side_encryption_configuration" "state" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap/main.tf:41:resource "aws_s3_bucket_public_access_block" "state" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap/main.tf:49:resource "aws_s3_bucket_ownership_controls" "state" {
+/Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap/main.tf:56:resource "aws_s3_bucket_policy" "state" {
++ grep -n -E 'aws_nat_gateway|aws_wafv2|aws_instance|aws_lambda_function|aws_ecs|aws_eks' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/cost-guard/main.tf /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/environments/prod/main.tf /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap/main.tf
++ echo BANNED_GREP_EXIT=1
+BANNED_GREP_EXIT=1
++ echo '=== AC6 ==='
+=== AC6 ===
++ cat -n /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/docs/runbooks/hosting-first-apply.md
+     1	# Runbook: first apply and DNS cut-over
+     2	
+     3	Every Terraform apply is attended (ADR-0010). Nothing here runs in CI and CI holds no AWS
+     4	credential for these roots. You need: AWS credentials for the owner's account with rights to
+     5	create S3, CloudFront, ACM, Route 53 records and Budgets; Terraform 1.10 or newer; the
+     6	Route 53 hosted zone for `jacops.pl`, which already exists.
+     7	
+     8	The bucket names (`jacops-pl-terraform-state`, `jacops-pl-site`) are global; if S3 reports one
+     9	taken, change it in `infra/bootstrap/main.tf` (and the `backend` block in
+    10	`infra/environments/prod/main.tf`) or in the `site_hosting` module call, and commit that.
+    11	
+    12	## 1. Check the code locally
+    13	
+    14	```bash
+    15	terraform fmt -check -recursive infra
+    16	infra/policies/test.sh
+    17	```
+    18	
+    19	## 2. Bootstrap the state bucket (once)
+    20	
+    21	```bash
+    22	cd infra/bootstrap
+    23	terraform init
+    24	terraform apply
+    25	```
+    26	
+    27	Its own state stays in `terraform.tfstate` in this directory. It is gitignored: keep it, never
+    28	commit it. The bucket is versioned, encrypted, private and has `prevent_destroy`.
+    29	
+    30	## 3. First apply of the hosting root
+    31	
+    32	The current page is served by the old 2021 distribution, which holds the `jacops.pl` and
+    33	`www.jacops.pl` aliases. CloudFront refuses to create a distribution with an alias another
+    34	distribution already uses (`CNAMEAlreadyExists`), so the first apply runs with
+    35	`serve_domain=false`: the distribution gets no aliases and the apex and www records are left
+    36	alone. Everything else, the bucket policy included, is created.
+    37	
+    38	```bash
+    39	cd infra/environments/prod
+    40	terraform init
+    41	terraform plan -var serve_domain=false -out=hosting.tfplan
+    42	```
+    43	
+    44	Read the plan. Expect new: the site bucket, its public access block, ownership, encryption and
+    45	policy, the CloudFront distribution with no aliases, origin access control, response headers
+    46	policy, the router function, the certificate and its validation records, and the budget.
+    47	Expect no apex or www record, and no WAF, NAT gateway, compute or logging resource. Then:
+    48	
+    49	```bash
+    50	terraform apply hosting.tfplan
+    51	```
+    52	
+    53	The apply creates the validation records, waits for the certificate and creates the
+    54	distribution. The old page stays live: nothing it uses is touched.
+    55	
+    56	Confirm the budget subscription: AWS emails the contact address; open it if it asks you to
+    57	confirm.
+    58	
+    59	## 4. Upload the site and check the new distribution
+    60	
+    61	Upload the built site to the bucket named by `terraform output site_bucket` (the deploy job
+    62	does this once its role exists), then invalidate if needed. Check the distribution on its own
+    63	`*.cloudfront.net` name (it has no alias yet, so a `jacops.pl` host header would reach the old
+    64	distribution):
+    65	
+    66	```bash
+    67	H=$(terraform output -raw distribution_domain)
+    68	curl -sI https://"$H"/ | head -20             # 200 with the new site
+    69	curl -sI https://"$H"/does-not-exist        # 404 with the custom page
+    70	curl -sI http://"$H"/                         # 301 to https
+    71	```
+    72	
+    73	You should see `strict-transport-security`, `content-security-policy`,
+    74	`x-content-type-options`, `referrer-policy` and `x-frame-options` on every response. Do not go
+    75	on until all three answer as shown.
+    76	
+    77	## 5. Cut-over: move the aliases, then the records
+    78	
+    79	The cut-over is the alias move. `aws cloudfront associate-alias` moves an alias from the old
+    80	distribution to the new one in one call; the new one's certificate covers both names. From
+    81	that moment CloudFront serves the alias from the new distribution, even to clients whose DNS
+    82	still points at the old one, so the records can follow without downtime.
+    83	
+    84	1. Note the old state so the move can be reversed:
+    85	
+    86	   ```bash
+    87	   ZONE=$(aws route53 list-hosted-zones-by-name --dns-name jacops.pl \
+    88	     --query 'HostedZones[0].Id' --output text)
+    89	   aws route53 list-resource-record-sets --hosted-zone-id "$ZONE" > old-records.json
+    90	   OLD=<old distribution id>     # aws cloudfront list-distributions; the one with the aliases
+    91	   OLD_H=$(aws cloudfront get-distribution --id "$OLD" --query 'Distribution.DomainName' --output text)
+    92	   NEW=$(terraform output -raw distribution_id)
+    93	   NEW_H=$(terraform output -raw distribution_domain)
+    94	   ```
+    95	
+    96	   Keep `old-records.json` outside the repo.
+    97	2. Lower the TTL of any non-alias apex or www record to 60 seconds and wait the old TTL.
+    98	3. Prove you own the names to CloudFront: create `_jacops.pl` and `_www.jacops.pl` TXT records
+    99	   whose value is `$NEW_H`:
+   100	
+   101	   ```bash
+   102	   for n in _jacops.pl _www.jacops.pl; do
+   103	     aws route53 change-resource-record-sets --hosted-zone-id "$ZONE" --change-batch \
+   104	       '{"Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'"$n"'","Type":"TXT","TTL":60,"ResourceRecords":[{"Value":"\"'"$NEW_H"'\""}]}}]}'
+   105	   done
+   106	   ```
+   107	
+   108	4. Move the aliases:
+   109	
+   110	   ```bash
+   111	   aws cloudfront associate-alias --target-distribution-id "$NEW" --alias jacops.pl
+   112	   aws cloudfront associate-alias --target-distribution-id "$NEW" --alias www.jacops.pl
+   113	   ```
+   114	
+   115	5. Point the records at the new distribution with the full apply (`serve_domain` defaults to
+   116	   true). The plan must show the four apex and www `A`/`AAAA` records created and **no change to
+   117	   the distribution**: its aliases already match after the move. A plan that changes the
+   118	   distribution means the move did not complete; stop and check `associate-alias`.
+   119	
+   120	   ```bash
+   121	   terraform plan -out=hosting.tfplan
+   122	   terraform apply hosting.tfplan
+   123	   ```
+   124	
+   125	6. Verify `https://jacops.pl/` serves the new site, `https://www.jacops.pl/` redirects to the
+   126	   apex with a 301, and `http://jacops.pl/` redirects to HTTPS.
+   127	7. Rollback if anything is wrong: set the two TXT records' value to `$OLD_H`, run
+   128	   `associate-alias --target-distribution-id "$OLD"` for both names (the old distribution's
+   129	   certificate still covers them), then restore the apex and www records from
+   130	   `old-records.json`, and investigate. Do not run `terraform apply` again until the cause is
+   131	   fixed: with `serve_domain` true it re-points the records at the new distribution.
+   132	8. Delete the two `_jacops.pl` and `_www.jacops.pl` TXT records once the site is verified.
+   133	
+   134	## 6. Retire the old site
+   135	
+   136	Keep the old resources for at least a week, until the new site has served traffic cleanly.
+   137	The old 2021 Terraform state still holds the apex and www records, which now alias the new
+   138	distribution through `allow_overwrite`: a `terraform destroy` there would delete them and take
+   139	the site offline.
+   140	
+   141	1. In the old stack's root, remove its record resources from its state first, so no destroy
+   142	   can touch them:
+   143	
+   144	   ```bash
+   145	   terraform state list | grep aws_route53_record    # every record the old state holds
+   146	   terraform state rm <each apex and www record address>
+   147	   ```
+   148	
+   149	   Keep any record the old state holds that is not the apex or www site record (MX, TXT,
+   150	   verification) out of the destroy the same way, or leave the old stack in place and delete the
+   151	   old distribution and bucket by hand instead.
+   152	2. Disable, then delete, the old distribution (it has no aliases left), and empty and delete the
+   153	   old bucket.
+   154	3. Remove every old record that served the old site, by name and type, as listed in
+   155	   `old-records.json`: anything that pointed at the old distribution (`$OLD_H`) or at an S3
+   156	   website or bucket endpoint, other than the four records step 5 replaced.
+   157	4. Check that no record dangles: every CloudFront or S3 target left in the zone must be the new
+   158	   distribution. This prints nothing when the zone is clean:
+   159	
+   160	   ```bash
+   161	   aws route53 list-resource-record-sets --hosted-zone-id "$ZONE" --output json \
+   162	     | jq -r --arg new "$NEW_H." '.ResourceRecordSets[]
+   163	         | {n: .Name, t: .Type, v: ((.AliasTarget.DNSName // "") + " " + ([.ResourceRecords[]?.Value] | join(" ")))}
+   164	         | select(.v | test("cloudfront\\.net|amazonaws\\.com"; "i"))
+   165	         | select((.v | ascii_downcase | ltrimstr(" ") | rtrimstr(" ")) != ($new | ascii_downcase))
+   166	         | "\(.n) \(.t) \(.v)"'
+   167	   ```
+   168	
+   169	## 7. After the cut-over
+   170	
+   171	Raise the TTLs if you lowered them, and check the budget exists in AWS Budgets at 2 USD per
+   172	month with alerts at 80% and 100% of actual spend. Later infrastructure changes follow steps
+   173	1 and 3 only, without `-var serve_domain=false`: once the aliases have moved, the default
+   174	keeps them and the records in place.
++ echo '=== AC7 ==='
+=== AC7 ===
++ cat /var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.DG0pZFVBxB/check.out
+policies pass
+CHECK_PROD_EXIT=0
+policies pass
+CHECK_BOOTSTRAP_EXIT=0
++ cat -n /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/cost-guard/main.tf
+     1	terraform {
+     2	  required_version = ">= 1.10"
+     3	  required_providers {
+     4	    aws = {
+     5	      source  = "hashicorp/aws"
+     6	      version = "~> 6.74"
+     7	    }
+     8	  }
+     9	}
+    10	
+    11	variable "email" {
+    12	  description = "Address that receives the budget notifications"
+    13	  type        = string
+    14	}
+    15	
+    16	variable "limit_usd" {
+    17	  description = "Monthly cost cap in USD"
+    18	  type        = string
+    19	  default     = "2"
+    20	}
+    21	
+    22	resource "aws_budgets_budget" "monthly" {
+    23	  name         = "site-monthly-cost"
+    24	  budget_type  = "COST"
+    25	  time_unit    = "MONTHLY"
+    26	  limit_amount = var.limit_usd
+    27	  limit_unit   = "USD"
+    28	
+    29	  notification {
+    30	    comparison_operator        = "GREATER_THAN"
+    31	    threshold                  = 80
+    32	    threshold_type             = "PERCENTAGE"
+    33	    notification_type          = "ACTUAL"
+    34	    subscriber_email_addresses = [var.email]
+    35	  }
+    36	
+    37	  notification {
+    38	    comparison_operator        = "GREATER_THAN"
+    39	    threshold                  = 100
+    40	    threshold_type             = "PERCENTAGE"
+    41	    notification_type          = "ACTUAL"
+    42	    subscriber_email_addresses = [var.email]
+    43	  }
+    44	}
++ grep -n -E 'cost_guard|budget|email|contact' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/environments/prod/main.tf
+48:module "cost_guard" {
+51:  # The public contact address the page publishes.
+52:  email = "jakub.igla@gmail.com"
++ echo '=== AC8 ==='
+=== AC8 ===
++ cat /var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.DG0pZFVBxB/test.out
+ok   public-bucket rejected by CKV_AWS_53
+ok   open-bucket-policy rejected by CKV_PS_001
+ok   unscoped-bucket-policy rejected by CKV_PS_001
+ok   no-oac rejected by CKV_PS_002
+ok   plain-http rejected by CKV_PS_003
+ok   old-tls rejected by CKV_PS_003
+ok   headers-incomplete rejected by CKV_PS_004
+ok   no-custom-404 rejected by CKV_PS_005
+ok   no-www-redirect rejected by CKV_PS_006
+ok   waf rejected by CKV_PS_007
+ok   nat-gateway rejected by CKV_PS_007
+ok   compute rejected by CKV_PS_007
+ok   logging rejected by CKV_PS_008
+ok   realtime-logging rejected by CKV_PS_008
+ok   log-store rejected by CKV_PS_008
+ok   budget-wrong rejected by CKV_PS_009
+ok   budget-missing rejected by CKV_PS_009 presence
+policies pass
+policies pass
+TEST_EXIT=0
++ grep -n -E 'logging|aws_cloudwatch|log_group|logs' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf
+257:  # No logging_config and no real-time log config: logging stays off (NFR-031).
++ echo LOG_GREP_EXIT=0
+LOG_GREP_EXIT=0
++ ls /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/policies/checks
+__init__.py
+__pycache__
+_conf.py
+banned_resources.py
+bucket_policy_cloudfront_only.py
+budget_configured.py
+distribution_custom_404.py
+distribution_https_only.py
+distribution_origin_access_control.py
+function_www_redirect.py
+logging_off.py
+response_headers_policy_complete.py
++ echo '=== AC9 ==='
+=== AC9 ===
++ cat -n /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap/main.tf
+     1	# Applied once by hand with local state; creates the bucket every other root keeps its
+     2	# state in (ADR-0009). Its own small state file stays on the owner's machine, never committed.
+     3	terraform {
+     4	  required_version = ">= 1.10"
+     5	  required_providers {
+     6	    aws = {
+     7	      source  = "hashicorp/aws"
+     8	      version = "~> 6.74"
+     9	    }
+    10	  }
+    11	}
+    12	
+    13	provider "aws" {
+    14	  region = "eu-central-1"
+    15	}
+    16	
+    17	resource "aws_s3_bucket" "state" {
+    18	  bucket = "jacops-pl-terraform-state"
+    19	
+    20	  lifecycle {
+    21	    prevent_destroy = true
+    22	  }
+    23	}
+    24	
+    25	resource "aws_s3_bucket_versioning" "state" {
+    26	  bucket = aws_s3_bucket.state.id
+    27	  versioning_configuration {
+    28	    status = "Enabled"
+    29	  }
+    30	}
+    31	
+    32	resource "aws_s3_bucket_server_side_encryption_configuration" "state" {
+    33	  bucket = aws_s3_bucket.state.id
+    34	  rule {
+    35	    apply_server_side_encryption_by_default {
+    36	      sse_algorithm = "AES256"
+    37	    }
+    38	  }
+    39	}
+    40	
+    41	resource "aws_s3_bucket_public_access_block" "state" {
+    42	  bucket                  = aws_s3_bucket.state.id
+    43	  block_public_acls       = true
+    44	  block_public_policy     = true
+    45	  ignore_public_acls      = true
+    46	  restrict_public_buckets = true
+    47	}
+    48	
+    49	resource "aws_s3_bucket_ownership_controls" "state" {
+    50	  bucket = aws_s3_bucket.state.id
+    51	  rule {
+    52	    object_ownership = "BucketOwnerEnforced"
+    53	  }
+    54	}
+    55	
+    56	resource "aws_s3_bucket_policy" "state" {
+    57	  bucket = aws_s3_bucket.state.id
+    58	  policy = jsonencode({
+    59	    Version = "2012-10-17"
+    60	    Statement = [{
+    61	      Sid       = "TlsOnly"
+    62	      Effect    = "Deny"
+    63	      Principal = "*"
+    64	      Action    = "s3:*"
+    65	      Resource  = [aws_s3_bucket.state.arn, "${aws_s3_bucket.state.arn}/*"]
+    66	      Condition = { Bool = { "aws:SecureTransport" = "false" } }
+    67	    }]
+    68	  })
+    69	
+    70	  depends_on = [aws_s3_bucket_public_access_block.state]
+    71	}
++ grep -n -E 'backend|use_lockfile|bucket|encrypt|key' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/environments/prod/main.tf
+11:  backend "s3" {
+12:    bucket       = "jacops-pl-terraform-state"
+13:    key          = "prod/terraform.tfstate"
+15:    encrypt      = true
+16:    use_lockfile = true
+44:  bucket_name  = "jacops-pl-site"
+55:output "site_bucket" {
+56:  value = module.site_hosting.bucket_name
++ git ls-files infra
++ grep -E 'tfstate|tfvars|\.terraform/'
++ echo 'STATE_FILES_COMMITTED_GREP_EXIT=1 (1 means none)'
+STATE_FILES_COMMITTED_GREP_EXIT=1 (1 means none)
++ grep -n -E '[0-9]{12}|AKIA[0-9A-Z]{16}' /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/bootstrap/main.tf /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/environments/prod/main.tf /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/site-hosting/main.tf /Users/jakubigla/Project-Repositories/Personal/personal-site/.claude/worktrees/PS-3/infra/modules/cost-guard/main.tf
++ echo 'ACCT_GREP_EXIT=1 (1 means none)'
+ACCT_GREP_EXIT=1 (1 means none)
++ echo '=== AC10 ==='
+=== AC10 ===
++ cat /var/folders/2s/16ndp1y154s9sh0l1b6t3gnm0000gn/T/tmp.DG0pZFVBxB/test.out
+ok   public-bucket rejected by CKV_AWS_53
+ok   open-bucket-policy rejected by CKV_PS_001
+ok   unscoped-bucket-policy rejected by CKV_PS_001
+ok   no-oac rejected by CKV_PS_002
+ok   plain-http rejected by CKV_PS_003
+ok   old-tls rejected by CKV_PS_003
+ok   headers-incomplete rejected by CKV_PS_004
+ok   no-custom-404 rejected by CKV_PS_005
+ok   no-www-redirect rejected by CKV_PS_006
+ok   waf rejected by CKV_PS_007
+ok   nat-gateway rejected by CKV_PS_007
+ok   compute rejected by CKV_PS_007
+ok   logging rejected by CKV_PS_008
+ok   realtime-logging rejected by CKV_PS_008
+ok   log-store rejected by CKV_PS_008
+ok   budget-wrong rejected by CKV_PS_009
+ok   budget-missing rejected by CKV_PS_009 presence
+policies pass
+policies pass
+TEST_EXIT=0
