@@ -1,0 +1,38 @@
+# Hook versions live here and nowhere else. xpm's own evidence is byte-exact capture, so no
+# hook that rewrites or rejects files touches it.
+exclude: ^(\.xpm|docs/xpm)/evidence/
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: check-executables-have-shebangs
+  - repo: https://github.com/jakubigla/xpm
+    rev: v0.21.0
+    hooks:
+      - id: xpm-sensitive-scan
+      - id: xpm-sensitive-scan-push
+  - repo: local
+    hooks:
+      - id: terraform-fmt
+        name: terraform fmt
+        entry: terraform fmt
+        language: system
+        files: \.tf$
+      - id: denylist
+        name: client-name denylist
+        # --optional: a laptop without a local list skips; CI runs the same script fail-closed.
+        entry: scripts/denylist-check.sh --optional
+        language: script
+        always_run: true
+        pass_filenames: false

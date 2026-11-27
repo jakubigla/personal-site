@@ -33,9 +33,35 @@ run = "npm test"
 [tasks."web:e2e-install"]
 description = "Install the Chromium that the browser specs use"
 dir = "apps/web"
-run = "npx playwright install chromium"
+run = "npx playwright install --with-deps chromium"
 
 [tasks."web:e2e"]
 description = "Browser specs against the production build"
 dir = "apps/web"
 run = "npm run e2e"
+
+[tasks."infra:fmt"]
+description = "Terraform format check"
+run = "terraform fmt -recursive -check -diff infra"
+
+[tasks."infra:validate"]
+description = "Validate the prod root without a backend or credentials"
+dir = "infra/environments/prod"
+run = ["terraform init -backend=false -input=false", "terraform validate"]
+
+[tasks."infra:lint"]
+description = "tflint over the prod root"
+dir = "infra"
+run = ["tflint --init", "tflint --chdir=environments/prod"]
+
+[tasks."repo:lint"]
+description = "Every pre-commit hook over every file"
+run = "pre-commit run --all-files"
+
+[tasks."repo:denylist"]
+description = "Client-name denylist over the tree; fails closed without DENYLIST"
+run = "scripts/denylist-check.sh"
+
+[tasks."repo:test"]
+description = "Behaviour tests for the repo's own scripts"
+run = "bash scripts/denylist-check.test.sh"
