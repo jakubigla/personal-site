@@ -16,3 +16,12 @@ static checks only (`mise run github:check`) and holds no credential.
    be recreated, so stop and add its import. The first plan must also show no change; anything else
    means the live setting differs from the code: fix the code.
 7. Apply only after a clean first plan.
+
+## Known limitation: unattributed-change approvals
+
+The live ruleset has `pull_request.require_extra_approval_for_unattributed_changes = true`. The
+integrations/github 6.13 provider has no such argument, so this stack cannot hold it. The first
+plan only imports the ruleset (0 to change), so nothing is lost then. After any later reviewed
+change to the ruleset, read the field back
+(`gh api repos/<owner>/<repo>/rulesets/<id> --jq '.rules[]|select(.type=="pull_request").parameters'`)
+and set it again if it reads false. Wire it once the provider supports it.

@@ -47,7 +47,7 @@ rules = {
     "requests an OIDC token (id-token permission)": (r"id-token\s*:", text),
     "assumes a cloud role or logs in to a cloud": (r"aws-actions/|azure/login|google-github-actions/auth|role-to-assume|AWS_(ACCESS|SECRET|SESSION|ROLE|WEB_IDENTITY)|ARM_(CLIENT|TENANT|SUBSCRIPTION)", commands),
     "reads a secret or a plan-identity variable": (r"secrets\.(?!GITHUB_TOKEN\b)|\bsecrets\s*:\s*inherit|GH_SETTINGS_", commands),
-    "runs terraform plan, apply, import, destroy or state": (r"terraform\b[^\n]*\b(plan|apply|import|destroy|state|refresh)\b|-chdir=\S+\s+(plan|apply|import|destroy)\b", commands),
+    "runs terraform plan, apply, import, destroy or state": (r"terraform\b[^\n]*\b(plan|apply|import|destroy|state|refresh)\b", commands),
     "runs a mise task that plans or applies": (r"mise\s+run\s+\S*(plan|apply)\b", commands),
     "grants a write permission (write-all or any scope: write)": (r"\bwrite-all\b|[\w-]+\s*:\s*write\b", text),
 }

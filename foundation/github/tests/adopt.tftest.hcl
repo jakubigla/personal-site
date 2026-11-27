@@ -38,6 +38,31 @@ run "defaults_manage_the_repository_as_xpm_sets_it_up" {
     condition     = github_repository_vulnerability_alerts.main.enabled && github_repository_dependabot_security_updates.main.enabled
     error_message = "Without adopt, Dependabot alerts and security updates are on."
   }
+
+  assert {
+    condition     = github_workflow_repository_permissions.main.default_workflow_permissions == "read" && !github_workflow_repository_permissions.main.can_approve_pull_request_reviews
+    error_message = "Without adopt, the workflow token is read-only and workflows cannot approve pull requests."
+  }
+
+  assert {
+    condition     = !github_repository.main.allow_merge_commit && github_repository.main.allow_squash_merge && !github_repository.main.allow_rebase_merge && github_repository.main.delete_branch_on_merge
+    error_message = "Without adopt, merging is squash only and merged branches are deleted."
+  }
+
+  assert {
+    condition     = github_repository_ruleset.default[0].enforcement == "active"
+    error_message = "Without adopt, the default ruleset is enforced, not just evaluated."
+  }
+
+  assert {
+    condition     = github_repository_ruleset.default[0].rules[0].deletion && github_repository_ruleset.default[0].rules[0].non_fast_forward && github_repository_ruleset.default[0].rules[0].required_linear_history
+    error_message = "The default ruleset blocks deletion and force pushes and requires linear history."
+  }
+
+  assert {
+    condition     = github_repository_ruleset.default[0].rules[0].pull_request[0].required_approving_review_count == 0 && toset(github_repository_ruleset.default[0].rules[0].pull_request[0].allowed_merge_methods) == toset(["rebase", "squash"])
+    error_message = "The default ruleset requires a pull request with the given approvals and rebase or squash merges."
+  }
 }
 
 run "adopt_reproduces_the_live_settings" {
@@ -54,13 +79,17 @@ run "adopt_reproduces_the_live_settings" {
     rulesets_enforced         = true
     secret_scanning_available = true
     adopt = {
-      default_ruleset             = false
-      collaborators               = { octocat = "push" }
-      teams                       = {}
-      vulnerability_alerts        = false
-      dependabot_security_updates = false
-      secret_scanning             = "disabled"
-      push_protection             = "disabled"
+      default_ruleset                  = false
+      default_workflow_permissions     = "write"
+      can_approve_pull_request_reviews = true
+      allow_merge_commit               = true
+      delete_branch_on_merge           = false
+      collaborators                    = { octocat = "push" }
+      teams                            = {}
+      vulnerability_alerts             = false
+      dependabot_security_updates      = false
+      secret_scanning                  = "disabled"
+      push_protection                  = "disabled"
       branch_protection = {
         pattern                         = "main"
         enforce_admins                  = true
@@ -79,6 +108,16 @@ run "adopt_reproduces_the_live_settings" {
         }
       }
     }
+  }
+
+  assert {
+    condition     = github_workflow_repository_permissions.main.default_workflow_permissions == "write" && github_workflow_repository_permissions.main.can_approve_pull_request_reviews
+    error_message = "The live workflow token and approval settings must be reproduced as they are."
+  }
+
+  assert {
+    condition     = github_repository.main.allow_merge_commit && !github_repository.main.delete_branch_on_merge
+    error_message = "The live merge settings must be reproduced as they are."
   }
 
   assert {

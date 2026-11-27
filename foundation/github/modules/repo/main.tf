@@ -20,6 +20,9 @@ locals {
     has_wiki                         = false
     has_discussions                  = false
     allow_merge_commit               = false
+    is_template                      = false
+    merge_commit_title               = "MERGE_MESSAGE"
+    merge_commit_message             = "PR_TITLE"
     allow_squash_merge               = true
     allow_rebase_merge               = false
     allow_auto_merge                 = true
@@ -62,6 +65,9 @@ resource "github_repository" "main" {
   allow_auto_merge            = local.live.allow_auto_merge
   allow_update_branch         = local.live.allow_update_branch
   delete_branch_on_merge      = local.live.delete_branch_on_merge
+  is_template                 = local.live.is_template
+  merge_commit_title          = local.live.merge_commit_title
+  merge_commit_message        = local.live.merge_commit_message
   squash_merge_commit_title   = local.live.squash_merge_commit_title
   squash_merge_commit_message = local.live.squash_merge_commit_message
   web_commit_signoff_required = local.live.web_commit_signoff_required
