@@ -37,10 +37,11 @@ description = "Terraform format check of the GitHub settings stack"
 run = "terraform fmt -recursive -check -diff foundation/github"
 
 [tasks."github:validate"]
-description = "Validate the GitHub settings stack without a backend or credentials"
+description = "Validate the GitHub settings stack and plan its tests against a mocked provider, without a backend or credentials"
 run = [
   "terraform -chdir=foundation/github init -backend=false -input=false",
   "terraform -chdir=foundation/github validate",
+  "terraform -chdir=foundation/github test",
 ]
 
 [tasks."github:lint"]

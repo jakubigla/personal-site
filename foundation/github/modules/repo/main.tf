@@ -30,7 +30,18 @@ locals {
     web_commit_signoff_required      = false
     default_workflow_permissions     = "read"
     can_approve_pull_request_reviews = false
+    vulnerability_alerts             = true
+    dependabot_security_updates      = true
+    secret_scanning                  = "enabled"
+    push_protection                  = "enabled"
+    default_ruleset                  = true
+    collaborators                    = {}
+    teams                            = {}
+    branch_protection                = null
   }, var.adopt)
+
+  # A classic branch protection exists only on a repository that had one before adoption.
+  legacy = local.live.branch_protection
 }
 
 resource "github_repository" "main" {
@@ -61,10 +72,10 @@ resource "github_repository" "main" {
     for_each = var.secret_scanning_available ? [1] : []
     content {
       secret_scanning {
-        status = "enabled"
+        status = local.live.secret_scanning
       }
       secret_scanning_push_protection {
-        status = "enabled"
+        status = local.live.push_protection
       }
     }
   }
@@ -74,9 +85,26 @@ resource "github_repository" "main" {
   }
 }
 
-# The owner always has admin and is not listed; a team adds users here.
+# Authoritative: the owner always has admin and is never listed, so everyone else live on adoption
+# is listed here, or the first plan would remove them.
 resource "github_repository_collaborators" "main" {
   repository = github_repository.main.name
+
+  dynamic "user" {
+    for_each = local.live.collaborators
+    content {
+      username   = user.key
+      permission = user.value
+    }
+  }
+
+  dynamic "team" {
+    for_each = local.live.teams
+    content {
+      team_id    = team.key
+      permission = team.value
+    }
+  }
 }
 
 resource "github_workflow_repository_permissions" "main" {
@@ -87,18 +115,19 @@ resource "github_workflow_repository_permissions" "main" {
 
 resource "github_repository_vulnerability_alerts" "main" {
   repository = github_repository.main.name
-  enabled    = true
+  enabled    = local.live.vulnerability_alerts
 }
 
 resource "github_repository_dependabot_security_updates" "main" {
   repository = github_repository.main.name
-  enabled    = true
+  enabled    = local.live.dependabot_security_updates
 
   depends_on = [github_repository_vulnerability_alerts.main]
 }
 
+# A repository adopted without xpm's ruleset gets it later, as its own reviewed tightening.
 resource "github_repository_ruleset" "default" {
-  count = 1
+  count = local.live.default_ruleset ? 1 : 0
 
   repository  = github_repository.main.name
   name        = "default"
@@ -128,10 +157,39 @@ resource "github_repository_ruleset" "default" {
   }
 }
 
-# No classic branch protection is live: the ruleset above is the only protection.
+# Kept as it was live on adoption; removing it is its own reviewed tightening, never a side effect.
 resource "github_branch_protection" "legacy" {
-  count = 0
+  # It reproduces the live protection, so its review count and signing rule are whatever was live;
+  # a solo maintainer cannot meet two approvals, and the ruleset is where xpm sets the rules.
+  # checkov:skip=CKV_GIT_5:adopted as live; tightened only in its own reviewed change
+  # checkov:skip=CKV_GIT_6:adopted as live; tightened only in its own reviewed change
+  count = local.legacy == null ? 0 : 1
 
-  repository_id = github_repository.main.node_id
-  pattern       = "main"
+  repository_id                   = github_repository.main.node_id
+  pattern                         = local.legacy.pattern
+  enforce_admins                  = local.legacy.enforce_admins
+  allows_deletions                = local.legacy.allows_deletions
+  allows_force_pushes             = local.legacy.allows_force_pushes
+  required_linear_history         = local.legacy.required_linear_history
+  require_conversation_resolution = local.legacy.require_conversation_resolution
+  require_signed_commits          = local.legacy.require_signed_commits
+  lock_branch                     = local.legacy.lock_branch
+
+  dynamic "required_status_checks" {
+    for_each = local.legacy.required_status_checks == null ? [] : [local.legacy.required_status_checks]
+    content {
+      strict   = required_status_checks.value.strict
+      contexts = required_status_checks.value.contexts
+    }
+  }
+
+  dynamic "required_pull_request_reviews" {
+    for_each = local.legacy.required_pull_request_reviews == null ? [] : [local.legacy.required_pull_request_reviews]
+    content {
+      required_approving_review_count = required_pull_request_reviews.value.required_approving_review_count
+      dismiss_stale_reviews           = required_pull_request_reviews.value.dismiss_stale_reviews
+      require_code_owner_reviews      = required_pull_request_reviews.value.require_code_owner_reviews
+      require_last_push_approval      = required_pull_request_reviews.value.require_last_push_approval
+    }
+  }
 }
