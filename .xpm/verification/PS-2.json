@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "id": "PS-2",
+  "ticket": "PS-2",
+  "title": "The site builds from one content file and runs locally",
+  "kind": "product",
+  "feature_url": "https://github.com/jakubigla/personal-site/pull/24/files",
+  "feature_label": "Static site skeleton, local - PR #24 diff (not deployed)",
+  "frs": [],
+  "pr": 24,
+  "steps": [
+    {
+      "label": "Run `mise trust && mise install`, then `mise run web:install`."
+    },
+    {
+      "label": "Run `mise run web:dev` and open http://localhost:4321; the hero and footer show."
+    },
+    {
+      "label": "Change the headline in `apps/web/content/en.yaml`; reload and see the hero text change."
+    },
+    {
+      "label": "Set a section flag to false in the content file; reload and see that section gone."
+    },
+    {
+      "label": "Run `mise run web:build`, then open a file in `apps/web/dist` with JavaScript off; the page still reads top to bottom."
+    }
+  ],
+  "generated_at": "2026-11-27T16:33:52Z"
+}
