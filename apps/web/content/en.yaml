@@ -5,6 +5,12 @@ sections:
   how_i_deliver: false # reserved slot, switched on by a later change
   footer: true
 
+# Each contact fact lives here once; links elsewhere name it with `to:`.
+contact:
+  email: jakub.igla@gmail.com
+  linkedin: https://www.linkedin.com/in/jakubigla
+  github: https://github.com/jacops
+
 hero:
   name: Jakub Igla
   role: Principal Data Platform Architect
@@ -12,10 +18,10 @@ hero:
   value_statement: I design data platforms on Databricks and lead the teams that run them.
   primary_link:
     label: Get in touch
-    href: mailto:jakub.igla@gmail.com
+    to: email
   secondary_link:
     label: LinkedIn
-    href: https://www.linkedin.com/in/jakubigla
+    to: linkedin
 
 how_i_deliver:
   title: How I deliver
@@ -24,13 +30,11 @@ how_i_deliver:
 footer:
   entity: Jakub Igla JacOps
   privacy_note: This site sets no cookies and does no tracking.
-  contact:
-    email:
-      label: Email
-      address: jakub.igla@gmail.com
-    linkedin:
-      label: LinkedIn
-      href: https://www.linkedin.com/in/jakubigla
-    github:
-      label: GitHub
-      href: https://github.com/jacops
+  # Each link names a fact under `contact` above.
+  links:
+    - label: Email
+      to: email
+    - label: LinkedIn
+      to: linkedin
+    - label: GitHub
+      to: github

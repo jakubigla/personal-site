@@ -25,6 +25,11 @@ describe("content file", () => {
     expect(() => parseContent(broken)).toThrow(/surprise/);
   });
 
+  it("rejects a link to a contact fact that does not exist and names it", () => {
+    const broken = valid.replace(/^( {4}to:) linkedin$/m, "$1 mastodon");
+    expect(() => parseContent(broken)).toThrow(/hero\.secondary_link\.to/);
+  });
+
   it("rejects text that is not YAML with a readable error", () => {
     expect(() => parseContent("sections: [unclosed")).toThrow(ContentError);
   });

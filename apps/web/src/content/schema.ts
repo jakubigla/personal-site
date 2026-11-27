@@ -3,16 +3,22 @@ import { z } from "zod";
 // Strict objects: an unknown key (a mistyped section flag, say) must fail the build, not vanish.
 const text = z.string().trim().min(1);
 const url = z.url({ protocol: /^https$/ });
+// A link names a contact fact rather than repeating it, so each fact is edited in one place.
 const link = z.strictObject({
   label: text,
-  href: z.string().regex(/^(https:\/\/|mailto:)/, "must start with https:// or mailto:"),
+  to: z.enum(["email", "linkedin", "github"]),
 });
 
-export const contentSchema = z.strictObject({
+const contentFileSchema = z.strictObject({
   sections: z.strictObject({
     hero: z.boolean(),
     how_i_deliver: z.boolean(),
     footer: z.boolean(),
+  }),
+  contact: z.strictObject({
+    email: z.email(),
+    linkedin: url,
+    github: url,
   }),
   hero: z.strictObject({
     name: text,
@@ -29,12 +35,25 @@ export const contentSchema = z.strictObject({
   footer: z.strictObject({
     entity: text,
     privacy_note: text,
-    contact: z.strictObject({
-      email: z.strictObject({ label: text, address: z.email() }),
-      linkedin: z.strictObject({ label: text, href: url }),
-      github: z.strictObject({ label: text, href: url }),
-    }),
+    links: z.array(link).min(1),
   }),
 });
 
-export type Content = z.infer<typeof contentSchema>;
+// Layout code gets ready-to-render hrefs; resolving them here keeps the contact lookup in one spot.
+export const contentSchema = contentFileSchema.transform((file) => {
+  const resolve = ({ label, to }: z.infer<typeof link>) => ({
+    label,
+    href: to === "email" ? `mailto:${file.contact.email}` : file.contact[to],
+  });
+  return {
+    ...file,
+    hero: {
+      ...file.hero,
+      primary_link: resolve(file.hero.primary_link),
+      secondary_link: resolve(file.hero.secondary_link),
+    },
+    footer: { ...file.footer, links: file.footer.links.map(resolve) },
+  };
+});
+
+export type Content = z.output<typeof contentSchema>;

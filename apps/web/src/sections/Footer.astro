@@ -5,15 +5,20 @@ interface Props {
   footer: Content["footer"];
 }
 const { footer } = Astro.props;
-const { contact } = footer;
 ---
 
 <footer id="contact">
   <p class="note">{footer.entity}. {footer.privacy_note}</p>
   <ul>
-    <li><a href={`mailto:${contact.email.address}`}>{contact.email.label}</a></li>
-    <li><a href={contact.linkedin.href} rel="noopener">{contact.linkedin.label}</a></li>
-    <li><a href={contact.github.href} rel="noopener">{contact.github.label}</a></li>
+    {
+      footer.links.map((link) => (
+        <li>
+          <a href={link.href} rel={link.href.startsWith("https:") ? "noopener" : undefined}>
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
   </ul>
 </footer>
 
