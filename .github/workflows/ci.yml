@@ -1,0 +1,68 @@
+# Baseline CI: the repo's one full-suite workflow. The walking skeleton (EN-001) adds the web,
+# infra, repo and deploy jobs here (docs/architecture.md, ADR-0016); ci-ok stays the one
+# required check and aggregates every job.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main, 'xpm/land/**']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  baseline:
+    name: baseline
+    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Committed config files parse
+        run: |
+          python3 - <<'PY'
+          import json, subprocess, sys
+          try:
+              import tomllib
+          except ImportError:
+              tomllib = None
+          files = subprocess.run(["git", "ls-files", "*.json", "*.toml"], capture_output=True, text=True, check=True).stdout.split()
+          if tomllib is None:
+              print(f"python {sys.version.split()[0]} has no tomllib: TOML files not parsed")
+              files = [f for f in files if f.endswith(".json")]
+          bad = []
+          for f in files:
+              try:
+                  with open(f, "rb") as fh:
+                      (json.load if f.endswith(".json") else tomllib.load)(fh)
+              except Exception as e:
+                  bad.append(f"{f}: {e}")
+          print("\n".join(bad) or f"{len(files)} files parse")
+          sys.exit(1 if bad else 0)
+          PY
+      - name: No merge-conflict markers
+        run: |
+          if git grep -nE '^(<<<<<<< |>>>>>>> )' -- . ; then
+            echo "merge-conflict markers found"; exit 1
+          fi
+
+  ci-ok:
+    name: ci-ok
+    if: always()
+    needs: [baseline]
+    runs-on: ${{ fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    timeout-minutes: 2
+    steps:
+      - name: Every job passed
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          for r in $RESULTS; do
+            [ "$r" = "success" ] || { echo "a job ended $r"; exit 1; }
+          done

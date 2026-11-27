@@ -1,0 +1,19 @@
+{
+  "ticket": "design-direction",
+  "adapter": "claude-design",
+  "link": "https://claude.ai/artifact/G1fVTJT7cpMHcxukbTptFz",
+  "direction": {
+    "tokens_sha256": "5b12865fd9b13ed4194400c489195d9343a27c477edbdaf54277c1515da0bdeb",
+    "doc_sha256": "d5c03d7411b976abb8bbc89fe155ad4976d68b21e66d7cddadc1c192a6313307"
+  },
+  "screens": [
+    {
+      "name": "direction",
+      "acs": [],
+      "png": "direction@desktop.png",
+      "sha256": "d53e6ed867a3b41902e1983fe3b5b6fd52d6801f687505d035194e0fabfe47b3",
+      "mobile_png": "direction@mobile.png",
+      "mobile_sha256": "53fa9b1e5e2fbd9a01db46533472130741aebc16f200663500f61f167f5c9e27"
+    }
+  ]
+}

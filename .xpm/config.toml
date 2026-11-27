@@ -92,8 +92,31 @@ security_parks = 3
 ticket_size = "large"
 
 [security]
-block_severity = "high"
+block_severity = "medium"
 
 [blueprints]
 source = "github:jakubigla/xpm-blueprints"
 ref = "v2.0.0"
+
+[[component]]
+name = "web"
+type = "web-frontend"
+path = "apps/web"
+stack = "astro"
+tier = "standard"
+
+[[component]]
+name = "infra"
+type = "terraform"
+path = "infra"
+stack = "aws"
+tier = "starter"
+
+[local_run]
+start = "web:dev"
+setup = ["web:install"]
+test = "web:test"
+
+[main_regression]
+workflow = "ci.yml"
+job = "web"
