@@ -26,7 +26,7 @@ jobs:
     name: repo
     # Where every job runs, written once here and reused through the alias below. A PR from a fork
     # never reaches the self-hosted runner CI_RUNNER names: its code would run on a developer's machine.
-    runs-on: &runner ${{ vars.CI_RUNNER && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && fromJSON(vars.CI_RUNNER) || 'ubuntu-latest' }}
+    runs-on: &runner ${{ github.run_attempt != 1 && vars.CI_FALLBACK || vars.CI_RUNNER && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && fromJSON(vars.CI_RUNNER) || 'ubuntu-latest' }}
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
