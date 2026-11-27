@@ -6,3 +6,6 @@ dist/
 # Playwright
 test-results/
 playwright-report/
+
+# Local client-name denylist for the pre-commit hook; the CI list is a secret
+.denylist.local
