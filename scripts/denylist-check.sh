@@ -45,7 +45,8 @@ if [ "$#" -gt 0 ]; then
   files=("$@")
 else
   files=()
-  while IFS= read -r f; do files+=("$f"); done < <(git ls-files)
+  # -z: without it git C-quotes a non-ASCII path, the quoted name is no file, and it is skipped.
+  while IFS= read -r -d '' f; do files+=("$f"); done < <(git ls-files -z)
 fi
 
 bad=0

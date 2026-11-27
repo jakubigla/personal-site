@@ -61,6 +61,17 @@ printf 'about %s\n' "$term" >content.yaml
 git add . && DENYLIST="$term" "$check" clean.txt >/dev/null 2>&1; expect "only the named files are scanned" 0 $?
 DENYLIST="$term" "$check" content.yaml >/dev/null 2>&1; expect "a named file holding a term fails" 1 $?
 
+# git quotes non-ASCII paths by default; such a file must still be read, not skipped as missing.
+new_repo
+printf 'about %s\n' "$term" >"zażółć notes.txt"
+git add . && DENYLIST="$term" "$check" >/dev/null 2>&1; expect "a non-ASCII file name is still scanned" 1 $?
+
+new_repo
+printf 'x\n' >"$term-łódź.txt"
+git add . && out="$(DENYLIST="$term" "$check" 2>&1)"; code=$?
+expect "a denied term in a non-ASCII file name fails" 1 "$code"
+case "$out" in *"$term"*) echo "FAIL the term leaked through a non-ASCII file name"; fails=$((fails + 1)) ;; *) echo "ok   a non-ASCII file name holding a term is not echoed" ;; esac
+
 # Squash merges copy branch commit messages and the PR title into main's history, so CI reads them too.
 new_repo
 git add . && git commit -qm "start"
