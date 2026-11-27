@@ -58,10 +58,28 @@ describe("static build", () => {
     expect(on.html).toContain('id="how-i-deliver"');
   });
 
+  it("removes the hero when its flag is off", () => {
+    expect(base.html).toContain('id="hero"');
+    const off = build("hero-off", committed.replace(/hero: true/, "hero: false"));
+    expect(off.run.status).toBe(0);
+    expect(off.html).not.toContain('id="hero"');
+    expect(off.html).not.toContain("<h1");
+  });
+
   it("removes the footer when its flag is off", () => {
     expect(base.html).toContain("<footer");
     const off = build("footer-off", committed.replace(/footer: true/, "footer: false"));
     expect(off.html).not.toContain("<footer");
+  });
+
+  it("takes the footer link labels from the content file", () => {
+    const relabelled = build(
+      "footer-labels",
+      committed.replace(/^( {6}label:) GitHub$/m, "$1 Code on GitHub"),
+    );
+    expect(relabelled.run.status).toBe(0);
+    expect(relabelled.html).toMatch(/<footer[\s\S]*>Code on GitHub<\/a>/);
+    expect(base.html).not.toContain("Code on GitHub");
   });
 
   it("is readable without JavaScript: the text is in the HTML and no script ships", () => {
