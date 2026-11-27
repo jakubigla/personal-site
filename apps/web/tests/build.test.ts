@@ -3,7 +3,7 @@ import { spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { gzipSync } from "node:zlib";
+import { scriptWeight } from "./script-weight";
 
 const root = new URL("..", import.meta.url).pathname;
 const committed = readFileSync(join(root, "content/en.yaml"), "utf8");
@@ -12,30 +12,6 @@ const work = mkdtempSync(join(tmpdir(), "site-build-"));
 // The page JavaScript budget (ADR-0005): 50 KB gzipped in total, at most 1 KB render-blocking.
 const JS_BUDGET_BYTES = 50 * 1024;
 const BLOCKING_JS_BUDGET_BYTES = 1024;
-
-function gzipped(text: string | Buffer) {
-  return gzipSync(text).length;
-}
-
-// Every script's gzipped size, and how much of it blocks rendering: a classic script with no
-// async or defer, inline or loaded, stops the parser until it has run.
-function scriptWeight(outDir: string, html: string) {
-  let total = 0;
-  let blocking = 0;
-  for (const [, attrs = "", body = ""] of html.matchAll(
-    /<script\b([^>]*)>([\s\S]*?)<\/script>/gi,
-  )) {
-    const src = /\bsrc=["']?([^"' >]+)/i.exec(attrs)?.[1];
-    const size = src ? gzipped(readFileSync(join(outDir, src.replace(/^\//, "")))) : gzipped(body);
-    total += src ? 0 : size;
-    if (!/\b(async|defer)\b|type=["']?module/i.test(attrs)) blocking += size;
-  }
-  const files = readdirSync(outDir, { recursive: true }).map(String);
-  for (const file of files.filter((f) => /\.m?js$/.test(f))) {
-    total += gzipped(readFileSync(join(outDir, file)));
-  }
-  return { total, blocking };
-}
 
 function build(name: string, contentText: string) {
   const contentFile = join(work, `${name}.yaml`);
@@ -119,6 +95,21 @@ describe("static build", () => {
     expect(moved.run.status).toBe(0);
     expect(moved.html.match(/href="mailto:someone@example\.org"/g)).toHaveLength(2);
     expect(moved.html).not.toMatch(/href="mailto:(?!someone@example\.org)/);
+  });
+
+  it("points each link at the contact fact it names, not at another fact", () => {
+    const moved = build(
+      "links-moved",
+      committed
+        .replace(/^( {2}linkedin:).*$/m, "$1 https://linkedin.example.org/in/someone")
+        .replace(/^( {2}github:).*$/m, "$1 https://github.example.org/someone"),
+    );
+    expect(moved.run.status).toBe(0);
+    const footer = /<footer[\s\S]*<\/footer>/.exec(moved.html)?.[0] ?? "";
+    expect(footer).toMatch(/href="https:\/\/linkedin\.example\.org\/in\/someone"[^>]*>\s*LinkedIn/);
+    expect(footer).toMatch(/href="https:\/\/github\.example\.org\/someone"[^>]*>\s*GitHub/);
+    expect(moved.html).not.toContain("linkedin.com/in/jakubigla");
+    expect(moved.html).not.toContain("github.com/jacops");
   });
 
   it("is readable without JavaScript: the text is in the HTML and no script ships", () => {
