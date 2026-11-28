@@ -7,10 +7,11 @@
 
 Only the deploy job may hold the OIDC token and it must not install anything; every action is
 pinned by commit SHA; package installs come from the lockfile with lifecycle scripts off; and the
-release artifact the deploy job publishes is uploaded by a job it needs. The deploy job's name is
-fixed because the role's trust policy and the repository variable gate on that one job.
+release artifact the deploy job publishes is uploaded by a job it needs. The role's trust policy
+gates only on the repository and the main branch, not on a workflow or job, so every workflow file
+is checked: the one that deploys with --require-deploy, every other with --forbid-deploy.
 
-usage: check-workflow-security.py [--require-deploy] <workflow.yml> [<mise.toml>]
+usage: check-workflow-security.py [--require-deploy | --forbid-deploy] <workflow.yml> [<mise.toml>]
 """
 import re
 import sys
@@ -40,7 +41,7 @@ def runs_of(job):
     return [str(s["run"]) for s in steps_of(job) if "run" in s]
 
 
-def check(workflow, tasks, require_deploy):
+def check(workflow, tasks, require_deploy, forbid_deploy=False):
     bad = []
     jobs = workflow.get("jobs", {})
     if perms(workflow).get("id-token") == "write":
@@ -49,6 +50,8 @@ def check(workflow, tasks, require_deploy):
         if name != DEPLOY and perms(job).get("id-token") == "write":
             bad.append(f"job {name!r} holds id-token: write; only {DEPLOY!r} may")
     deploy = jobs.get(DEPLOY)
+    if deploy is not None and forbid_deploy:
+        bad.append(f"job {DEPLOY!r} is only allowed in the deploying workflow, not here")
     if deploy is None:
         if require_deploy:
             bad.append(f"no job named {DEPLOY!r}")
@@ -98,7 +101,10 @@ def check(workflow, tasks, require_deploy):
 def main():
     args = sys.argv[1:]
     require_deploy = "--require-deploy" in args
-    args = [a for a in args if a != "--require-deploy"]
+    forbid_deploy = "--forbid-deploy" in args
+    args = [a for a in args if a not in ("--require-deploy", "--forbid-deploy")]
+    if require_deploy and forbid_deploy:
+        sys.exit(__doc__)
     if not args:
         sys.exit(__doc__)
     sys.argv = [sys.argv[0], *args]
@@ -108,7 +114,7 @@ def main():
     if len(sys.argv) > 2:
         with open(sys.argv[2], "rb") as fh:
             tasks = tomllib.load(fh).get("tasks", {})
-    bad = check(workflow, tasks, require_deploy)
+    bad = check(workflow, tasks, require_deploy, forbid_deploy)
     if bad:
         print(f"workflow security failures in {sys.argv[1]}:\n  " + "\n  ".join(bad))
         sys.exit(1)

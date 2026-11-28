@@ -89,10 +89,14 @@ run = ["bash scripts/denylist-check.test.sh", "bash scripts/check-workflow-secur
 
 [tasks."repo:workflows"]
 description = "Only the deploy job holds the OIDC token, every action is SHA-pinned, installs are locked"
-run = [
-  "scripts/check-workflow-security.py --require-deploy .github/workflows/ci.yml mise.toml",
-  "scripts/check-workflow-security.py .github/workflows/github-config.yml mise.toml",
-]
+# Every workflow file, not a named list: the deploy role trusts any workflow that runs on main.
+run = """
+scripts/check-workflow-security.py --require-deploy .github/workflows/ci.yml mise.toml
+for f in .github/workflows/*.yml .github/workflows/*.yaml; do
+  [ -e "$f" ] && [ "$f" != .github/workflows/ci.yml ] || continue
+  scripts/check-workflow-security.py --forbid-deploy "$f" mise.toml
+done
+"""
 
 [tasks."github:fmt"]
 description = "Terraform format check of the GitHub settings stack"

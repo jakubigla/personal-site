@@ -59,19 +59,8 @@ write clean "" "" ""
 reject build-id-token '    permissions:
       id-token: write' "" ""
 reject build-write-all '    permissions: write-all' "" ""
-cat >"$work/top.yml" <<YAML
-on: push
-permissions:
-  id-token: write
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    steps:
-      - uses: actions/download-artifact@$sha
-YAML
-"$check" "$work/top.yml" >/dev/null 2>&1; expect "id-token at workflow level is rejected" 1 $?
+# Conforming in every other way, so only the workflow-level rule can reject it.
+reject top-id-token "" "" "  id-token: write"
 reject deploy-installs "" '      - run: npm ci --ignore-scripts' ""
 reject deploy-npx "" '      - run: npx wrangler deploy' ""
 reject deploy-delete "" '      - run: aws s3 sync site s3://b --delete' ""
@@ -85,14 +74,18 @@ reject short-sha "" '      - uses: actions/cache@3d3c42e' ""
 write unlocked-install "" "" ""
 sed -i.bak 's/npm ci --ignore-scripts/npm ci/' "$work/unlocked-install.yml"
 "$check" "$work/unlocked-install.yml" >/dev/null 2>&1; expect "npm ci with scripts on is rejected" 1 $?
-sed -i.bak 's/npm ci --ignore-scripts/npm install --ignore-scripts/' "$work/unlocked-install.yml"
-"$check" "$work/unlocked-install.yml" >/dev/null 2>&1; expect "npm install outside the lockfile is rejected" 1 $?
+# A fresh file with scripts off, so only the lockfile rule can reject it.
+write unlocked-install2 "" "" ""
+sed -i.bak 's/npm ci --ignore-scripts/npm install --ignore-scripts/' "$work/unlocked-install2.yml"
+"$check" "$work/unlocked-install2.yml" >/dev/null 2>&1; expect "npm install outside the lockfile is rejected" 1 $?
 write missing-artifact "" "" ""
 sed -i.bak '/download-artifact/,$ s/name: site/name: other/' "$work/missing-artifact.yml"
 "$check" --require-deploy "$work/missing-artifact.yml" >/dev/null 2>&1; expect "an artifact no needed job uploads is rejected" 1 $?
 printf 'on: push\njobs:\n  build:\n    runs-on: x\n    steps: []\n' >"$work/nodeploy.yml"
 "$check" --require-deploy "$work/nodeploy.yml" >/dev/null 2>&1; expect "a missing deploy job is rejected when required" 1 $?
 "$check" "$work/nodeploy.yml" >/dev/null 2>&1; expect "a missing deploy job is fine when not required" 0 $?
+"$check" --forbid-deploy "$work/nodeploy.yml" >/dev/null 2>&1; expect "a workflow without a deploy job passes when one is forbidden" 0 $?
+"$check" --forbid-deploy "$work/clean.yml" >/dev/null 2>&1; expect "a deploy job in a non-deploying workflow is rejected" 1 $?
 
 cat >"$work/mise.toml" <<'TOML'
 [tasks."web:install"]
@@ -101,6 +94,6 @@ TOML
 "$check" "$work/clean.yml" "$work/mise.toml" >/dev/null 2>&1; expect "a mise task installing with scripts on is rejected" 1 $?
 
 "$check" --require-deploy "$root/.github/workflows/ci.yml" "$root/mise.toml"; expect "ci.yml passes" 0 $?
-"$check" "$root/.github/workflows/github-config.yml" "$root/mise.toml"; expect "github-config.yml passes" 0 $?
+"$check" --forbid-deploy "$root/.github/workflows/github-config.yml" "$root/mise.toml"; expect "github-config.yml passes" 0 $?
 
 exit "$fails"
