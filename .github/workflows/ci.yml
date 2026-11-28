@@ -1,10 +1,13 @@
-# Baseline CI: the repo's one full-suite workflow. The walking skeleton (EN-001) adds the web,
-# infra, repo and deploy jobs here (docs/architecture.md, ADR-0016); ci-ok stays the one
-# required check and aggregates every job.
+# The repo's one gating workflow. Every job runs a mise task, so what CI runs is what
+# `mise run <task>` runs locally. ci-ok is the one required check and follows every job.
 name: ci
 
 on:
   pull_request:
+    # edited: the denylist reads the PR title, which a squash merge writes into main's history, so
+    # a title changed without a push must re-run every job. Skipping jobs on a body-only edit would
+    # report ci-ok as skipped, which GitHub counts as passing over an earlier red run.
+    types: [opened, synchronize, reopened, edited]
   push:
     branches: [main, 'xpm/land/**']
 
@@ -19,45 +22,95 @@ env:
   MISE_VERSION: 2026.11.14
 
 jobs:
-  baseline:
-    name: baseline
-    runs-on: ${{ github.run_attempt != 1 && vars.CI_FALLBACK || fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
-    timeout-minutes: 5
+  repo:
+    name: repo
+    # Where every job runs, written once here and reused through the alias below. A PR from a fork
+    # never reaches the self-hosted runner CI_RUNNER names: its code would run on a developer's machine.
+    runs-on: &runner ${{ github.run_attempt != 1 && vars.CI_FALLBACK || vars.CI_RUNNER && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && fromJSON(vars.CI_RUNNER) || 'ubuntu-latest' }}
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Committed config files parse
-        run: |
-          python3 - <<'PY'
-          import json, subprocess, sys
-          try:
-              import tomllib
-          except ImportError:
-              tomllib = None
-          files = subprocess.run(["git", "ls-files", "*.json", "*.toml"], capture_output=True, text=True, check=True).stdout.split()
-          if tomllib is None:
-              print(f"python {sys.version.split()[0]} has no tomllib: TOML files not parsed")
-              files = [f for f in files if f.endswith(".json")]
-          bad = []
-          for f in files:
-              try:
-                  with open(f, "rb") as fh:
-                      (json.load if f.endswith(".json") else tomllib.load)(fh)
-              except Exception as e:
-                  bad.append(f"{f}: {e}")
-          print("\n".join(bad) or f"{len(files)} files parse")
-          sys.exit(1 if bad else 0)
-          PY
-      - name: No merge-conflict markers
-        run: |
-          if git grep -nE '^(<<<<<<< |>>>>>>> )' -- . ; then
-            echo "merge-conflict markers found"; exit 1
-          fi
+          # The secret scan reads every commit, not only the tip.
+          fetch-depth: 0
+      - uses: jdx/mise-action@924e7c586e33d7d4bae9c14e26c5d22e2beb6e78 # v5.3.0
+        with:
+          version: ${{ env.MISE_VERSION }}
+          cache: ${{ runner.environment == 'github-hosted' }}
+      - name: Secret scan over the full history
+        run: mise run repo:secrets
+      - name: Hooks over every file
+        # CI makes no commit or push, so xpm's own hooks have nothing to guard here.
+        run: mise run repo:lint
+        env:
+          SKIP: xpm-sensitive-scan,xpm-sensitive-scan-push
+      - name: Repo script tests
+        run: mise run repo:test
+      - name: Client-name denylist
+        # Fails closed when the secret is unset (ADR-0013): a missing list must never pass silently.
+        # On a PR it also reads the branch's commit messages and the PR title: squash merges copy
+        # both into main's history.
+        run: mise run repo:denylist
+        env:
+          DENYLIST: ${{ secrets.DENYLIST }}
+          DENYLIST_COMMITS: ${{ github.event_name == 'pull_request' && format('{0}..{1}', github.event.pull_request.base.sha, github.event.pull_request.head.sha) || '' }}
+          DENYLIST_TITLE: ${{ github.event.pull_request.title }}
+
+  web:
+    name: web
+    runs-on: *runner
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@924e7c586e33d7d4bae9c14e26c5d22e2beb6e78 # v5.3.0
+        with:
+          version: ${{ env.MISE_VERSION }}
+          cache: ${{ runner.environment == 'github-hosted' }}
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        if: runner.environment == 'github-hosted'
+        with:
+          path: |
+            ~/.npm
+            ~/.cache/ms-playwright
+          key: web-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('apps/web/package-lock.json') }}
+      - run: mise run web:install
+      - run: mise run web:lint
+      - run: mise run web:test
+      - run: mise run web:build
+      - run: mise run web:e2e-install
+      - run: mise run web:e2e
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: site
+          path: apps/web/dist
+          retention-days: 14
+          if-no-files-found: error
+
+  deploy:
+    name: deploy
+    # Inert until the attended first apply sets DEPLOY_ROLE_ARN (ADR-0010). Every check must pass
+    # first: a failed denylist or secret scan must never reach the public site.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DEPLOY_ROLE_ARN != ''
+    needs: [repo, web, infra]
+    runs-on: *runner
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: site
+          path: site
+      - name: Publish
+        run: echo "publishing the site artifact is added with the hosting module"
 
   infra:
     name: infra
-    runs-on: ${{ github.run_attempt != 1 && vars.CI_FALLBACK || fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    runs-on: *runner
     timeout-minutes: 10
     # No AWS credentials: every apply is attended (ADR-0010), so CI only checks the code.
     steps:
@@ -87,14 +140,14 @@ jobs:
   ci-ok:
     name: ci-ok
     if: always()
-    needs: [baseline, infra]
-    runs-on: ${{ github.run_attempt != 1 && vars.CI_FALLBACK || fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    needs: [repo, web, infra, deploy]
+    runs-on: *runner
     timeout-minutes: 2
     steps:
-      - name: Every job passed
+      - name: Every job passed or was skipped
         env:
           RESULTS: ${{ join(needs.*.result, ' ') }}
         run: |
           for r in $RESULTS; do
-            [ "$r" = "success" ] || { echo "a job ended $r"; exit 1; }
+            [ "$r" = "success" ] || [ "$r" = "skipped" ] || { echo "a job ended $r"; exit 1; }
           done

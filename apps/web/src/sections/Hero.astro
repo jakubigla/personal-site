@@ -1,0 +1,91 @@
+---
+import type { Content } from "../content/schema";
+
+interface Props {
+  hero: Content["hero"];
+}
+const { hero } = Astro.props;
+---
+
+<header id="hero">
+  <p class="identity"><span>{hero.name}</span><span>{hero.role}</span></p>
+  <div class="stage">
+    <h1>{hero.headline}</h1>
+    <p class="lede">{hero.value_statement}</p>
+    <p class="actions">
+      <a class="button primary" href={hero.primary_link.href}>{hero.primary_link.label}</a>
+      <a class="button secondary" href={hero.secondary_link.href} rel="noopener"
+        >{hero.secondary_link.label}</a
+      >
+    </p>
+  </div>
+</header>
+
+<style>
+  #hero {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .identity {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .identity span {
+    min-width: 0;
+  }
+  .stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-7) 0;
+  }
+  h1 {
+    font-size: clamp(2.25rem, 5.5vw, 4.25rem);
+    max-width: 22ch;
+  }
+  .lede {
+    margin: 0 0 var(--space-6);
+    font-size: 1.25rem;
+    color: var(--muted);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: 0;
+  }
+  .button {
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+  }
+  .secondary {
+    background: var(--surface);
+  }
+  @media (max-width: 40rem) {
+    .identity {
+      flex-direction: column;
+    }
+    .actions {
+      flex-direction: column;
+    }
+    .button {
+      text-align: center;
+    }
+  }
+</style>
