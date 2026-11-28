@@ -11,6 +11,15 @@
 # DENYLIST_TITLE (a PR title) adds that text: a squash merge copies both into main's history.
 set -u
 
+# Case folding must reach non-ASCII letters (a Polish name in capitals), and a runner can start in the
+# C locale. Use the first UTF-8 locale the machine has; a bare C locale would only fold ASCII.
+for loc in C.UTF-8 C.utf8 en_US.UTF-8 en_US.utf8; do
+  if locale -a 2>/dev/null | grep -qix "$loc"; then
+    export LC_ALL="$loc"
+    break
+  fi
+done
+
 optional=0
 if [ "${1:-}" = "--optional" ]; then
   optional=1
@@ -28,8 +37,10 @@ if [ -n "${DENYLIST:-}" ]; then
 elif [ -f .denylist.local ]; then
   cat .denylist.local >"$terms"
 fi
-# Blank lines would match every file; drop them and CRs from a pasted secret.
-tr -d '\r' <"$terms" | grep -v '^[[:space:]]*$' >"$terms.clean" || true
+# Blank lines would match every file. Drop CRs from a pasted secret, trim each term's leading and
+# trailing whitespace (padding is not part of a name, so a padded term must still match) and skip
+# the lines left empty.
+tr -d '\r' <"$terms" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | grep -v '^$' >"$terms.clean" || true
 mv "$terms.clean" "$terms"
 
 if [ ! -s "$terms" ]; then
@@ -50,16 +61,29 @@ else
 fi
 
 bad=0
+unreadable=0
 for f in "${files[@]}"; do
   [ -f "$f" ] || continue
   if printf '%s\n' "$f" | grep -qiFf "$terms"; then
     # The name itself holds a term, so printing it would print the term.
     echo "denylist-check: a file name holds a denied term (name withheld)" >&2
     bad=1
-  elif grep -qIiFf "$terms" -- "$f"; then
-    echo "denylist-check: denied term in $f" >&2
-    bad=1
+    continue
   fi
+  # -a: binary files are scanned too, so a term inside one cannot slip through. grep exits 1 for
+  # "no match" and 2 for "could not read": a file the check cannot read is a failure, not clean.
+  grep -aqiFf "$terms" -- "$f" 2>/dev/null
+  case $? in
+    0)
+      echo "denylist-check: denied term in $f" >&2
+      bad=1
+      ;;
+    1) ;;
+    *)
+      echo "denylist-check: cannot read $f; failing closed" >&2
+      unreadable=1
+      ;;
+  esac
 done
 
 if [ -n "${DENYLIST_COMMITS:-}" ]; then
@@ -83,5 +107,9 @@ fi
 if [ "$bad" = 1 ]; then
   echo "denylist-check: failed; terms are never printed" >&2
   exit 1
+fi
+if [ "$unreadable" = 1 ]; then
+  echo "denylist-check: a file could not be read, so the tree is unchecked" >&2
+  exit 2
 fi
 echo "denylist-check: clean (${#files[@]} files)"

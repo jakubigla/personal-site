@@ -91,4 +91,33 @@ expect "a denied term in the title fails" 1 "$code"
 case "$out" in *"$term"*) echo "FAIL the term was printed from the title"; fails=$((fails + 1)) ;; *) echo "ok   the title's term is never printed" ;; esac
 DENYLIST="$term" DENYLIST_TITLE="Add the case study" "$check" >/dev/null 2>&1; expect "a clean title passes" 0 $?
 
+# A term pasted into the secret with stray spaces must still match: the padding is not part of the name.
+new_repo
+printf 'about %s.\n' "$term" >content.yaml
+git add . && out="$(DENYLIST="  $term  " "$check" 2>&1)"; code=$?
+expect "a padded term still matches" 1 "$code"
+case "$out" in *"$term"*) echo "FAIL the padded term was printed"; fails=$((fails + 1)) ;; *) echo "ok   a padded term is never printed" ;; esac
+new_repo
+git add . && DENYLIST=$'  \t \n'"$term" "$check" >/dev/null 2>&1; expect "a whitespace-only line is dropped, the term still counts" 0 $?
+
+# Case folding must reach non-ASCII letters whatever locale the runner starts with.
+new_repo
+printf 'about ŻÓŁĆ-klient\n' >content.yaml
+git add . && LC_ALL=C LANG=C DENYLIST="żółć-klient" "$check" >/dev/null 2>&1; expect "a Polish term matches its upper-case form" 1 $?
+
+# A file the check cannot read is a failure, never clean.
+new_repo
+printf 'x\n' >locked.txt
+git add . && chmod 000 locked.txt
+DENYLIST="$term" "$check" >/dev/null 2>&1; code=$?
+chmod 644 locked.txt
+[ "$(id -u)" = 0 ] && echo "skip an unreadable file fails (running as root)" || expect "an unreadable file fails the check" 2 "$code"
+
+# Binary files are scanned too: a term inside one must not slip through.
+new_repo
+printf 'PNG\000\001 data %s \000\002\n' "$term" >image.bin
+git add . && out="$(DENYLIST="$term" "$check" 2>&1)"; code=$?
+expect "a term inside a binary file fails" 1 "$code"
+case "$out" in *"$term"*) echo "FAIL the term was printed from a binary"; fails=$((fails + 1)) ;; *) echo "ok   a binary's term is never printed" ;; esac
+
 [ "$fails" = 0 ] && echo "all passed" || { echo "$fails failed"; exit 1; }

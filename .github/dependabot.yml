@@ -15,6 +15,14 @@ updates:
     directory: /infra/environments/prod
     schedule:
       interval: weekly
+  - package-ecosystem: terraform
+    directory: /infra/bootstrap
+    schedule:
+      interval: weekly
+  - package-ecosystem: terraform
+    directory: /foundation/github
+    schedule:
+      interval: weekly
   - package-ecosystem: pre-commit
     directory: /
     schedule:
