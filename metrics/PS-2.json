@@ -4,16 +4,16 @@
   "id": "PS-2",
   "ticket": "PS-2",
   "branch": "feature/PS-2-the-site-builds-from-one-content-file",
-  "generated_at": "2026-11-28T14:44:42Z",
+  "generated_at": "2026-11-28T15:00:37Z",
   "coverage": "parent-and-subagents",
   "subagents": {
     "xpm:xpm-exerciser": {
-      "count": 185,
-      "output_tokens": 109266,
-      "input_tokens": 370,
-      "cache_read": 4033102,
-      "cache_create": 472613,
-      "cache_write_5m": 472613,
+      "count": 191,
+      "output_tokens": 111656,
+      "input_tokens": 382,
+      "cache_read": 4102665,
+      "cache_create": 492701,
+      "cache_write_5m": 492701,
       "cache_write_1h": 0,
       "models": [
         "claude-sonnet-5-5"
@@ -61,12 +61,12 @@
   },
   "cost": {
     "tokens": {
-      "output": 473882,
-      "input": 1880,
-      "cache_read": 59061939,
-      "cache_create": 2390493,
-      "cache_write_5m": 1721574,
-      "cache_write_1h": 668919
+      "output": 483248,
+      "input": 1930,
+      "cache_read": 62678527,
+      "cache_create": 2425380,
+      "cache_write_5m": 1741662,
+      "cache_write_1h": 683718
     },
     "usd": null,
     "usd_source": null
@@ -130,25 +130,32 @@
       "trailing": false
     },
     {
-      "stage": "after-retro",
+      "stage": "ready-flipped",
       "at": "2026-11-27T16:35:43Z",
-      "output_tokens": 23203,
+      "output_tokens": 23424,
+      "cost_usd": null,
+      "trailing": false
+    },
+    {
+      "stage": "after-ready-flipped",
+      "at": "2026-11-28T14:50:44Z",
+      "output_tokens": 6755,
       "cost_usd": null,
       "trailing": true
     }
   ],
   "diff": {
     "files": 39,
-    "insertions": 7038,
+    "insertions": 7103,
     "deletions": 42,
     "code": {
       "files": 26,
-      "insertions": 6661,
+      "insertions": 6718,
       "deletions": 0
     },
     "docs": {
       "files": 13,
-      "insertions": 377,
+      "insertions": 385,
       "deletions": 42
     },
     "measured_from": "merge-base",
@@ -171,7 +178,7 @@
   "sessions": 2,
   "wall_clock": {
     "first": "2026-11-27T14:04:57.884Z",
-    "last": "2026-11-28T14:44:12.176Z"
+    "last": "2026-11-28T15:00:17.460Z"
   },
   "per_session": [
     {
@@ -183,22 +190,22 @@
     },
     {
       "sessionId": "eb505c7b-abb7-4aac-85da-b642502db128",
-      "entries": 412,
-      "output_tokens": 40397,
+      "entries": 457,
+      "output_tokens": 47373,
       "first": "2026-11-27T15:43:23.564Z",
-      "last": "2026-11-28T14:44:12.176Z"
+      "last": "2026-11-28T15:00:17.460Z"
     }
   ],
-  "output_tokens": 56466,
+  "output_tokens": 63442,
   "models": {
     "claude-sonnet-5-5": {
-      "calls": 215,
-      "output_tokens": 56466,
-      "input_tokens": 510,
-      "cache_read": 28883956,
-      "cache_create": 668919,
+      "calls": 232,
+      "output_tokens": 63442,
+      "input_tokens": 548,
+      "cache_read": 32430981,
+      "cache_create": 683718,
       "cache_write_5m": 0,
-      "cache_write_1h": 668919
+      "cache_write_1h": 683718
     }
   },
   "skills": {
@@ -208,7 +215,7 @@
     "xpm:xpm-ui-design": 1
   },
   "dispatches": {
-    "xpm:xpm-exerciser": 7,
+    "xpm:xpm-exerciser": 8,
     "xpm:xpm-step": 12
   },
   "dispatches_reported": {
@@ -217,9 +224,9 @@
   },
   "dispatches_reported_source": "evidence-dir",
   "tools": {
-    "Agent": 19,
+    "Agent": 20,
     "Artifact": 4,
-    "Bash": 152,
+    "Bash": 166,
     "Edit": 2,
     "Read": 5,
     "Skill": 5,
@@ -242,8 +249,8 @@
     },
     "tools": {
       "Agent": {
-        "count": 19,
-        "total_seconds": 17,
+        "count": 20,
+        "total_seconds": 18,
         "median_seconds": 1
       },
       "Artifact": {
@@ -252,8 +259,8 @@
         "median_seconds": 2
       },
       "Bash": {
-        "count": 151,
-        "total_seconds": 3042,
+        "count": 165,
+        "total_seconds": 3517,
         "median_seconds": 2
       },
       "Edit": {
@@ -278,28 +285,35 @@
       }
     },
     "hooks": {
-      "fires": 93,
+      "fires": 99,
       "errors": 0,
       "by_command": {
         "\"${CLAUDE_PLUGIN_ROOT}/hooks/autonomous-keepalive.sh\"": {
-          "fires": 31,
-          "total_ms": 4544
+          "fires": 33,
+          "total_ms": 4831
         },
         "\"${CLAUDE_PLUGIN_ROOT}/hooks/stage-keepalive.sh\"": {
-          "fires": 31,
-          "total_ms": 1612
+          "fires": 33,
+          "total_ms": 1659
         },
         "\"/Users/jakubigla/.config/iterm2/it2\" handle-agent-hook": {
-          "fires": 31,
-          "total_ms": 37340
+          "fires": 33,
+          "total_ms": 37902
         }
       }
     },
     "turns": {
-      "count": 31,
-      "total_seconds": 12820
+      "count": 33,
+      "total_seconds": 13701
     },
     "subagent_runs": [
+      {
+        "name": "ex-local-8",
+        "agent_type": "xpm:xpm-exerciser",
+        "first": "2026-11-28T14:58:48.547Z",
+        "last": "2026-11-28T14:59:16.020Z",
+        "seconds": 28
+      },
       {
         "name": "ex-local",
         "agent_type": "xpm:xpm-exerciser",
@@ -569,21 +583,21 @@
     ]
   },
   "spend": {
-    "usd": 23.370239800000007,
+    "usd": 23.935074600000014,
     "coverage": "exact",
     "coverage_tokens": {
-      "exact": 62476239
+      "exact": 66137130
     },
     "unpriced": [],
     "table_date": "2026-11-09",
-    "tokens": 62476239,
+    "tokens": 66137130,
     "tokens_by_model": {
       "claude-sonnet-5-5": {
-        "input": 1308,
-        "output": 252671,
-        "cache_write_1h": 747665,
-        "cache_read": 44606995,
-        "cache_write_5m": 1062439
+        "input": 1358,
+        "output": 262037,
+        "cache_write_1h": 762464,
+        "cache_read": 48223583,
+        "cache_write_5m": 1082527
       },
       "claude-opus-5-5": {
         "input": 596,
@@ -609,7 +623,7 @@
     "evidence": {
       "fail": 7,
       "pass": 12,
-      "repins": 2
+      "repins": 3
     },
     "po_outcome": null,
     "review": {
