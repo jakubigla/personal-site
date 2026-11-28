@@ -49,17 +49,6 @@
     "commit_sha": "9e5c3eebc5035ae80884a5910680c9a0704550c4"
    }
   ],
-  "AC12": [
-   {
-    "kind": "cast",
-    "path": "media/local/AC12/terminal.cast",
-    "bytes": 1614,
-    "sha256": "636edff1ec090f54c115464a70387df29ba57245709340acc8c3be7de8bc5d58",
-    "status": "ok",
-    "duration_s": 1.3,
-    "commit_sha": "9e5c3eebc5035ae80884a5910680c9a0704550c4"
-   }
-  ],
   "AC10": [
    {
     "kind": "cast",
@@ -70,6 +59,17 @@
     "duration_s": 0.1,
     "commit_sha": "9e5c3eebc5035ae80884a5910680c9a0704550c4"
    }
+  ],
+  "AC12": [
+   {
+    "kind": "cast",
+    "path": "media/local/AC12/terminal.cast",
+    "bytes": 3042,
+    "sha256": "fa7de4d20460173f06c3982990b737492a3e663ce7bac66a451e8ea68751bd2e",
+    "status": "ok",
+    "duration_s": 2.0,
+    "commit_sha": "743389f983d730f80b2eb35f1a37962174e0a6a0"
+   }
   ]
  },
  "unassigned": [],
@@ -78,7 +78,7 @@
   "mp4: agg not on PATH - casts only (xpm doctor names the install)"
  ],
  "run_acs": [
-  "AC10"
+  "AC12"
  ],
  "recorders": {
   "cast": "asciinema==2.4.0"

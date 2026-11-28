@@ -24,7 +24,7 @@
    "contradiction": null,
    "warnings": [],
    "source": "cast",
-   "commit_sha": "9e5c3eebc5035ae80884a5910680c9a0704550c4"
+   "commit_sha": "743389f983d730f80b2eb35f1a37962174e0a6a0"
   },
   "AC7": {
    "result": "no-wire",
