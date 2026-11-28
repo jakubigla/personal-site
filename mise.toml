@@ -85,7 +85,14 @@ run = "scripts/denylist-check.sh"
 
 [tasks."repo:test"]
 description = "Behaviour tests for the repo's own scripts"
-run = "bash scripts/denylist-check.test.sh"
+run = ["bash scripts/denylist-check.test.sh", "bash scripts/check-workflow-security.test.sh"]
+
+[tasks."repo:workflows"]
+description = "Only the deploy job holds the OIDC token, every action is SHA-pinned, installs are locked"
+run = [
+  "scripts/check-workflow-security.py --require-deploy .github/workflows/ci.yml mise.toml",
+  "scripts/check-workflow-security.py .github/workflows/github-config.yml mise.toml",
+]
 
 [tasks."github:fmt"]
 description = "Terraform format check of the GitHub settings stack"
