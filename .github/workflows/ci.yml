@@ -130,6 +130,12 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
       - name: Policies reject what they must, and the roots pass them
         run: mise run infra:policies
+      # The github-config workflow is path-filtered, so it cannot be a required check; running the
+      # same task here puts it under ci-ok on every pull request.
+      - name: GitHub settings stack static checks
+        run: mise run github:check
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
   ci-ok:
     name: ci-ok

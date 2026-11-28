@@ -1,0 +1,40 @@
+# Static checks for the GitHub settings stack. It holds no cloud credential and no GitHub token
+# beyond read access: only the owner plans and applies this stack, locally (ADR-0010).
+# policies/check-workflow.sh fails the build if this file ever gains a credential, an OIDC
+# permission or a plan or apply command.
+name: github-config
+
+on:
+  pull_request:
+    paths:
+      - 'foundation/github/**'
+      - '.github/workflows/github-config.yml'
+      - 'mise.toml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-config-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  MISE_VERSION: 2026.11.14
+
+jobs:
+  static:
+    name: static
+    runs-on: ${{ github.run_attempt != 1 && vars.CI_FALLBACK || fromJSON(vars.CI_RUNNER || '"ubuntu-latest"') }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jdx/mise-action@924e7c586e33d7d4bae9c14e26c5d22e2beb6e78 # v5.3.0
+        with:
+          version: ${{ env.MISE_VERSION }}
+          cache: ${{ runner.environment == 'github-hosted' }}
+      - run: mise run github:check
+        env:
+          # tflint downloads its ruleset from GitHub; the read-only token avoids the shared-IP rate limit.
+          GITHUB_TOKEN: ${{ github.token }}
