@@ -64,6 +64,7 @@ run = [
   "tflint --chdir=infra/environments/prod --config=\"$PWD/infra/.tflint.hcl\"",
   "tflint --chdir=infra/modules/site-hosting --config=\"$PWD/infra/.tflint.hcl\"",
   "tflint --chdir=infra/modules/cost-guard --config=\"$PWD/infra/.tflint.hcl\"",
+  "tflint --chdir=infra/modules/deploy-role --config=\"$PWD/infra/.tflint.hcl\"",
 ]
 
 [tasks."infra:policies"]
@@ -84,7 +85,18 @@ run = "scripts/denylist-check.sh"
 
 [tasks."repo:test"]
 description = "Behaviour tests for the repo's own scripts"
-run = "bash scripts/denylist-check.test.sh"
+run = ["bash scripts/denylist-check.test.sh", "bash scripts/check-workflow-security.test.sh"]
+
+[tasks."repo:workflows"]
+description = "Only the deploy job holds the OIDC token, every action is SHA-pinned, installs are locked"
+# Every workflow file, not a named list: the deploy role trusts any workflow that runs on main.
+run = """
+scripts/check-workflow-security.py --require-deploy .github/workflows/ci.yml mise.toml
+for f in .github/workflows/*.yml .github/workflows/*.yaml; do
+  [ -e "$f" ] && [ "$f" != .github/workflows/ci.yml ] || continue
+  scripts/check-workflow-security.py --forbid-deploy "$f" mise.toml
+done
+"""
 
 [tasks."github:fmt"]
 description = "Terraform format check of the GitHub settings stack"

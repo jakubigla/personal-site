@@ -57,6 +57,18 @@ module "cost_guard" {
   email = var.contact_email
 }
 
+module "deploy_role" {
+  source = "../../modules/deploy-role"
+
+  github_repository = "jakubigla/personal-site"
+  bucket_arn        = module.site_hosting.bucket_arn
+  distribution_arn  = module.site_hosting.distribution_arn
+}
+
+output "deploy_role_arn" {
+  value = module.deploy_role.role_arn
+}
+
 output "site_bucket" {
   value = module.site_hosting.bucket_name
 }

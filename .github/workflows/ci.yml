@@ -47,6 +47,9 @@ jobs:
           SKIP: xpm-sensitive-scan,xpm-sensitive-scan-push
       - name: Repo script tests
         run: mise run repo:test
+      - name: Workflow trust boundary
+        # Only the deploy job may hold the OIDC token; actions are pinned; installs are locked.
+        run: mise run repo:workflows
       - name: Client-name denylist
         # Fails closed when the secret is unset (ADR-0013): a missing list must never pass silently.
         # On a PR it also reads the branch's commit messages and the PR title: squash merges copy
@@ -95,7 +98,9 @@ jobs:
     # first: a failed denylist or secret scan must never reach the public site.
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DEPLOY_ROLE_ARN != ''
     needs: [repo, web, infra]
-    runs-on: *runner
+    # Always a fresh GitHub-hosted machine, never the self-hosted runner: the build jobs run
+    # third-party packages there, and anything they left behind would run with the deploy role.
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
       contents: read
@@ -105,8 +110,29 @@ jobs:
         with:
           name: site
           path: site
-      - name: Publish
-        run: echo "publishing the site artifact is added with the hosting module"
+      # The role is assumed through OIDC: no key or secret exists for this job to read.
+      - uses: aws-actions/configure-aws-credentials@45666896f5d8e0f10ae255413f3a4cdd03bdc8f5 # v6.3.1
+        with:
+          role-to-assume: ${{ vars.DEPLOY_ROLE_ARN }}
+          aws-region: eu-central-1
+      # Hashed assets go first so a page that reaches the edge mid-deploy never names a file that
+      # is not there yet. They are immutable by name. Nothing is ever deleted: older cached HTML
+      # still loads its assets (ADR-0011), and the role has no delete right.
+      - name: Upload hashed assets
+        run: aws s3 sync site/_astro "s3://$SITE_BUCKET/_astro" --cache-control "public, max-age=31536000, immutable"
+        env:
+          SITE_BUCKET: ${{ vars.SITE_BUCKET }}
+      # Everything else, HTML included, revalidates within five minutes so a release shows quickly.
+      - name: Upload HTML and the rest
+        run: aws s3 sync site "s3://$SITE_BUCKET" --exclude "_astro/*" --cache-control "public, max-age=300"
+        env:
+          SITE_BUCKET: ${{ vars.SITE_BUCKET }}
+      - name: Invalidate the cache and wait for it
+        run: |
+          id="$(aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*" --query Invalidation.Id --output text)"
+          aws cloudfront wait invalidation-completed --distribution-id "$DISTRIBUTION_ID" --id "$id"
+        env:
+          DISTRIBUTION_ID: ${{ vars.DISTRIBUTION_ID }}
 
   infra:
     name: infra
