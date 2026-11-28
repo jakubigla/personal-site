@@ -32,4 +32,5 @@ Set `DEPLOY_ROLE_ARN` last: it is the switch.
 The next merge to main runs the deploy job: it uploads `_astro/` (hashed, immutable), then the
 HTML (five minutes), then invalidates and waits. The role trusts only the subject
 `repo:jakubigla/personal-site:ref:refs/heads/main`, so a pull request, a fork or another branch
-cannot assume it. The runner needs the AWS CLI; GitHub's hosted runners have it.
+cannot assume it. The job always runs on a GitHub-hosted runner, which ships the AWS CLI, and
+never on the self-hosted one.

@@ -98,7 +98,9 @@ jobs:
     # first: a failed denylist or secret scan must never reach the public site.
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DEPLOY_ROLE_ARN != ''
     needs: [repo, web, infra]
-    runs-on: *runner
+    # Always a fresh GitHub-hosted machine, never the self-hosted runner: the build jobs run
+    # third-party packages there, and anything they left behind would run with the deploy role.
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
       contents: read
