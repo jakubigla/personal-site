@@ -20,9 +20,9 @@
         "AC5"
       ],
       "png": "work-card@desktop.png",
-      "sha256": "83f83fce5cb60bf3a440a8a126a434b3c4383d3603da6ac4eb1c21c9357ab03b",
+      "sha256": "c5d96a6b45584456f3cb63518e4ae68205221df8285bc5b6a21c1ac90504c105",
       "mobile_png": "work-card@mobile.png",
-      "mobile_sha256": "ce309c2d4741616b9ea0d5609693783ea14838b59d12988ff05f6206afa7f48c",
+      "mobile_sha256": "490bd8d76851ca48910ab2abaf97fc852713eb0961ae0ae925c5583fd3065430",
       "state": "dark theme, one filled work card beside one placeholder sample card, under the Selected work heading"
     }
   ]
