@@ -25,5 +25,5 @@
       "label": "Run `mise run web:build`, then open a file in `apps/web/dist` with JavaScript off; the page still reads top to bottom."
     }
   ],
-  "generated_at": "2026-11-27T18:09:58Z"
+  "generated_at": "2026-11-28T14:43:42Z"
 }
