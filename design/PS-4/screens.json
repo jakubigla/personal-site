@@ -1,0 +1,29 @@
+{
+  "ticket": "PS-4",
+  "adapter": "claude-design",
+  "link": "https://claude.ai/artifact/9eC9YQcFRLGUvQWsjz9WgA",
+  "screens": [
+    {
+      "name": "hero",
+      "acs": [
+        "AC5"
+      ],
+      "png": "hero@desktop.png",
+      "sha256": "19f0126568aa30941f03a4b9e6b3d6f3abfc947cf3305a3e6fe0df7896f0a373",
+      "mobile_png": "hero@mobile.png",
+      "mobile_sha256": "df0cdb01e5e83ef8b0c5d6c25442c8fdea63fe5ed631c1f1fb0bc2ea11e17af1",
+      "state": "dark theme, placeholder name Ada Novak, no portrait yet, Get in touch and Download CV buttons, four proof statements in words"
+    },
+    {
+      "name": "work-card",
+      "acs": [
+        "AC5"
+      ],
+      "png": "work-card@desktop.png",
+      "sha256": "83f83fce5cb60bf3a440a8a126a434b3c4383d3603da6ac4eb1c21c9357ab03b",
+      "mobile_png": "work-card@mobile.png",
+      "mobile_sha256": "ce309c2d4741616b9ea0d5609693783ea14838b59d12988ff05f6206afa7f48c",
+      "state": "dark theme, one filled work card beside one placeholder sample card, under the Selected work heading"
+    }
+  ]
+}
