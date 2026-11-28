@@ -1,49 +1,52 @@
-::xpm-ac AC12::
---- CI wiring: secret fed to the check
-54:        run: mise run repo:denylist
-56:          DENYLIST: ${{ secrets.DENYLIST }}
---- fixture repo: content file holding a placeholder term
---- negative: denied term present
-EXIT=1
-denylist-check: denied term in content.yaml
-denylist-check: failed; terms are never printed
-TERM PRINTED: no
---- fail closed: DENYLIST unset, no .denylist.local
-EXIT=2
-denylist-check: no denylist found (set DENYLIST or create .denylist.local); failing closed
---- fail closed: DENYLIST empty
-EXIT=2
-denylist-check: no denylist found (set DENYLIST or create .denylist.local); failing closed
---- positive control: clean file only
-EXIT=0
-denylist-check: clean (1 files)
---- mise run repo:test (behaviour tests)
-EXIT=0
-[repo:test] $ bash scripts/denylist-check.test.sh
-ok   a denied term fails the check
-ok   the term is never printed
-ok   the offending file is named
-ok   matching ignores case
-ok   a denied term in a file name fails
-ok   a file name holding a term is not echoed
-ok   a clean tree passes
-ok   a missing denylist fails closed
-ok   an empty denylist fails closed
-ok   a blank-only denylist fails closed
-ok   the local file feeds the check
-ok   the hook may skip when no list exists
-ok   only the named files are scanned
-ok   a named file holding a term fails
-ok   a non-ASCII file name is still scanned
-ok   a denied term in a non-ASCII file name fails
-ok   a non-ASCII file name holding a term is not echoed
-ok   a denied term in a commit message fails
-ok   a message's term is never printed
-ok   the offending commit is named
-ok   commits outside the range are not read
-ok   messages are read only when a range is given
-ok   an unreadable range fails closed
-ok   a denied term in the title fails
-ok   the title's term is never printed
-ok   a clean title passes
-all passed
+::xpm-ac AC10::
+--- triggers
+pull_request:
+  # edited: the denylist reads the PR title, which a squash merge writes into main's history, so
+  # a title changed without a push must re-run every job. Skipping jobs on a body-only edit would
+  # report ci-ok as skipped, which GitHub counts as passing over an earlier red run.
+  types: [opened, synchronize, reopened, edited]
+push:
+  branches: [main, 'xpm/land/**']
+exit=0
+--- web job steps
+mise run web:install
+mise run web:lint
+mise run web:test
+mise run web:build
+mise run web:e2e-install
+mise run web:e2e
+--- deploy needs
+[repo, web, infra]
+--- web:test / web:e2e tasks
+[tasks."web:test"]
+description = "Unit tests and build checks"
+dir = "apps/web"
+run = "npm test"
+
+[tasks."web:e2e-install"]
+description = "Install the Chromium that the browser specs use"
+dir = "apps/web"
+run = "npx playwright install --with-deps chromium"
+
+[tasks."web:e2e"]
+description = "Browser specs against the production build"
+dir = "apps/web"
+run = "npm run e2e"
+
+--- needs contains web?
+true
+deploy-needs-web exit=0
+--- negative: contains a bogus job?
+false
+Error: no matches found
+bogus exit=1 (nonzero expected)
+--- e2e step present
+run: mise run web:e2e
+e2e exit=0
+--- no job-level if on web
+false
+--- ADR
+---
+status: accepted
+date: 2026-11-27
+---

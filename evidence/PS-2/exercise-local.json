@@ -3,20 +3,19 @@
  "display_name": "Local tooling",
  "acs": [
   {
-   "id": "AC12",
-   "text": "Negative: a content file or fixture holding a term from the client-name denylist fails the CI denylist check without printing the term, and the check fails closed when the denylist secret is missing (ADR-0013).",
+   "id": "AC10",
+   "text": "Main regression: .github/workflows/ci.yml runs the full test suite, Playwright included, on every pull request and every push to main, in job web; the deploy job needs it.",
    "command": "xpm evidence record --surface local --evidence-dir .xpm/state/evidence/PS-2 -- bash .xpm/state/evidence/PS-2/exercise-local.sh",
-   "raw_artifact": "--- CI wiring: secret fed to the check\n54:        run: mise run repo:denylist\n56:          DENYLIST: ${{ secrets.DENYLIST }}\n--- fixture repo: content file holding a placeholder term\n--- negative: denied term present\nEXIT=1\ndenylist-check: denied term in content.yaml\ndenylist-check: failed; terms are never printed\nTERM PRINTED: no\n--- fail closed: DENYLIST unset, no .denylist.local\nEXIT=2\ndenylist-check: no denylist found (set DENYLIST or create .denylist.local); failing closed\n--- fail closed: DENYLIST empty\nEXIT=2\ndenylist-check: no denylist found (set DENYLIST or create .denylist.local); failing closed\n--- positive control: clean file only\nEXIT=0\ndenylist-check: clean (1 files)\n--- mise run repo:test (behaviour tests)\nEXIT=0\n[repo:test] $ bash scripts/denylist-check.test.sh\nok   a denied term fails the check\nok   the term is never printed\nok   the offending file is named\nok   matching ignores case\nok   a denied term in a file name fails\nok   a file name holding a term is not echoed\nok   a clean tree passes\nok   a missing denylist fails closed\nok   an empty denylist fails closed\nok   a blank-only denylist fails closed\nok   the local file feeds the check\nok   the hook may skip when no list exists\nok   only the named files are scanned\nok   a named file holding a term fails\nok   a non-ASCII file name is still scanned\nok   a denied term in a non-ASCII file name fails\nok   a non-ASCII file name holding a term is not echoed\nok   a denied term in a commit message fails\nok   a message's term is never printed\nok   the offending commit is named\nok   commits outside the range are not read\nok   messages are read only when a range is given\nok   an unreadable range fails closed\nok   a denied term in the title fails\nok   the title's term is never printed\nok   a clean title passes\nall passed",
-   "verdict_reason": "Fixture with placeholder term exits 1 naming only the file, term not printed; unset and empty DENYLIST exit 2 failing closed; repo:test all passed.",
-   "verdict": "pass",
    "paths": [
-    "scripts/denylist-check.sh",
-    "scripts/denylist-check.test.sh",
-    "mise.toml",
     ".github/workflows/ci.yml",
+    "mise.toml",
+    "docs/adr/0016-main-regression-job-ci-web.md",
     ".xpm/state/evidence/PS-2/exercise-local.sh"
    ],
-   "no_visual_reason": "CLI exit codes and output; no rendered state"
+   "raw_artifact": "::xpm-ac AC10::\n--- triggers\npull_request:\n  # edited: the denylist reads the PR title, which a squash merge writes into main's history, so\n  # a title changed without a push must re-run every job. Skipping jobs on a body-only edit would\n  # report ci-ok as skipped, which GitHub counts as passing over an earlier red run.\n  types: [opened, synchronize, reopened, edited]\npush:\n  branches: [main, 'xpm/land/**']\nexit=0\n--- web job steps\nmise run web:install\nmise run web:lint\nmise run web:test\nmise run web:build\nmise run web:e2e-install\nmise run web:e2e\n--- deploy needs\n[repo, web, infra]\n--- web:test / web:e2e tasks\n[tasks.\"web:test\"]\ndescription = \"Unit tests and build checks\"\ndir = \"apps/web\"\nrun = \"npm test\"\n\n[tasks.\"web:e2e-install\"]\ndescription = \"Install the Chromium that the browser specs use\"\ndir = \"apps/web\"\nrun = \"npx playwright install --with-deps chromium\"\n\n[tasks.\"web:e2e\"]\ndescription = \"Browser specs against the production build\"\ndir = \"apps/web\"\nrun = \"npm run e2e\"\n\n--- needs contains web?\ntrue\ndeploy-needs-web exit=0\n--- negative: contains a bogus job?\nfalse\nError: no matches found\nbogus exit=1 (nonzero expected)\n--- e2e step present\nrun: mise run web:e2e\ne2e exit=0\n--- no job-level if on web\nfalse\n--- ADR\n---\nstatus: accepted\ndate: 2026-11-27\n---",
+   "verdict": "pass",
+   "verdict_reason": "Triggers include pull_request and push to main; job web runs web:test and web:e2e unconditionally; deploy needs [repo, web, infra]; negative probe of a bogus need returned false.",
+   "no_visual_reason": "workflow-config claim, no rendered state"
   }
  ],
  "summary": {
@@ -27,7 +26,7 @@
   "total": 1
  },
  "branch": "feature/PS-2-the-site-builds-from-one-content-file",
- "commit_sha": "22d93cbcc362fbd66a21c81564a10a97faf3d7a0",
+ "commit_sha": "9e5c3eebc5035ae80884a5910680c9a0704550c4",
  "deployed_sha": null,
  "deploy_run_id": null,
  "run_state": "complete"
