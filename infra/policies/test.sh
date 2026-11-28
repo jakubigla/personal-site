@@ -41,6 +41,13 @@ run_fixture logging CKV_PS_008
 run_fixture realtime-logging CKV_PS_008
 run_fixture log-store CKV_PS_008
 run_fixture budget-wrong CKV_PS_009
+run_fixture trust-pull-request CKV_PS_010
+run_fixture trust-other-branch CKV_PS_010
+run_fixture trust-other-repo CKV_PS_010
+run_fixture trust-wildcard CKV_PS_010
+run_fixture trust-no-subject CKV_PS_010
+run_fixture deploy-wildcard-action CKV_PS_011
+run_fixture deploy-wildcard-resource CKV_PS_011
 
 # A root without a budget must fail the presence assertion.
 if "$here/policies/check.sh" --require-budget "$here/policies/tests/budget-missing" >/dev/null 2>&1; then

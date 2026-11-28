@@ -64,6 +64,7 @@ run = [
   "tflint --chdir=infra/environments/prod --config=\"$PWD/infra/.tflint.hcl\"",
   "tflint --chdir=infra/modules/site-hosting --config=\"$PWD/infra/.tflint.hcl\"",
   "tflint --chdir=infra/modules/cost-guard --config=\"$PWD/infra/.tflint.hcl\"",
+  "tflint --chdir=infra/modules/deploy-role --config=\"$PWD/infra/.tflint.hcl\"",
 ]
 
 [tasks."infra:policies"]
