@@ -1,9 +1,47 @@
 # The one place a tool version lives. CI installs from here, so a laptop and a runner match.
 [tools]
+node = "26.13.1"
 terraform = "1.17.2"
 tflint = "0.66.0"
+pre-commit = "4.7.0"
+gitleaks = "8.30.1"
 uv = "0.12.5"
 "pipx:checkov" = "3.4.11"
+
+[tasks."web:install"]
+description = "Install the web app's packages from the lockfile, scripts off"
+dir = "apps/web"
+run = "npm ci --ignore-scripts"
+
+[tasks."web:dev"]
+description = "Serve the site with hot reload at http://localhost:4321"
+dir = "apps/web"
+run = "npm run dev"
+
+[tasks."web:build"]
+description = "Build the static site into apps/web/dist"
+dir = "apps/web"
+run = "npm run build"
+
+[tasks."web:lint"]
+description = "Format check, typecheck and eslint"
+dir = "apps/web"
+run = ["npm run format:check", "npm run typecheck", "npm run lint"]
+
+[tasks."web:test"]
+description = "Unit tests and build checks"
+dir = "apps/web"
+run = "npm test"
+
+[tasks."web:e2e-install"]
+description = "Install the Chromium that the browser specs use"
+dir = "apps/web"
+run = "npx playwright install --with-deps chromium"
+
+[tasks."web:e2e"]
+description = "Browser specs against the production build"
+dir = "apps/web"
+run = "npm run e2e"
 
 [tasks."infra:fmt"]
 description = "Terraform format check"
@@ -31,6 +69,22 @@ run = [
 [tasks."infra:policies"]
 description = "Checkov policies reject their negative fixtures and the real roots pass"
 run = "infra/policies/test.sh"
+
+[tasks."repo:lint"]
+description = "Every pre-commit hook over every file"
+run = "pre-commit run --all-files"
+
+[tasks."repo:secrets"]
+description = "Secret scan over every commit in history (redacted output); needs a full clone"
+run = "gitleaks git --redact --no-banner ."
+
+[tasks."repo:denylist"]
+description = "Client-name denylist over the tree; fails closed without DENYLIST"
+run = "scripts/denylist-check.sh"
+
+[tasks."repo:test"]
+description = "Behaviour tests for the repo's own scripts"
+run = "bash scripts/denylist-check.test.sh"
 
 [tasks."github:fmt"]
 description = "Terraform format check of the GitHub settings stack"

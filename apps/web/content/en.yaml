@@ -1,0 +1,40 @@
+# The one content file for the English page. Edit text here; layout code never holds a fact.
+# A section renders only while its flag below is true.
+sections:
+  hero: true
+  how_i_deliver: false # reserved slot, switched on by a later change
+  footer: true
+
+# Each contact fact lives here once; links elsewhere name it with `to:`.
+contact:
+  email: jakub.igla@gmail.com
+  linkedin: https://www.linkedin.com/in/jakubigla
+  github: https://github.com/jacops
+
+hero:
+  name: Jakub Igla
+  role: Principal Data Platform Architect
+  headline: Principal Data Platform Architect. Databricks Partner Champion.
+  value_statement: I design data platforms on Databricks and lead the teams that run them.
+  primary_link:
+    label: Get in touch
+    to: email
+  secondary_link:
+    label: LinkedIn
+    to: linkedin
+
+how_i_deliver:
+  title: How I deliver
+  body: Placeholder text until this section is written.
+
+footer:
+  entity: Jakub Igla JacOps
+  privacy_note: This site sets no cookies and does no tracking.
+  # Each link names a fact under `contact` above.
+  links:
+    - label: Email
+      to: email
+    - label: LinkedIn
+      to: linkedin
+    - label: GitHub
+      to: github

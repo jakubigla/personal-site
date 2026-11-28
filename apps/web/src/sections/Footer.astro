@@ -1,0 +1,47 @@
+---
+import type { Content } from "../content/schema";
+
+interface Props {
+  footer: Content["footer"];
+}
+const { footer } = Astro.props;
+---
+
+<footer id="contact">
+  <p class="note">{footer.entity}. {footer.privacy_note}</p>
+  <ul>
+    {
+      footer.links.map((link) => (
+        <li>
+          <a href={link.href} rel={link.href.startsWith("https:") ? "noopener" : undefined}>
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</footer>
+
+<style>
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-4) var(--space-6);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+  }
+  .note {
+    margin: 0;
+    color: var(--muted);
+  }
+  ul {
+    display: flex;
+    gap: var(--space-5);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

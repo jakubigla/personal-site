@@ -1,3 +1,15 @@
+# Dependencies and build output
+node_modules/
+dist/
+.astro/
+
+# Playwright
+test-results/
+playwright-report/
+
+# Local client-name denylist for the pre-commit hook; the CI list is a secret
+.denylist.local
+
 # Terraform: state, saved plans and provider caches never enter the repo (T-10)
 *.tfstate
 *.tfstate.*
