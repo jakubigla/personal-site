@@ -31,3 +31,34 @@ run = [
 [tasks."infra:policies"]
 description = "Checkov policies reject their negative fixtures and the real roots pass"
 run = "infra/policies/test.sh"
+
+[tasks."github:fmt"]
+description = "Terraform format check of the GitHub settings stack"
+run = "terraform fmt -recursive -check -diff foundation/github"
+
+[tasks."github:validate"]
+description = "Validate the GitHub settings stack and plan its tests against a mocked provider, without a backend or credentials"
+run = [
+  "terraform -chdir=foundation/github init -backend=false -input=false",
+  "terraform -chdir=foundation/github validate",
+  "terraform -chdir=foundation/github test",
+]
+
+[tasks."github:lint"]
+description = "tflint over the GitHub settings stack and its module"
+run = [
+  "tflint --init --config=\"$PWD/infra/.tflint.hcl\"",
+  "tflint --chdir=foundation/github --config=\"$PWD/infra/.tflint.hcl\"",
+  "tflint --chdir=foundation/github/modules/repo --config=\"$PWD/infra/.tflint.hcl\"",
+]
+
+[tasks."github:policies"]
+description = "Checkov passes the stack, and the workflow policy rejects any credential, plan or apply"
+run = [
+  "infra/policies/check.sh foundation/github",
+  "foundation/github/policies/test-check-workflow.sh",
+]
+
+[tasks."github:check"]
+description = "Every static check of the GitHub settings stack; none needs a credential"
+depends = ["github:fmt", "github:validate", "github:lint", "github:policies"]

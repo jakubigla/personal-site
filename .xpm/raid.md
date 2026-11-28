@@ -9,6 +9,7 @@ Last updated: 2026-11-27
 ## Assumptions
 | ID | Date | Title | Validation | Owner | Status |
 |---|---|---|---|---|---|
+| A-021 | 2026-11-27 | The github foundation stays `deferred` (status never reaches vars-set) because ADR-0010 gives CI no plan role or repo variable and xpm has no attended-only path; the owner pins, renders, plans and applies locally, and `xpm doctor`'s github-as-code row stays info or stopped at rendered, never ok (EN-011 AC1, AC4) | `xpm init foundation status` answers step `rendered` or later after the owner's pin and render; docs/runbooks/github-settings-first-plan.md | Jakub | open |
 | A-020 | 2026-11-27 | The AWS Budgets notifications go to the contact email the page already publishes, so no other private address enters the public repo (NFR-014 AC2, NFR-034) | EN-002 review: the budget's subscriber is the published contact address, read from a variable | Jakub | open |
 | A-019 | 2026-11-27 | Act 1's overlay is drawn in the first frame over the hero, which paints beneath it and stays the LCP element; Act 1 never delays the hero's paint (FR-002 vs NFR-002 AC3) [frs: FR-002] | PO answer, autopilot decisions batch Q4; NFR-002 AC3 amended | PO | confirmed (PO, Q4) |
 | A-018 | 2026-11-27 | PO waived data-retention-and-backup, Q14 | elicitation 2026-11-27 Q14 | PO | confirmed |
@@ -37,5 +38,5 @@ Last updated: 2026-11-27
 ## Dependencies
 | ID | Date | Title | On | Needed by | Owner | Status |
 |---|---|---|---|---|---|---|
-| D-002 | 2026-11-27 | A read-only Terraform plan identity for the github stack needs a PO decision and a new ADR before GitHub settings as code can be built (ADR-0010 allows only the deploy role in CI) | PO decision | EN-011 | PO | open |
+| D-002 | 2026-11-27 | A read-only Terraform plan identity for the github stack needs a PO decision and a new ADR before GitHub settings as code can be built (ADR-0010 allows only the deploy role in CI) | PO decision | EN-011 | PO | closed (PO kept ADR-0010: no plan identity, CI runs static checks only) |
 | D-001 | 2026-11-27 | Client-name denylist secret is set in GitHub Actions before the build stage starts; without it every CI run fails closed (ADR-0013) [frs: FR-006, FR-009] | Jakub | EN-001 walking skeleton CI | Jakub | open |

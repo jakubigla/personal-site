@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "PS-9",
+  "ticket": "PS-9",
+  "title": "PS-9 acceptance criteria",
+  "kind": "tooling",
+  "feature_url": "https://github.com/jakubigla/personal-site/pull/27/files",
+  "feature_label": "PR #27 diff",
+  "frs": [],
+  "pr": 27,
+  "steps": [
+    {
+      "label": "Run `mise run github:check` and confirm fmt, validate, tflint, checkov and the workflow policy checks all pass"
+    },
+    {
+      "label": "Open .github/workflows for the github-config workflow and confirm it has no cloud credential, secret or OIDC role step"
+    },
+    {
+      "label": "Follow docs/runbooks/github-settings-first-plan.md locally and confirm the first plan reports no changes to GitHub (needs your GITHUB_TOKEN)"
+    }
+  ],
+  "generated_at": "2026-11-27T21:58:58Z"
+}
